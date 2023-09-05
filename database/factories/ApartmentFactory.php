@@ -18,7 +18,7 @@ class ApartmentFactory extends Factory
     {
         return [
             'title' => "apartment ".fake() -> word(),
-            'description' => fake() -> paragraph(2),
+            'description' => fake() -> paragraphs(2, true),
             'rooms' => fake() -> randomDigitNotNull(),
             'beds' => fake() -> randomDigitNotNull(),
             'bathrooms' => fake() -> randomDigitNotNull(),
