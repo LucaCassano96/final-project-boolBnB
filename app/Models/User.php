@@ -26,6 +26,11 @@ class User extends Authenticatable
 
     ];
 
+    public function apartments() {
+
+        return $this -> hasMany(Apartment :: class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -15,6 +15,11 @@ class Message extends Model
         'sender_name',
         'sender_surname'
     ];
+
+    public function apartment() {
+
+        return $this -> belongsTo(Apartment :: class);
+    }
 }
 
 

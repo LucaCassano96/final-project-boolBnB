@@ -14,8 +14,14 @@ class Location extends Model
         'city',
         "address",
         "latitude",
-        "longitude"
+        "longitude",
+        "apartment_id"
     ];
+
+     public function apartment() {
+
+        return $this -> belongsTo(Apartment :: class);
+    } 
 }
 
 

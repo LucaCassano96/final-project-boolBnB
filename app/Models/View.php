@@ -12,5 +12,11 @@ class View extends Model
     protected $fillable = [
         'date',
         'ip_address',
+        "apartment_id"
     ];
+
+    public function apartment() {
+
+        return $this -> belongsTo(Apartment :: class);
+    }
 }

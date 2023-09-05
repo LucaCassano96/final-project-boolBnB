@@ -18,8 +18,39 @@ class Apartment extends Model
         "square_meters",
         "picture",
         "price",
-        "visible"
+        "visible",
+        "user_id"
+
     ];
+
+
+    /* View */
+
+    public function view() {
+
+        return $this -> hasOne(View :: class);
+    }
+
+
+    /* Location */
+
+    public function location() {
+
+        return $this -> hasOne(location :: class);
+    }
+
+    /* User--Apartment */
+
+    public function user() {
+
+        return $this -> belongsTo(User :: class);
+    }
+
+    /* Apartment--Message */
+    public function messages() {
+
+        return $this -> hasMany(Message :: class);
+    }
 }
 
 
