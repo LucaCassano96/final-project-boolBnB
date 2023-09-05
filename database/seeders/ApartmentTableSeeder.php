@@ -4,18 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Apartment;
 
-class DatabaseSeeder extends Seeder
+class ApartmentTableSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this -> call([
-            ApartmentTableSeeder :: class
-        ]);
+
+        Apartment :: factory() -> count(20) -> create();
     }
 }
