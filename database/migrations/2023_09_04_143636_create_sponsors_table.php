@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
 
             $table -> string("title", 32);
-            $table -> decimal("price", 5,2);
-            $table -> integer("duration");
+            $table -> string("price") -> unique();
+            $table -> integer("duration") -> unique();
 
             $table->timestamps();
         });

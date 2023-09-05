@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->id();
 
-            $table -> string("title", 32);
+            $table -> string("title", 32) -> unique();
             $table -> text("icon");
 
             $table->timestamps();
