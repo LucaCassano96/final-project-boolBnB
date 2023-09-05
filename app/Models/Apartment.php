@@ -51,6 +51,21 @@ class Apartment extends Model
 
         return $this -> hasMany(Message :: class);
     }
+
+    /* apartments--amenities */
+
+    public function amenities() {
+
+        return $this -> belongsToMany(Amenity :: class);
+    }
+
+
+    /* apartments--sponsors */
+    
+    public function sponsors() {
+
+        return $this -> belongsToMany(Sponsor :: class);
+    }
+
+
 }
-
-

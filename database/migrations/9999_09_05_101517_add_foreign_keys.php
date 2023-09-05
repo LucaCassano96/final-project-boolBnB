@@ -36,6 +36,21 @@ return new class extends Migration
             $table -> foreignId("apartment_id") -> constrained();
         });
 
+        /* amenity_apartment > tabella ponte*/
+
+        Schema::table('amenity_apartment', function (Blueprint $table) {
+            $table -> foreignId('amenity_id') -> constrained();
+            $table -> foreignId('apartment_id') -> constrained();
+        });
+
+        /* apartment_sponsor > tabella ponte*/
+
+        Schema::table('apartment_sponsor', function (Blueprint $table) {
+            $table -> foreignId('apartment_id') -> constrained();
+            $table -> foreignId('sponsor_id') -> constrained();
+        });
+
+
     }
 
     /**
@@ -78,6 +93,28 @@ return new class extends Migration
                 $table -> dropForeign ('messages_apartment_id_foreign');
                 $table -> dropColumn("apartment_id");
 
+            });
+
+            /* amenity_apartment > tabella ponte*/
+
+            Schema::table('amenity_apartment', function (Blueprint $table) {
+
+                $table -> dropForeign('amenity_apartment_amenity_id_foreign');
+                $table -> dropForeign('amenity_apartment_apartment_id_foreign');
+
+                $table -> dropColumn('amenity_id');
+                $table -> dropColumn('apartment_id');
+            });
+
+            /* apartment_sponsor > tabella ponte*/
+
+            Schema::table('apartment_sponsor', function (Blueprint $table) {
+
+                $table -> dropForeign('apartment_sponsor_apartment_id_foreign');
+                $table -> dropForeign('apartment_sponsor_sponsor_id_foreign');
+
+                $table -> dropColumn('apartment_id');
+                $table -> dropColumn('sponsor_id');
             });
     }
 

@@ -14,5 +14,9 @@ class Sponsor extends Model
         'price',
         "duration"
     ];
+
+    public function apartments() {
+        return $this -> belongsToMany(Apartment :: class);
+    }
 }
 

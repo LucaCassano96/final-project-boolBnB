@@ -13,4 +13,8 @@ class Amenity extends Model
         'title',
         'icon',
     ];
+
+    public function apartments() {
+        return $this -> belongsToMany(Apartment :: class);
+    }
 }
