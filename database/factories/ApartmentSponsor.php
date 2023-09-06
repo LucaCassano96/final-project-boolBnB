@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sponsor>
  */
-class SponsorFactory extends Factory
+class ApartmentSponsorFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,8 @@ class SponsorFactory extends Factory
     public function definition()
     {
         return [
-
-            'title' => "abbonamento" ,
-            'price' => fake() -> unique() -> randomElement([2.99, 5.99, 9.99]),
-            'duration' => fake() -> unique() -> randomElement([24, 72, 144])
+            'start_date' => fake()->date(),
+            'end_date' => fake()->date(),
         ];
     }
 }

@@ -17,7 +17,7 @@ class ViewTableSeeder extends Seeder
      */
     public function run()
     {
-        /* View :: factory() -> count(20) -> create(); */
+         /* UNO > UNO un appartamento per una view  */
 
         $apartments = Apartment :: all();
         $views = View :: factory() -> count(count($apartments)) -> make();

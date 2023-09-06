@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Amenity;
+use App\Models\Apartment;
+
 
 class AmenityTableSeeder extends Seeder
 {
@@ -15,6 +17,16 @@ class AmenityTableSeeder extends Seeder
      */
     public function run()
     {
-        Amenity :: factory() -> count(10) -> create();
+        
+
+        $amenities =  Amenity :: factory() -> count(10) -> create();
+
+        foreach ($amenities as $amenity) {
+
+        $apartments = Apartment :: inRandomOrder() -> limit(rand(1,10)) -> get();
+
+        $amenity -> apartments() -> attach($apartments);
+
+    }
     }
 }

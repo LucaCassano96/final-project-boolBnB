@@ -17,7 +17,7 @@ class ApartmentTableSeeder extends Seeder
     public function run()
     {
 
-       /*  Apartment :: factory() -> count(20) -> create(); */
+        /* UNO > MOLTI collegamento tra uno User con tanti appartamenti */
 
         $apartments = Apartment :: factory() -> count(20) -> make();
 

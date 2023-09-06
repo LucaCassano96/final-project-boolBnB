@@ -16,7 +16,7 @@ class LocationTableSeeder extends Seeder
      */
     public function run()
     {
-         /* Location :: factory() -> count(20) -> create(); */
+         /* UNO > UNO un appartamento per una location  */
 
         $apartments = Apartment :: all();
         $locations = Location :: factory() -> count(count($apartments)) -> make();

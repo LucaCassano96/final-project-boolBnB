@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('apartment_sponsor', function (Blueprint $table) {
 
             $table->id();
-            $table-> dateTime ("start_date");
-            $table-> dateTime ("end_date");
+            $table->dateTime('start_date')->default(now());
+            $table->dateTime('end_date')->default(now());
 
         });
     }

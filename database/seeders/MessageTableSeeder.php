@@ -17,7 +17,7 @@ class MessageTableSeeder extends Seeder
      */
     public function run()
     {
-        /* Message :: factory() -> count(30) -> create(); */
+        //* UNO > MOLTI collegamento di un appartamento con tanti messaggi */
 
         $messages = Message :: factory() -> count(30) -> make();
 
