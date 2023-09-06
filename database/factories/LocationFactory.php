@@ -26,4 +26,7 @@ class LocationFactory extends Factory
 
         ];
     }
+
+
+    
 }

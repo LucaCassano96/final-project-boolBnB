@@ -61,7 +61,7 @@ class Apartment extends Model
 
 
     /* apartments--sponsors */
-    
+
     public function sponsors() {
 
         return $this -> belongsToMany(Sponsor :: class);
