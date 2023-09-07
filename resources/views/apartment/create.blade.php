@@ -10,10 +10,14 @@
 
     <form class="d-flex flex-column text-center"
     method="POST"
-    action="{{route("apartment.store")}}">
+    action="{{route("apartment.store")}}"
+    enctype="multipart/form-data">
 
 
         @csrf
+
+        <label for="user_id">User ID</label>
+        <input type="number" name="user_id">
 
         <label for="title">Nome appartamento</label>
         <input type="text" name="title">
@@ -38,6 +42,31 @@
 
         <label for="price">Prezzo appartamento</label>
         <input type="number" name="price">
+
+        {{-- Location --}}
+
+      {{--   <label for="{{$location->country}}">Paese</label>
+        <input type="text" name="{{$location->country}}">
+
+        <label for="{{$location->city}}">Città</label>
+        <input type="text" name="{{$location->city}}">
+
+        <label for="{{$location->address}}">Indirizzo</label>
+        <input type="text" name="{{$location->address}}"> --}}
+
+        {{-- Amenities checkbox --}}
+
+        @foreach ($amenities as $amenity)
+            <div class="border-bottom p-2 text-start">
+                <input class="form-check-input" type="checkbox" value="{{ $amenity->id }}"
+                    name="amenities[]" id="{{ $amenity->id }}">
+                <label class="form-check-label" for="{{ $amenity->id }}">
+                    {{ $amenity->title }}
+                    <img src="{{$amenity->icon}}" alt="icon">
+                </label>
+            </div>
+            <br>
+        @endforeach
 
         <label for="visible">Visibile</label>
         <input type="checkbox" name="visible">

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Apartment;
 use App\Models\Location;
-use App\Models\Amentity;
+use App\Models\Amenity;
 
 
 
@@ -25,10 +25,10 @@ class MainController extends Controller
     public function create(){
 
         $apartments = Apartment :: all();
-        $locations = Location :: all();
+        /* $location = Location :: all(); */
         $amenities = Amenity :: all();
 
-        return view("apartment.create", compact("apartments", "locations", "amenities"));
+        return view("apartment.create", compact("apartments",/*  "location", */ "amenities"));
 
         }
 
@@ -40,6 +40,10 @@ class MainController extends Controller
 
         $apartment = Apartment :: create($data);
         return redirect() -> route("home", $apartment -> id);
+
+         // Imposta il user_id dell'appartamento con l'id dell'utente autenticato
+         $data['user_id'] = Auth::id();
+
     }
 
 }

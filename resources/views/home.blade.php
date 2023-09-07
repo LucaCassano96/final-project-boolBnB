@@ -12,7 +12,7 @@
             @foreach ($apartments as $apartment)
 
             <li>{{$apartment -> title}}</li>
-            <li>{{$apartment -> location -> address}}</li>
+            {{-- <li>{{$apartment -> location -> address}}</li> --}}
             @endforeach
 
     </ul>

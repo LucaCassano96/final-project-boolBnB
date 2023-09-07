@@ -15,7 +15,7 @@ use App\Http\Controllers\MainController;
 |
 */
 /* HOME */
-Route :: get("/", [MainController :: class, "index"]);
+Route :: get("/", [MainController :: class, "index"]) -> name("home");
 
 
 /* CREATE APARTMENT */
