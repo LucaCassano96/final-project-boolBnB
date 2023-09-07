@@ -22,7 +22,6 @@
 
                 <form method="POST" action="{{ route('apartment.store') }}">
 
-
                     @csrf
 
                     <div class="form-floating mb-3">
