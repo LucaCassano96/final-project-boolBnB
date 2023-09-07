@@ -17,8 +17,6 @@ class AmenityTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         $amenities =  Amenity :: factory() -> count(10) -> create();
 
         foreach ($amenities as $amenity) {
@@ -26,7 +24,6 @@ class AmenityTableSeeder extends Seeder
         $apartments = Apartment :: inRandomOrder() -> limit(rand(1,10)) -> get();
 
         $amenity -> apartments() -> attach($apartments);
-
-    }
+        }
     }
 }

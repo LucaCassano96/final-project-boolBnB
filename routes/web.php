@@ -2,27 +2,24 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\ApartmentController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 /* HOME */
-Route :: get("/", [MainController :: class, "index"]);
+Route :: get("/", [ApartmentController :: class, "index"]);
 
+/* SHOW */
+Route :: get("/show/{id}", [ApartmentController :: class, "show"])
+->middleware(['auth', 'verified'])
+-> name("apartment.show");
 
 /* CREATE APARTMENT */
-Route :: get("/apartment/create", [MainController :: class, "create"]) -> name("apartment.create");
+Route :: get("/create", [ApartmentController :: class,
+"create"])
+-> middleware(['auth', 'verified'])
+-> name("apartment.create");
 
-/* STORE */
-Route :: post("/apartment_store", [MainController :: class, "store"]) -> name("apartment.store");
+/* STORE APPARTMENT */
+Route :: post("/apartment_store", [ApartmentController :: class, "store"]) -> name("apartment.store");
 
 
 Route::get('/dashboard', function () {

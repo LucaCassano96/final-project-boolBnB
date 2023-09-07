@@ -2,24 +2,25 @@
 @section('content')
 
 <div class="jumbotron p-5 mb-4 bg-light rounded-3">
-    <div class="container py-5">
 
-        <h1>ciao</h1>
-        <a href="{{route('apartment.create')}}">Aggiungi</a>
+    <a href="{{route('apartment.create')}}">Aggiungi Appartamento</a>
 
-        <ul>
+    <ul>
 
-            @foreach ($apartments as $apartment)
+        @foreach ($apartments as $apartment)
 
-            <li>{{$apartment -> title}}</li>
-            <li>{{$apartment -> location -> address}}</li>
-            @endforeach
+        <h2>
+            <a href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+        </h2>
+        <div>{{ $apartment -> user -> name}}</div>
+        <img src="{{$apartment -> picture}}" alt="">
+        @endforeach
 
     </ul>
 
-    </div>
 </div>
 
+<div class="content">
 
+</div>
 @endsection
-

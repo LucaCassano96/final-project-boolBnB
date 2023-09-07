@@ -19,38 +19,14 @@ class Apartment extends Model
         "picture",
         "price",
         "visible",
+        "city",
+        "address",
+        "latitude",
+        "longitude",
         "user_id"
 
     ];
 
-
-    /* View */
-
-    public function view() {
-
-        return $this -> hasOne(View :: class);
-    }
-
-
-    /* Location */
-
-    public function location() {
-
-        return $this -> hasOne(location :: class);
-    }
-
-    /* User--Apartment */
-
-    public function user() {
-
-        return $this -> belongsTo(User :: class);
-    }
-
-    /* Apartment--Message */
-    public function messages() {
-
-        return $this -> hasMany(Message :: class);
-    }
 
     /* apartments--amenities */
 
@@ -60,12 +36,12 @@ class Apartment extends Model
     }
 
 
-    /* apartments--sponsors */
+    /* User--Apartment */
 
-    public function sponsors() {
+    public function user() {
 
-        return $this -> belongsToMany(Sponsor :: class);
+        return $this -> belongsTo(User :: class);
     }
-
-
 }
+
+

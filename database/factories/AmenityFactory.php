@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Amenity>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
 class AmenityFactory extends Factory
 {
@@ -18,10 +18,10 @@ class AmenityFactory extends Factory
     {
         return [
 
-                'title' => fake() -> unique() -> randomElement([
+            'title' => fake() -> unique() -> randomElement([
                 "piscina", "sauna", "parcheggio gratuito", "WiFi", "aria condizionata", "vista mare", "TV", "lavatrice", "barbecue", "sala giochi"
             ]) ,
-            'icon' => fake() ->imageUrl(70, 70, "icon", true),
+            'icon' => fake() ->imageUrl(50, 50, "icon", true),
 
         ];
     }

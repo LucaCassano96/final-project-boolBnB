@@ -17,6 +17,7 @@ class ApartmentFactory extends Factory
     public function definition()
     {
         return [
+
             'title' => "apartment ".fake() -> word(),
             'description' => fake() -> paragraphs(2, true),
             'rooms' => fake() -> randomDigitNotNull(),
@@ -26,6 +27,13 @@ class ApartmentFactory extends Factory
             'picture' => fake() -> imageUrl(360, 360, "house", true),
             'price' => fake() -> numberBetween(100, 1000000),
             'visible' => fake() -> boolean(),
+            'city' => fake() ->city(),
+            'address' => fake() -> streetAddress(),
+            'latitude' => fake() -> latitude(),
+            'longitude' => fake() -> longitude(),
+
         ];
     }
 }
+
+
