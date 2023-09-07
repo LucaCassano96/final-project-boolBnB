@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+/* HOME */
+Route :: get("/", [MainController :: class, "index"]);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+/* CREATE APARTMENT */
+Route :: get("/apartment/create", [MainController :: class, "create"]) -> name("apartment.create");
+
+/* STORE */
+Route :: post("/apartment_store", [MainController :: class, "store"]) -> name("apartment.store");
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
