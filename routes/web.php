@@ -9,7 +9,6 @@ Route :: get("/", [ApartmentController :: class, "index"]);
 
 /* SHOW */
 Route :: get("/show/{id}", [ApartmentController :: class, "show"])
-->middleware(['auth', 'verified'])
 -> name("apartment.show");
 
 /* CREATE APARTMENT */
