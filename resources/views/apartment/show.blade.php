@@ -6,6 +6,14 @@
         <a class="btn btn-primary border-white" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
     </div>
 
+    {{-- Delete Appartamento --}}
+    <div class="text-end m-3">
+        <form action="{{route('apartment.delete', $apartment -> id)}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger border-white" type="submit">X</button>
+        </form>
+
     {{-- titolo appartamento --}}
     <h2 class="text-uppercase mt-5 m-3" >
         <a class="

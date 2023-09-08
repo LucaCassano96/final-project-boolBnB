@@ -70,4 +70,15 @@ class ApartmentController extends Controller
         return redirect() -> route("apartment.show", $apartment -> id);
     }
 
+    // /* DELETE */
+    public function delete($id) {
+        $apartment = Apartment::findOrFail($id);
+
+        $apartment->amenities()->detach();
+        $apartment->delete();
+
+        return redirect()->route("dashboard");
+    }
+
+
 }

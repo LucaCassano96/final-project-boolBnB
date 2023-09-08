@@ -26,6 +26,9 @@ Route :: get ('/edit/{id}', [ApartmentController :: class, "edit"]) -> name("apa
 // UPDATE APARTMENT
 Route :: put ('/update/{id}', [ApartmentController :: class, "update"]) -> name("apartment.update");
 
+// DELETE APARTMENT
+Route :: delete ('/delete/{id}', [ApartmentController :: class, "delete"]) -> name("apartment.delete");
+
 // -----------------------------------------------------------------
 
 
