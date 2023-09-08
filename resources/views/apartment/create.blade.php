@@ -4,16 +4,6 @@
 
         <div class="row d-flex justify-content-center ">
 
-            @if ($errors->any())
-                <div class="alert alert-danger" style="margin-top: 120px;">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
 
             <div class="col-11 col-md-8 col-xl-5 border border-primary p-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded"
                 style="margin: 150px">
@@ -27,11 +17,17 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="title" placeholder="nome appartamento">
                         <label for="floatingInput">Nome appartamento</label>
+                        @error('title')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="Descrizione appartamento" class="form-label">Descrizione appartamento</label>
                         <textarea class="form-control" name="description" rows="3"></textarea>
+                        @error('title')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
 

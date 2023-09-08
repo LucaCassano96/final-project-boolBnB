@@ -43,6 +43,29 @@ class ApartmentController extends Controller
 
     public function store(Request $request){
 
+
+        // validazioni backend appartamento
+
+
+        $request -> validate([
+            "title" => "required|max:255",
+            "description" => "required",
+            "rooms" => "required|integer|max:30",
+            "beds" => "required|integer|max:80",
+            "bathrooms" => "required|integer|max:10",
+            "square_meters" => "required|integer|min:10|max:5000",
+            "address" => "required|max:255",
+
+            // DA MODIFICARE
+            "latitude" => "numeric",
+            "longitude" => "numeric",
+
+
+            "image" => "required|image",
+            "price" => "required|numeric",
+            "amenities" => "required|array",
+            // "amenities.*" => "exists:amenities,id"
+        ]);
         $data =  $request -> all();
         $data['user_id'] = Auth::id();
         $apartment = Apartment :: create($data);
