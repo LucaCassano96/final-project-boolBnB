@@ -65,7 +65,31 @@ class ApartmentController extends Controller
             "price" => "required|numeric",
             "amenities" => "required|array",
             // "amenities.*" => "exists:amenities,id"
-        ]);
+        ],
+
+        // MODIFICA MESSAGGI VALIDATE
+        [
+            'title.required'=> "È necessario inserire un titolo",
+
+            'description.required'=> "È necessario inserire una descrizione",
+
+            'rooms.required'=> "È necessario inserire un numero di stanze",
+
+            'beds.required'=> "È necessario inserire un numero di letti",
+
+            'bathrooms.required'=> "È necessario inserire un numero di bagni",
+
+            'square_meters.required'=> "È necessario inserire i metri quadrati",
+
+            'address.required'=> "È necessario inserire un indirizzo",
+
+            'image.required'=> "È necessario inserire un immagine",
+
+            'price.required'=> "È necessario inserire un prezzo",        
+        ]
+     );
+
+
         $data =  $request -> all();
         $data['user_id'] = Auth::id();
         $apartment = Apartment :: create($data);
