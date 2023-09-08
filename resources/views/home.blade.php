@@ -3,9 +3,7 @@
 
 <div class="container border border-primary rounded bg-primary">
 
-    <div class="text-end m-3">
-        <a class="btn btn-primary border-white" href="{{route('apartment.create')}}">Aggiungi Appartamento</a>
-    </div>
+
 
     @foreach ($apartments as $apartment)
         {{-- titolo appartamento --}}

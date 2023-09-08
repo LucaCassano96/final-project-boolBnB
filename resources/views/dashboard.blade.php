@@ -21,6 +21,9 @@
                 </div>
             </div>
         </div>
+        <div class="text-end m-3">
+            <a class="btn btn-primary border-white" href="{{route('apartment.create')}}">Aggiungi Appartamento</a>
+        </div>
     </div>
 </div>
 @endsection
