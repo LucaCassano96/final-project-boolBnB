@@ -1,17 +1,22 @@
 @extends('layouts.app')
 @section('content')
 
+    {{-- Edit Appartamento  --}}
+    <div class="text-end m-3">
+        <a class="btn btn-primary border-white" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
+    </div>
+
     {{-- titolo appartamento --}}
     <h2 class="text-uppercase mt-5 m-3" >
         <a class="
-        text-decoration-none border border-white p-2 rounded" 
-        style="color: rgb(255, 255, 255)" 
+        text-decoration-none border border-white p-2 rounded"
+        style="color: rgb(255, 255, 255)"
         href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
     </h2>
 
     <div class="card border border-primary m-3 p-2 flex-row bg-primary-subtle">
 
-        
+
         {{-- CARD LEFT --}}
         <div class="card-left p-2">
 
@@ -24,7 +29,7 @@
 
         {{-- CARD RIGHT --}}
         <div class="card-right p-2">
-            
+
             {{-- nome proprietario --}}
             <h3>{{ $apartment -> user -> name}}</h3>
 

@@ -20,6 +20,14 @@ Route :: get("/create", [ApartmentController :: class,
 /* STORE APPARTMENT */
 Route :: post("/apartment_store", [ApartmentController :: class, "store"]) -> name("apartment.store");
 
+// EDIT APARTMENT
+Route :: get ('/edit/{id}', [ApartmentController :: class, "edit"]) -> name("apartment.edit");
+
+// UPDATE APARTMENT
+Route :: put ('/update/{id}', [ApartmentController :: class, "update"]) -> name("apartment.update");
+
+// -----------------------------------------------------------------
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,5 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__.'/auth.php';

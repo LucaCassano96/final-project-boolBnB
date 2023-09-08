@@ -50,4 +50,24 @@ class ApartmentController extends Controller
 
         return redirect() -> route("apartment.show", $apartment -> id);
  }
+
+    //  /* EDIT */
+    public function edit($id){
+
+        $amenities = Amenity :: all();
+        $apartment = Apartment :: FindOrFail($id);
+        return view("apartment.edit", compact("apartment", "amenities"));
+        }
+
+    //  /* UPDATE */
+    public function update(Request $request, $id){
+
+        $data = $request -> all();
+        $apartment = Apartment :: FindOrFail($id);
+        $apartment -> update($data);
+        $apartment -> amenities() -> sync($data["amenities"]);
+
+        return redirect() -> route("apartment.show", $apartment -> id);
+    }
+
 }
