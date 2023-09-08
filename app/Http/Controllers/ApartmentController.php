@@ -57,12 +57,12 @@ class ApartmentController extends Controller
             "address" => "required|max:255",
 
             // DA MODIFICARE
-            "latitude" => "numeric",
-            "longitude" => "numeric",
+            // "latitude" => "numeric",
+            // "longitude" => "numeric",
 
 
-            "image" => "required|image",
-            "price" => "required|numeric",
+            "picture" => "required",
+            "price" => "required|integer",
             "amenities" => "required|array",
             // "amenities.*" => "exists:amenities,id"
         ],
@@ -70,22 +70,35 @@ class ApartmentController extends Controller
         // MODIFICA MESSAGGI VALIDATE
         [
             'title.required'=> "È necessario inserire un titolo",
+            'title.max'=> "Il titolo non può superare i 255 caratteri",
 
             'description.required'=> "È necessario inserire una descrizione",
 
+
             'rooms.required'=> "È necessario inserire un numero di stanze",
+            'rooms.integer'=> "È necessario inserire un numero intero",
+            'rooms.max'=> "Il numero di stanze non può superare i 30",
 
             'beds.required'=> "È necessario inserire un numero di letti",
+            'beds.integer'=> "È necessario inserire un numero intero",
+            'beds.max'=> "Il numero di letti non può superare gli 80",
 
             'bathrooms.required'=> "È necessario inserire un numero di bagni",
+            'bathrooms.integer'=> "È necessario inserire un numero intero",
+            'bathrooms.max'=> "Il numero di bagni non può superare i 10",
 
             'square_meters.required'=> "È necessario inserire i metri quadrati",
+            'square_meters.integer'=> "È necessario inserire un numero intero",
+            'square_meters.min'=> "I metri quadrati non possono essere inferiori a 10",
+            'square_meters.max'=> "I metri quadrati non possono superare i 5000",
 
             'address.required'=> "È necessario inserire un indirizzo",
+            'address.max'=> "L'indirizzo non può superare i 255 caratteri",
 
-            'image.required'=> "È necessario inserire un immagine",
+            'picture.required'=> "È necessario inserire un'immagine",
 
-            'price.required'=> "È necessario inserire un prezzo",        
+            'price.required'=> "È necessario inserire un prezzo",
+            'price.integer'=> "È necessario inserire un numero intero",
         ]
      );
 
@@ -109,6 +122,62 @@ class ApartmentController extends Controller
     //  /* UPDATE */
     public function update(Request $request, $id){
 
+        // validazioni update
+        $request -> validate([
+            "title" => "required|max:255",
+            "description" => "required",
+            "rooms" => "required|integer|max:30",
+            "beds" => "required|integer|max:80",
+            "bathrooms" => "required|integer|max:10",
+            "square_meters" => "required|integer|min:10|max:5000",
+            "address" => "required|max:255",
+
+            // DA MODIFICARE
+            // "latitude" => "numeric",
+            // "longitude" => "numeric",
+
+
+            "picture" => "required",
+            "price" => "required|integer",
+            "amenities" => "required|array",
+            // "amenities.*" => "exists:amenities,id"
+        ],
+
+        // MODIFICA MESSAGGI VALIDATE
+        [
+            'title.required'=> "È necessario inserire un titolo",
+            'title.max'=> "Il titolo non può superare i 255 caratteri",
+
+            'description.required'=> "È necessario inserire una descrizione",
+
+
+            'rooms.required'=> "È necessario inserire un numero di stanze",
+            'rooms.integer'=> "È necessario inserire un numero intero",
+            'rooms.max'=> "Il numero di stanze non può superare i 30",
+
+            'beds.required'=> "È necessario inserire un numero di letti",
+            'beds.integer'=> "È necessario inserire un numero intero",
+            'beds.max'=> "Il numero di letti non può superare gli 80",
+
+            'bathrooms.required'=> "È necessario inserire un numero di bagni",
+            'bathrooms.integer'=> "È necessario inserire un numero intero",
+            'bathrooms.max'=> "Il numero di bagni non può superare i 10",
+
+            'square_meters.required'=> "È necessario inserire i metri quadrati",
+            'square_meters.integer'=> "È necessario inserire un numero intero",
+            'square_meters.min'=> "I metri quadrati non possono essere inferiori a 10",
+            'square_meters.max'=> "I metri quadrati non possono superare i 5000",
+
+            'address.required'=> "È necessario inserire un indirizzo",
+            'address.max'=> "L'indirizzo non può superare i 255 caratteri",
+
+            'picture.required'=> "È necessario inserire un'immagine",
+
+            'price.required'=> "È necessario inserire un prezzo",
+            'price.integer'=> "È necessario inserire un numero intero",
+        ]
+     );
+
         $data = $request -> all();
         $apartment = Apartment :: FindOrFail($id);
         $apartment -> update($data);
@@ -128,4 +197,8 @@ class ApartmentController extends Controller
     }
 
 
+
 }
+
+
+
