@@ -63,7 +63,7 @@ class ApartmentController extends Controller
 
             "picture" => "required",
             "price" => "required|integer",
-            "amenities" => "required|array",
+            "amenities" => "required|array|min:1",
             // "amenities.*" => "exists:amenities,id"
         ],
 
@@ -99,6 +99,9 @@ class ApartmentController extends Controller
 
             'price.required'=> "È necessario inserire un prezzo",
             'price.integer'=> "È necessario inserire un numero intero",
+
+            'amenities.required'=> "È necessario selezionare almeno un servizio",
+            'amenities.min'=> "È necessario selezionare almeno un servizio",
         ]
      );
 
@@ -139,7 +142,7 @@ class ApartmentController extends Controller
 
             "picture" => "required",
             "price" => "required|integer",
-            "amenities" => "required|array",
+            "amenities" => "required|array|min:1",
             // "amenities.*" => "exists:amenities,id"
         ],
 
@@ -175,6 +178,9 @@ class ApartmentController extends Controller
 
             'price.required'=> "È necessario inserire un prezzo",
             'price.integer'=> "È necessario inserire un numero intero",
+
+            'amenities.required'=> "È necessario selezionare almeno un servizio",
+            'amenities.min'=> "È necessario selezionare almeno un servizio",
         ]
      );
 

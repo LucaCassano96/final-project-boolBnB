@@ -139,13 +139,18 @@
                                 </label>
                             </div>
                         @endforeach
+                        @error('amenities')
+                                <div class="alert alert-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
 
                     </div>
 
                     {{-- VISIBILITA' --}}
                     <label for="visible" class="form-label">Seleziona se rendere visibile o invisibile
                         l'appartamento</label>
-                        
+
                     <select value="{{$apartment->visible}}" class="form-select" id="visible" name="visible">
                         <option value="1" {{ $apartment->visible ? 'selected' : '' }}>Visible</option>
                         <option value="0" {{ !$apartment->visible ? 'selected' : '' }}>Non visibile</option>
