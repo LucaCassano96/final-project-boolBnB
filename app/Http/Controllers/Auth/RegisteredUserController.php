@@ -31,13 +31,41 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['string', 'max:255'],
+            'surname' => [ 'string', 'max:255'],
+            'date_of_birth' => ['date'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ],
+
+        [
+
+            'name.string'=> "Il nome deve essere composto da caratteri",
+            'name.max'=> "Il nome non può superare i 255 caratteri",
+
+            'surname.string'=> "Il cognome deve essere composto da caratteri",
+            'surname.max'=> "Il cognome non può superare i 255 caratteri",
+
+            'date_of_birth.date'=> "la data deve avere il formato gg/mm/aaaa",
+
+
+            'email.required'=> "È necessario inserire una email",
+            'email.string'=> "L'email deve essere composta da caratteri",
+            'email.email'=> "l'email deve avere il formato mail ad es: mario.rossi@gmail.com",
+            'email.max'=> "l'email non può superare i 255 caratteri",
+            'email.unique'=> "Questa mail è già stata usata",
+
+            'password.required'=> "È necessario inserire una password",
+            'password.confirmed'=> "La password deve essere confermata",
+            'password.min'=> "La password deve contenere almeno 8 caratteri",
+
+        ]
+    );
 
         $user = User::create([
             'name' => $request->name,
+            'surname' => $request->surname,
+            'date_of_birth' => $request->date_of_birth,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

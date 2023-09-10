@@ -21,6 +21,18 @@ class ApartmentController extends Controller
         return view("home", compact("apartments"));
     }
 
+
+    /* HOME */
+    public function dashboard(){
+
+        $apartments = Apartment :: all();
+        $users = User :: all();
+
+        return view("dashboard", compact("apartments", "users"));
+    }
+
+
+
 /* SHOW */
     public function show($id){
 

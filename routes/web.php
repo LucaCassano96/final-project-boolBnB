@@ -7,6 +7,10 @@ use App\Http\Controllers\ApartmentController;
 /* HOME */
 Route :: get("/", [ApartmentController :: class, "index"]);
 
+/* DASHBOARD */
+Route::get('/dashboard', [ApartmentController :: class, "dashboard"])->middleware(['auth', 'verified'])
+->name('dashboard');
+
 /* SHOW */
 Route :: get("/show/{id}", [ApartmentController :: class, "show"])
 -> name("apartment.show");
@@ -32,9 +36,7 @@ Route :: delete ('/delete/{id}', [ApartmentController :: class, "delete"]) -> na
 // -----------------------------------------------------------------
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
