@@ -43,7 +43,6 @@
 
             {{-- indirizzo appartamento --}}
             <div class="mb-3">
-                {{$apartment->city}},
                 {{$apartment->address}}
             </div>
 
@@ -64,11 +63,10 @@
 
             {{-- dati appartamento --}}
             <ul>
-                <li> Numero di Stanze:  {{ $apartment->rooms }}</li>
-                <li> Numero di Letti:  {{ $apartment->beds }}</li>
-                <li> Numero di Bagni:  {{ $apartment->bathrooms }}</li>
-                <li> Metri Quadrati:  {{ $apartment->square_meters }}</li>
-                <li> prezzo:  {{ $apartment->price }}</li>
+                <li> Stanze: {{ $apartment->rooms }}</li>
+                <li> Letti: {{ $apartment->beds }}</li>
+                <li> Bagni: {{ $apartment->bathrooms }}</li>
+                <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
             </ul>
 
             {{-- prezzo appartamento --}}
