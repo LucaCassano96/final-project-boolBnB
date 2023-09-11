@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\View;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ApartmentTableSeeder :: class,
             AmenityTableSeeder :: class,
             MessageTableSeeder :: class,
+            ViewTableSeeder :: class,
         ]);
     }
 }

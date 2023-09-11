@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Apartment;
 use App\Models\Amenity;
 use App\Models\User;
+use App\Models\Message;
+use App\Models\View;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -124,33 +126,33 @@ class ApartmentController extends Controller
         $data['user_id'] = Auth::id();
 
         // Geocode the address using the TomTom Geocoding API
-        $geocodingResponse = $this->geocodeAddress($data['address']);
+//         $geocodingResponse = $this->geocodeAddress($data['address']);
 
-        if ($geocodingResponse && $geocodingResponse->successful()) {
-            $geocodingData = $geocodingResponse->json();
+//         if ($geocodingResponse && $geocodingResponse->successful()) {
+//             $geocodingData = $geocodingResponse->json();
 
-            // Extract latitude and longitude from the geocoding response
-            $data['latitude'] = $geocodingData['results'][0]['position']['lat'];
-            $data['longitude'] = $geocodingData['results'][0]['position']['lon'];
+//             // Extract latitude and longitude from the geocoding response
+//             $data['latitude'] = $geocodingData['results'][0]['position']['lat'];
+//             $data['longitude'] = $geocodingData['results'][0]['position']['lon'];
 
-            // Create the apartment with geocoded data
+//             // Create the apartment with geocoded data
             $apartment = Apartment::create($data);
             $apartment->amenities()->attach($data["amenities"]);
 
             return redirect()->route("apartment.show", $apartment->id);
-        } else {
-            // Handle geocoding API request failure
-            throw ValidationException::withMessages(['address' => 'Geocoding failed. Please check the address.']);
-        }
- }
+//         } else {
+//             // Handle geocoding API request failure
+//             throw ValidationException::withMessages(['address' => 'Geocoding failed. Please check the address.']);
+//         }
+//  }
 
- private function geocodeAddress($address) {
-    $apiKey = config('services.tomtom.api_key');
-    $apiUrl = 'https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json';
+//  private function geocodeAddress($address) {
+//     $apiKey = config('services.tomtom.api_key');
+//     $apiUrl = 'https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json';
 
-    return Http::get($apiUrl, [
-        'key' => $apiKey,
-    ]);
+//     return Http::get($apiUrl, [
+//         'key' => $apiKey,
+//     ]);
  }
 
     //  /* EDIT */
@@ -233,9 +235,13 @@ class ApartmentController extends Controller
 
     // /* DELETE */
     public function delete($id) {
+
         $apartment = Apartment::findOrFail($id);
 
         $apartment->amenities()->detach();
+        $apartment->messages()->delete();
+        $apartment->view()->delete();
+
         $apartment->delete();
 
         return redirect()->route("dashboard");
