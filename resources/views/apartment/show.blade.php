@@ -1,49 +1,51 @@
 @extends('layouts.app')
 @section('content')
 
-    {{-- Edit Appartamento  --}}
-    <div class="text-end m-3">
-        <a class="btn btn-primary border-white" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
-    </div>
+<div class="container-fluid" style="background-color: #2d3047; height:100vh">
+    
+    {{-- BUTTON --}}
+    <div class="d-flex justify-content-end p-4">
 
-    {{-- Delete Appartamento --}}
-    <div class="text-end m-3">
+        {{-- Edit Appartamento  --}}
+        <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
+
+        {{-- Delete Appartamento --}}
         <form action="{{route('apartment.delete', $apartment -> id)}}" method="POST">
             @csrf
             @method('DELETE')
-            <button class="btn btn-danger border-white" type="submit">X</button>
+            <button class="btn btn-danger" style="border: 2px solid #e0a458;" type="submit">Elimina Appartamento</button>
         </form>
+    </div>
 
-    {{-- titolo appartamento --}}
-    <h2 class="text-uppercase mt-5 m-3" >
-        <a class="
-        text-decoration-none border border-white p-2 rounded"
-        style="color: rgb(255, 255, 255)"
-        href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
-    </h2>
-
-    <div class="card border border-primary m-3 p-2 flex-row bg-primary-subtle">
-
+    <div class="apartment m-3 text-light d-flex rounded justify-content-center align-items-center" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
         {{-- CARD LEFT --}}
-        <div class="card-left p-2">
+        <div class="card-left m-3 p-2">
+
+            {{-- titolo appartamento --}}
+            <h2 class="text-uppercase" >
+                {{ $apartment->title }}
+            </h2>
+
+            {{-- indirizzo appartamento --}}
+            <div class="mb-3">
+                {{$apartment->city}}, 
+                {{$apartment->address}}                
+            </div>
 
             {{-- immagine --}}
-            <div class="img rounded" style="width: 350px; height: 350px ">
-                <img class="rounded" src="{{$apartment -> picture}}" alt="" style="max-width: 100%;">
+            <div class="img rounded" style="width: 350px;">
+                <img class="rounded" src="{{$apartment -> picture}}" alt="" style="width: 100%; border: 3px solid #e0a458;">
             </div>
 
         </div>
 
         {{-- CARD RIGHT --}}
-        <div class="card-right p-2">
-
-            {{-- nome proprietario --}}
-            <h3>{{ $apartment -> user -> name}}</h3>
+        <div class="card-center m-3 p-2">
 
             {{-- descrizione appartamento --}}
-            <div class="border border-black rounded p-2 m-2">
-                <a class="text-decoration-none " style="color: black" href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->description }}</a>
+            <div class="rounded p-2 m-2" style="border: 2px solid #e0a458;">
+                {{ $apartment->description }}
             </div>
 
             {{-- dati appartamento --}}
@@ -55,15 +57,22 @@
                 <li> prezzo:  {{ $apartment->price }}</li>
             </ul>
 
-            {{-- amenities stampa show --}}
+            {{-- prezzo appartamento --}}
+            <div class="fw-bold text-center rounded p-2" style="border: 2px solid #e0a458;">
+                Prezzo: {{ $apartment->price }}€
+            </div>
+        </div>
+
+        {{-- amenities stampa show --}}
+        <div class="card-right m-3 p-2">
             <h3>SERVIZI</h3>
             <ul>
                 @foreach ($apartment->amenities as $amenity)
                     <li class="">{{ $amenity->title }}</li>
                 @endforeach
             </ul>
-
         </div>
     </div>
+</div>
 
     @endsection
