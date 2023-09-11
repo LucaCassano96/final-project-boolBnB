@@ -25,10 +25,10 @@ return new class extends Migration
             $table -> integer("square_meters");
             $table -> text("picture");
             $table -> integer("price");
-            $table -> string("city");
+            $table -> string("city") -> nullable();
             $table -> text("address");
-            $table -> float("latitude") -> nullable();
-            $table -> float("longitude") -> nullable();
+            $table -> float("latitude") /* -> nullable() */;
+            $table -> float("longitude") /* -> nullable() */;
 
             $table -> boolean("visible") -> default(true);
 
