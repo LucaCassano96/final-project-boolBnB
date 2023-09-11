@@ -39,6 +39,12 @@ return new class extends Migration
             $table -> foreignId("apartment_id") -> constrained();
         });
 
+        /* Apartment--Sponsor */
+        Schema::table('apartment_sponsor', function (Blueprint $table) {
+            $table -> foreignId('apartment_id') -> constrained();
+            $table -> foreignId('sponsor_id') -> constrained();
+        });
+
     }
 
     /**
@@ -88,6 +94,19 @@ return new class extends Migration
                 $table -> dropColumn("apartment_id");
 
             });
+
+            /* Apartment--Sponsor */
+
+            Schema::table('apartment_sponsor', function (Blueprint $table) {
+
+                $table -> dropForeign ('apartment_sponsor_apartment_id_foreign');
+                $table -> dropForeign ('apartment_sponsor_sponsor_id_foreign');
+
+                $table -> dropColumn("apartment_id");
+                $table -> dropColumn("sponsor_id");
+
+            });
+
 
         }
 

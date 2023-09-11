@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AmenityTableSeeder :: class,
             MessageTableSeeder :: class,
             ViewTableSeeder :: class,
+            SponsorTableSeeder :: class,
         ]);
     }
 }

@@ -55,6 +55,12 @@ class Apartment extends Model
 
         return $this -> hasOne(View :: class);
     }
+
+    /* Apartment--Sponsor */
+    public function sponsors() {
+
+        return $this -> belongsToMany(Sponsor :: class) -> withPivot('start_date', 'end_date');
+    }
 }
 
 
