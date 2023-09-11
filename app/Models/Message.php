@@ -15,4 +15,10 @@ class Message extends Model
        'sender_email',
        'sender_surname',
     ];
+
+    /* Apartment--Message */
+    public function apartment() {
+
+        return $this -> belongsTo(Apartment :: class);
+    }
 }

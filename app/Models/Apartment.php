@@ -42,6 +42,13 @@ class Apartment extends Model
 
         return $this -> belongsTo(User :: class);
     }
+
+    /* Apartment--Message */
+
+    public function messages() {
+
+        return $this -> hasMany(Message :: class);
+    }
 }
 
 
