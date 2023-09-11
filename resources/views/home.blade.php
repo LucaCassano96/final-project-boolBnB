@@ -1,16 +1,16 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container border border-primary rounded bg-primary d-flex flex-wrap">
+<div class="container rounded d-flex flex-wrap" style="background-color: #2d3047">
 
     @foreach ($apartments as $apartment)
-    
-    <div class="card border border-primary m-2 p-2 bg-primary-subtle text-center align-items-center mx-auto my-3"    style="width:400px; height:500px;">           
+
+    <div class="card border my-3  text-center align-items-center mx-auto my-3"    style="width:400px; height:500px; background-color:#2d3047; border-color:#fffdeb">
             {{-- titolo appartamento --}}
             <h5 class="text-uppercase mt-3 mb-4" style="display:inline-block">
                 <a class="
-                text-decoration-none border border-black p-2 rounded"
-                style="color: rgb(0, 0, 0)"
+                text-decoration-none border p-2 rounded"
+                style="color: #fffdeb; border-color: #fffdeb;"
                 href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
             </h5>
 
@@ -20,14 +20,14 @@
             </div>
 
             {{-- dati appartamento --}}
-            <ul class="list-unstyled">
-                <li> {{ $apartment->city }}</li> 
-                <li> {{ $apartment->address }}</li>               
-                <li> 
-                    <h5 class="fw-bolder"> Prezzo:  {{ $apartment->price }}</h5>
+            <ul class="list-unstyled" style="color: #fffdeb">
+                <li> {{ $apartment->city }}</li>
+                <li> {{ $apartment->address }}</li>
+                <li>
+                    <span class="p-0 my-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
                 </li>
             </ul>
-          
+
         </div>
     @endforeach
 
