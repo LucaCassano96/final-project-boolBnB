@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApartmentController;
+use App\Http\Controllers\AutocompleteController;
 
 /* HOME */
 Route :: get("/", [ApartmentController :: class, "index"]);
@@ -32,6 +33,13 @@ Route :: put ('/update/{id}', [ApartmentController :: class, "update"]) -> name(
 
 // DELETE APARTMENT
 Route :: delete ('/delete/{id}', [ApartmentController :: class, "delete"]) -> name("apartment.delete");
+
+// -----------------------------------------------------------------
+//TOM TOM
+
+//Autocomplete
+
+Route::get('/autocomplete', [AutocompleteController::class, 'autocomplete']);
 
 // -----------------------------------------------------------------
 
