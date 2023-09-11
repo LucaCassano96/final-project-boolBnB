@@ -161,6 +161,8 @@ class ApartmentController extends Controller
         $amenities = Amenity :: all();
         $apartment = Apartment :: FindOrFail($id);
         return view("apartment.edit", compact("apartment", "amenities"));
+
+
         }
 
     //  /* UPDATE */
