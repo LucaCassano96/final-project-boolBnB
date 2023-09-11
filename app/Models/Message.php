@@ -14,6 +14,7 @@ class Message extends Model
        'sender_name',
        'sender_email',
        'sender_surname',
+       'apartment_id'
     ];
 
     /* Apartment--Message */
