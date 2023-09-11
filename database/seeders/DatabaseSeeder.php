@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder :: class,
             ApartmentTableSeeder :: class,
             AmenityTableSeeder :: class,
+            MessageTableSeeder :: class,
         ]);
     }
 }
