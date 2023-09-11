@@ -2,20 +2,34 @@
 @section('content')
 
 <div class="container-fluid" style="background-color: #2d3047; height:100vh">
-    
-    {{-- BUTTON --}}
-    <div class="d-flex justify-content-end p-4">
 
-        {{-- Edit Appartamento  --}}
-        <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
+        {{-- Bottoni edit/delete solo se loggato e proprietario --}}
+        @auth
+            @if (Auth::user()->id == $apartment->user_id)
+            {{-- Buttons --}}
+            <div class="d-flex justify-content-end p-4">
 
-        {{-- Delete Appartamento --}}
-        <form action="{{route('apartment.delete', $apartment -> id)}}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button class="btn btn-danger" style="border: 2px solid #e0a458;" type="submit">Elimina Appartamento</button>
-        </form>
-    </div>
+                {{-- Edit Appartamento --}}
+                <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;" href="{{route('apartment.edit', $apartment -> id)}}">Modifica Appartamento</a>
+                {{-- Messaggio conferma edit --}}
+                @if (session('edit'))
+                    <div class="alert alert-success">
+                        {{ session('edit') }}
+                    </div>
+                @endif
+
+                {{-- Delete Appartamento --}}
+                <form action="{{route('apartment.delete', $apartment -> id)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" style="border: 2px solid #e0a458;" type="submit">
+                        Elimina Appartamento
+                    </button>
+                </form>
+            </div>
+            @endif
+        @endauth
+
 
     <div class="apartment m-3 text-light d-flex rounded justify-content-center align-items-center" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
@@ -29,8 +43,7 @@
 
             {{-- indirizzo appartamento --}}
             <div class="mb-3">
-                {{$apartment->city}}, 
-                {{$apartment->address}}                
+                {{$apartment->address}}
             </div>
 
             {{-- immagine --}}
@@ -50,11 +63,10 @@
 
             {{-- dati appartamento --}}
             <ul>
-                <li> Numero di Stanze:  {{ $apartment->rooms }}</li>
-                <li> Numero di Letti:  {{ $apartment->beds }}</li>
-                <li> Numero di Bagni:  {{ $apartment->bathrooms }}</li>
-                <li> Metri Quadrati:  {{ $apartment->square_meters }}</li>
-                <li> prezzo:  {{ $apartment->price }}</li>
+                <li> Stanze: {{ $apartment->rooms }}</li>
+                <li> Letti: {{ $apartment->beds }}</li>
+                <li> Bagni: {{ $apartment->bathrooms }}</li>
+                <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
             </ul>
 
             {{-- prezzo appartamento --}}
