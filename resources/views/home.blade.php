@@ -24,7 +24,7 @@
     <div class="row mt-4">
         @foreach ($apartments as $apartment)
             <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-                <div class="card border text-center p-0" style="min-height:400px; background-color:#2d3047; border-color:#fffdeb">
+                <div class="card border text-center p-0" style="min-height:400px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                     {{-- Card Header --}}
                     <div class="card-header p-2" style="border-color: #fffdeb;">
