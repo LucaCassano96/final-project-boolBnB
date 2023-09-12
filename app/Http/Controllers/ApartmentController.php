@@ -71,16 +71,10 @@ class ApartmentController extends Controller
             "bathrooms" => "required|integer|max:10",
             "square_meters" => "required|integer|min:10|max:5000",
             "address" => "required|max:255",
-
-            // DA MODIFICARE
-            // "latitude" => "numeric",
-            // "longitude" => "numeric",
-
-
             "picture" => "required",
             "price" => "required|integer",
             "amenities" => "required|array|min:1",
-            // "amenities.*" => "exists:amenities,id"
+
         ],
 
         // MODIFICA MESSAGGI VALIDATE
@@ -118,6 +112,7 @@ class ApartmentController extends Controller
 
             'amenities.required'=> "È necessario selezionare almeno un servizio",
             'amenities.min'=> "È necessario selezionare almeno un servizio",
+
         ]
      );
 
