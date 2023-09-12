@@ -5,7 +5,7 @@
 
     <div class="row d-flex justify-content-center">
         <div class="col-md-10">
-            <div class="card p-4 mt-4">
+            <div class="card p-4 mt-4 rounded-4">
                 <h1 class="my-5 text-center" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
                 <div class="">
                     <div class="search my-5 d-flex justify-content-center" style="width: 100%;">
