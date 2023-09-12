@@ -8,9 +8,10 @@
             <div class="col-11 col-md-8 col-xl-5 border border-primary p-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded"
                 style="margin: 150px">
 
-                <h2 class="my-4">Crea un nuovo progetto</h2>
+                <h2 class="my-4">Crea un nuovo appartamento</h2>
 
-                <form method="POST" action="{{ route('apartment.store') }}">
+                <form method="POST" action="{{ route('apartment.store') }}"
+                enctype="multipart/form-data">
 
                     @csrf
 
@@ -34,8 +35,8 @@
 
                     {{-- IMMAGINE --}}
                     <div class="form-floating">
-                        <input type="text" class="form-control" placeholder="inserisci un'immagine" name="picture">
-                        <label for="image">Inserisci un'immagine</label>
+                        <input type="file" class="form-control" placeholder="inserisci un'immagine" name="picture">
+                        <label for="picture">Inserisci un'immagine</label>
                     </div>
                     @error('picture')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -133,7 +134,7 @@
                     </select>
 
                     {{-- BUTTON CREAZIONE --}}
-                    <button class="btn btn-primary mt-3" type="submit">Crea progetto</button>
+                    <button class="btn btn-primary mt-3" type="submit">Crea </button>
 
                 </form>
 

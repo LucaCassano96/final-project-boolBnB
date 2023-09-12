@@ -46,9 +46,15 @@
                 {{$apartment->address}}
             </div>
 
-            {{-- immagine --}}
-            <div class="img rounded" style="width: 350px;">
-                <img class="rounded" src="{{$apartment -> picture}}" alt="" style="width: 100%; border: 3px solid #e0a458;">
+             {{-- immagine --}}
+             <div class="img rounded" style="width: 350px;">
+                <img class="rounded" src="{{
+                    asset(
+                        $apartment-> picture
+                        ? 'storage/' . $apartment-> picture
+                        : 'storage/images/apartment.jpg')
+
+                    }}" alt="" style="width: 100%; border: 3px solid #e0a458;">
             </div>
 
         </div>

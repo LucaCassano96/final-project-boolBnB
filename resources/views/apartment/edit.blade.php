@@ -7,7 +7,8 @@
 
                 <h2 class="my-4">Modifica appartamento</h2>
 
-                <form method="POST" action="{{ route('apartment.update', $apartment->id) }}">
+                <form method="POST" action="{{ route('apartment.update', $apartment->id) }}"
+                enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')
@@ -32,8 +33,9 @@
 
                     {{-- IMMAGINE --}}
                     <div class="form-floating">
-                        <input value="{{$apartment->picture}}" type="text" class="form-control" placeholder="inserisci un'immagine" name="picture">
-                        <label for="image">Inserisci un'immagine</label>
+                        <input type="file" class="form-control"  name="picture"
+                            value="{{$apartment->picture}}">
+                        <label for="floatingPassword">Inserisci un'immagine</label>
                     </div>
                     @error('picture')
                         <div class="alert alert-danger">{{ $message }}</div>

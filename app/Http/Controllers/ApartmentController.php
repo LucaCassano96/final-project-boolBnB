@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Apartment;
 use App\Models\Amenity;
@@ -77,7 +78,7 @@ class ApartmentController extends Controller
             // "longitude" => "numeric",
 
 
-            "picture" => "required",
+            "picture" => "required|image|file|max:2048",
             "price" => "required|integer",
             "amenities" => "required|array|min:1",
             // "amenities.*" => "exists:amenities,id"
@@ -123,6 +124,10 @@ class ApartmentController extends Controller
 
 
         $data =  $request -> all();
+
+        $img_path = Storage::put("uploads", $data["picture"]);
+        $data["picture"] = $img_path;
+
         $data['user_id'] = Auth::id();
 
         // Geocode the address using the TomTom Geocoding API
@@ -183,7 +188,7 @@ class ApartmentController extends Controller
             // "longitude" => "numeric",
 
 
-            "picture" => "required",
+            "picture" => "nullable",
             "price" => "required|integer",
             "amenities" => "required|array|min:1",
             // "amenities.*" => "exists:amenities,id"
@@ -217,8 +222,6 @@ class ApartmentController extends Controller
             'address.required'=> "È necessario inserire un indirizzo",
             'address.max'=> "L'indirizzo non può superare i 255 caratteri",
 
-            'picture.required'=> "È necessario inserire un'immagine",
-
             'price.required'=> "È necessario inserire un prezzo",
             'price.integer'=> "È necessario inserire un numero intero",
 
@@ -228,11 +231,33 @@ class ApartmentController extends Controller
      );
 
         $data = $request -> all();
+
         $apartment = Apartment :: FindOrFail($id);
+
+        if (!array_key_exists("picture", $data)) {
+            $data["picture"] = $apartment -> picture;
+
+        }else{
+            $oldImgPath = $apartment -> picture;
+
+            if ($oldImgPath) {
+                Storage :: delete($oldImgPath);
+            }
+
+            $img_path = Storage::put("uploads", $data["picture"]);
+            $data["picture"] = $img_path;
+        }
+
+
         $apartment -> update($data);
+
+        if(array_key_exists("amenities", $data))
         $apartment -> amenities() -> sync($data["amenities"]);
+        else
+        $apartment -> amenities() -> detach();
 
         return redirect() -> route("apartment.show", $apartment -> id);
+
     }
 
     // /* DELETE */

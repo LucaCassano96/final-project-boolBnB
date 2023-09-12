@@ -15,9 +15,14 @@
             </h5>
 
             {{-- immagine --}}
-            <div class="img rounded" style="width: 350px; height: 350px ">
-                <img class="rounded" src="{{$apartment -> picture}}" alt="" style="max-width: 100%;">
+
+
+            <div class="img rounded" style="width: 350px;">
+                <img class="rounded" src="{{asset('storage/' . $apartment -> picture)  }}" alt="" style="width: 100%; border: 3px solid #e0a458;">
             </div>
+
+
+
 
             {{-- dati appartamento --}}
             <ul class="list-unstyled" style="color: #fffdeb">
