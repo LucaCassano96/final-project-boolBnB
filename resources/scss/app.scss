@@ -1,6 +1,103 @@
 // Importo Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// Importo FontAwesome
-// @import '@fortawesome/fontawesome-free/css/all.css';
+// Importo colors
+@import 'colors';
 
+// LOGO
+.logo-bnb{
+    background: -webkit-linear-gradient(120deg, $quaternary, $quinary);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+// NAVBAR GUEST
+.login-link-1{
+    font-size: 20px;
+    font-weight: 600;
+    background: -webkit-linear-gradient(30deg, $quaternary, $quinary);
+    text-decoration: none;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.login-link-2{
+    font-size: 20px;
+    font-weight: 600;
+    background: -webkit-linear-gradient(30deg, $quinary, $quaternary);
+    text-decoration: none;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hover-uline{
+    position: relative;
+    &:hover::after{
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        background: $quaternary;
+        background: -webkit-linear-gradient(30deg, $quaternary, $quinary);
+    }
+}
+
+// NAVBAR LOGGED
+.bi-person-circle{
+    font-size: 30px;
+    font-weight: 600;
+    background: -webkit-linear-gradient(120deg, $quinary, $quaternary);
+    text-decoration: none;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+// DROPDOWN MENU
+.dropdown-menu{
+    background: -webkit-linear-gradient(120deg, $quinary, $quaternary);
+    text-decoration: none;
+
+}
+
+.dropdown-item{
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+//DASHBOARD
+.bordo-gradient{
+    border: 4px solid;
+    border-image-slice: 1;
+    border-width: 4px;
+    border-image-source: linear-gradient(30deg, $quinary, $quaternary);
+}
+
+
+.add-apartment{
+    color: $tertiary;
+    background: linear-gradient(30deg, $quinary, $quaternary);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 60px;
+    transition: rotate 0.5s ease-in-out;
+    &:hover{
+        rotate: 180deg;
+
+    }
+
+}
+
+.my-apartment{
+    color: $tertiary;
+    background: linear-gradient(30deg, $quinary, $quaternary);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 60px;
+
+
+}

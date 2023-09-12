@@ -81,7 +81,7 @@ class ApartmentController extends Controller
             "picture" => "required|image|file|max:2048",
             "price" => "required|integer",
             "amenities" => "required|array|min:1",
-            // "amenities.*" => "exists:amenities,id"
+
         ],
 
         // MODIFICA MESSAGGI VALIDATE
@@ -119,6 +119,7 @@ class ApartmentController extends Controller
 
             'amenities.required'=> "È necessario selezionare almeno un servizio",
             'amenities.min'=> "È necessario selezionare almeno un servizio",
+
         ]
      );
 
