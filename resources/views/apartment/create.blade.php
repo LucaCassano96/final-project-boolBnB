@@ -166,7 +166,7 @@
     </div>
 
     <script>
-        //TomTom Autocomplete con bootstrap
+        //TomTom Autocomplete con fuzzy search
 
         //Richiamo gli elementi del form
         const searchInput = document.getElementById('searchInput');
@@ -175,37 +175,38 @@
         //Prendo il contenuto dell'input
         searchInput.addEventListener('input', debounce(function () {
         const query = searchInput.value.trim();
-        //
+
         if (query.length === 0) {
             autocompleteSelect.style.display = 'none';
             return;
         }
-
+        //Chiamata axios alla rotta autocomplete + query (testo input)
         axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
             .then(response => {
                 const suggestions = response.data.results;
 
                 autocompleteSelect.innerHTML = '';
-
+                //per ogni risultato della chiamata creo una option per la select
                 suggestions.forEach(suggestion => {
                     const option = document.createElement('option');
                     option.textContent = suggestion.address.freeformAddress;
                     option.value = suggestion.address.freeformAddress;
                     autocompleteSelect.appendChild(option);
                 });
-
+                //rendo la select visibile
                 autocompleteSelect.style.display = 'block';
             })
             .catch(error => {
                 console.error('Autocomplete request failed', error);
             });
     }, 100));
-
+    //Il valore della option selezionata diventa il valore dell'input e la select torna a essere nascosta
     autocompleteSelect.addEventListener('change', function () {
         searchInput.value = autocompleteSelect.value;
         autocompleteSelect.style.display = 'none';
     });
 
+    //Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
     function debounce(func, wait) {
         let timeout;
         return function () {
