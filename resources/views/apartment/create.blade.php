@@ -90,15 +90,6 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
 
-                    {{-- CITTA' --}}
-                    {{-- <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
-                        <input type="text" name="city" placeholder="inserisci la città" class="form-control">
-                    </div>
-                    @error('city')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror --}}
-
                     {{-- INDIRIZZO --}}
                     <div class=" mt-3 input-group">
                         <span class="input-group-text"></span>
@@ -110,19 +101,6 @@
                     @error('address')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-
-                    {{-- LATITUDINE --}}
-                    {{-- <div class="my-3 input-group mb-3" style="display:none">
-                        <span class="input-group-text"></span>
-                        <input type="number" name="latitude" placeholder="inserisci la latitudine" class="form-control">
-                    </div> --}}
-
-                    {{-- LONGITUDINE --}}
-                    {{-- <div class="my-3 input-group mb-3" style="display:none">
-                        <span class="input-group-text"></span>
-                        <input type="number" name="longitude" placeholder="inserisci la longitudine" class="form-control">
-                    </div> --}}
-
 
                     {{-- SERVIZI --}}
                     <div class="mt-3 mb-3">
