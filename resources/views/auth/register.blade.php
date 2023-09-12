@@ -116,7 +116,6 @@
 
             return false; // Stop form submission if validation fails
         }
-        console.log('prova');
         // If validation passes, submit the form
         this.submit();
     });

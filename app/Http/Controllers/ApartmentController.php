@@ -72,12 +72,6 @@ class ApartmentController extends Controller
             "bathrooms" => "required|integer|max:10",
             "square_meters" => "required|integer|min:10|max:5000",
             "address" => "required|max:255",
-
-            // DA MODIFICARE
-            // "latitude" => "numeric",
-            // "longitude" => "numeric",
-
-
             "picture" => "required|image|file|max:2048",
             "price" => "required|integer",
             "amenities" => "required|array|min:1",

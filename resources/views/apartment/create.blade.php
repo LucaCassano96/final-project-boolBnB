@@ -10,14 +10,14 @@
 
                 <h2 class="my-4">Crea un nuovo appartamento</h2>
 
-                <form method="POST" action="{{ route('apartment.store') }}"
+                <form method="POST" id="form" action="{{ route('apartment.store') }}"
                 enctype="multipart/form-data">
 
                     @csrf
 
                     {{-- NOME --}}
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="title" placeholder="nome appartamento">
+                        <input type="text" id="title" class="form-control" name="title" placeholder="nome appartamento">
                         <label for="floatingInput">Nome appartamento</label>
                     </div>
                     @error('title')
@@ -35,7 +35,7 @@
 
                     {{-- IMMAGINE --}}
                     <div class="form-floating">
-                        <input type="file" class="form-control" placeholder="inserisci un'immagine" name="picture">
+                        <input type="file" id="picture" class="form-control" placeholder="inserisci un'immagine" name="picture">
                         <label for="picture">Inserisci un'immagine</label>
                     </div>
                     @error('picture')
@@ -45,7 +45,7 @@
                     {{-- NUMERO STANZE --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
-                        <input type="number" name="rooms" placeholder="inserisci il numero di stanze"
+                        <input type="number" id="rooms" name="rooms" placeholder="inserisci il numero di stanze"
                             class="form-control">
                         </div>
                     @error('rooms')
@@ -55,7 +55,7 @@
                     {{-- NUMERO LETTI --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
-                        <input type="number" name="beds" placeholder="inserisci il numero di letti"
+                        <input type="number" id="beds" name="beds" placeholder="inserisci il numero di letti"
                             class="form-control">
                         </div>
                     @error('beds')
@@ -65,7 +65,7 @@
                     {{-- NUMERO BAGNI --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
-                        <input type="number" name="bathrooms" placeholder="inserisci il numero di bagni"
+                        <input type="number" id="bathrooms" name="bathrooms" placeholder="inserisci il numero di bagni"
                             class="form-control">
                         </div>
                     @error('bathrooms')
@@ -75,7 +75,7 @@
                     {{-- METRI QUADRATI --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
-                        <input type="number" name="square_meters" placeholder="inserisci il numero di metri quadrati"
+                        <input type="number" id="square_meters" name="square_meters" placeholder="inserisci il numero di metri quadrati"
                             class="form-control">
                         </div>
                     @error('square_meters')
@@ -85,7 +85,7 @@
                     {{-- PREZZO --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text">€</span>
-                        <input type="number" name="price" placeholder="inserisci il prezzo" class="form-control">
+                        <input type="number" id="price" name="price" placeholder="inserisci il prezzo" class="form-control">
                     </div>
                     @error('price')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -94,7 +94,7 @@
                     {{-- INDIRIZZO --}}
                     <div class=" mt-3 input-group">
                         <span class="input-group-text"></span>
-                        <input type="text" id="searchInput" name="address" placeholder="inserisci l'indirizzo" class="form-control">
+                        <input type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control">
                     </div>
                     {{-- Hidden select --}}
                     <select id="autocompleteSelect" class="form-select" size="5" style="display: none; cursor: pointer;"></select>
@@ -148,7 +148,7 @@
         //TomTom Autocomplete con fuzzy search
 
         //Richiamo gli elementi del form
-        const searchInput = document.getElementById('searchInput');
+        const searchInput = document.getElementById('address');
         const autocompleteSelect = document.getElementById('autocompleteSelect');
 
         //Prendo il contenuto dell'input
@@ -192,6 +192,158 @@
             clearTimeout(timeout);
             timeout = setTimeout(func, wait);
         };
+    }
+
+//VALIDATION CLIENT-SIDE
+
+    const form = document.getElementById('form');
+    const title = document.getElementById('title');
+    const picture = document.getElementById('picture');
+    const rooms = document.getElementById('rooms');
+    const beds = document.getElementById('beds');
+    const bathrooms = document.getElementById('bathrooms');
+    const square_meters = document.getElementById('square_meters');
+    const price = document.getElementById('price');
+    const address = document.getElementById('address');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting
+
+        if (!validateTitle() || !validatePic() || !validateRooms() || !validateBeds() || !validateBathrooms() || !validateSqMeters() || !validatePrice() || !validateAddress() ) {
+
+            return false; // Stop form submission if validation fails
+        }
+        // If validation passes, submit the form
+        this.submit();
+    });
+
+    function validateTitle() {
+
+        const titleValue = title.value.trim();
+
+        if (titleValue === '') {
+            alert('Inserire un titolo');
+            title.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validatePic() {
+
+        const pictureValue = picture.value.trim();
+
+        if (pictureValue === '') {
+            alert("Inserire un'immagine");
+            picture.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateRooms() {
+
+        const roomsValue = rooms.value.trim();
+
+        if (roomsValue === '') {
+            alert('Inserire il numero di stanze');
+            rooms.focus();
+            return false;
+
+        }else if (roomsValue <= 0 || roomsValue > 30) {
+            alert("Il numero di stanze dev'essere compreso tra 0 e 30");
+            rooms.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateBeds() {
+
+        const bedsValue = beds.value.trim();
+
+        if (bedsValue === '') {
+            alert('Inserire il numero di letti');
+            beds.focus();
+            return false;
+
+        }else if (bedsValue <= 0 || bedsValue > 80) {
+            alert("Il numero di stanze dev'essere compreso tra 0 e 80");
+            beds.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateBathrooms() {
+
+        const bathroomsValue = bathrooms.value.trim();
+
+        if (bathroomsValue === '') {
+            alert('Inserire il numero di bagni');
+            bathrooms.focus();
+            return false;
+
+        }else if (bathroomsValue <= 0 || bathroomsValue > 10) {
+            alert("Il numero di bagni dev'essere compreso tra 0 e 10");
+            bathrooms.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateSqMeters() {
+
+        const sqMetersValue = square_meters.value.trim();
+
+        if (sqMetersValue === '') {
+            alert('Inserire il numero di metri quadrati');
+            square_meters.focus();
+            return false;
+
+        }else if (sqMetersValue <= 10 || sqMetersValue > 5000) {
+            alert("Il numero di metri quadrati dev'essere compreso tra 10 e 5000");
+            square_meters.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validatePrice() {
+
+        const priceValue = price.value.trim();
+
+        if (priceValue === '') {
+            alert('Inserire il prezzo');
+            price.focus();
+            return false;
+
+        }else if (priceValue <= 0) {
+            alert("Il prezzo dev'essere superiore a 0");
+            price.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateAddress() {
+
+        const addressValue = address.value.trim();
+
+        if (addressValue === '') {
+            alert('Selezionare un indirizzo');
+            address.focus();
+            return false;
+
+        }
+        return true;
     }
     </script>
 @endsection
