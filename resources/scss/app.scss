@@ -68,3 +68,18 @@
         text-decoration: underline;
     }
 }
+
+//DASHBOARD
+.add-apartment{
+    color: $tertiary;
+    background: linear-gradient(30deg, $quinary, $quaternary);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 80px;
+    transition: rotate 0.5s ease-in-out;
+    &:hover{
+        rotate: 180deg;
+
+    }
+
+}
