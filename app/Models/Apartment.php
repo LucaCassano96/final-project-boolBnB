@@ -19,7 +19,6 @@ class Apartment extends Model
         "picture",
         "price",
         "visible",
-        "city",
         "address",
         "latitude",
         "longitude",

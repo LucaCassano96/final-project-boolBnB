@@ -90,36 +90,17 @@
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
 
-                    {{-- CITTA' --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
-                        <input type="text" name="city" placeholder="inserisci la città" class="form-control">
-                    </div>
-                    @error('city')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-
                     {{-- INDIRIZZO --}}
-                    <div class="my-3 input-group mb-3">
+                    <div class=" mt-3 input-group">
                         <span class="input-group-text"></span>
-                        <input type="text" name="address" placeholder="inserisci l'indirizzo" class="form-control">
+                        <input type="text" id="searchInput" name="address" placeholder="inserisci l'indirizzo" class="form-control">
                     </div>
+                    {{-- Hidden select --}}
+                    <select id="autocompleteSelect" class="form-select" size="5" style="display: none; cursor: pointer;"></select>
+
                     @error('address')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-
-                    {{-- LATITUDINE --}}
-                    <div class="my-3 input-group mb-3" style="display:none">
-                        <span class="input-group-text"></span>
-                        <input type="number" name="latitude" placeholder="inserisci la latitudine" class="form-control">
-                    </div>
-
-                    {{-- LONGITUDINE --}}
-                    <div class="my-3 input-group mb-3" style="display:none">
-                        <span class="input-group-text"></span>
-                        <input type="number" name="longitude" placeholder="inserisci la longitudine" class="form-control">
-                    </div>
-
 
                     {{-- SERVIZI --}}
                     <div class="mt-3 mb-3">
@@ -160,8 +141,56 @@
 
         </div>
 
-
-
-
     </div>
+
+    <script>
+        //TomTom Autocomplete con fuzzy search
+
+        //Richiamo gli elementi del form
+        const searchInput = document.getElementById('searchInput');
+        const autocompleteSelect = document.getElementById('autocompleteSelect');
+
+        //Prendo il contenuto dell'input
+        searchInput.addEventListener('input', debounce(function () {
+        const query = searchInput.value.trim();
+
+        if (query.length === 0) {
+            autocompleteSelect.style.display = 'none';
+            return;
+        }
+        //Chiamata axios alla rotta autocomplete + query (testo input)
+        axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                const suggestions = response.data.results;
+
+                autocompleteSelect.innerHTML = '';
+                //per ogni risultato della chiamata creo una option per la select
+                suggestions.forEach(suggestion => {
+                    const option = document.createElement('option');
+                    option.textContent = suggestion.address.freeformAddress;
+                    option.value = suggestion.address.freeformAddress;
+                    autocompleteSelect.appendChild(option);
+                });
+                //rendo la select visibile
+                autocompleteSelect.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Autocomplete request failed', error);
+            });
+    }, 100));
+    //Il valore della option selezionata diventa il valore dell'input e la select torna a essere nascosta
+    autocompleteSelect.addEventListener('change', function () {
+        searchInput.value = autocompleteSelect.value;
+        autocompleteSelect.style.display = 'none';
+    });
+
+    //Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
+    function debounce(func, wait) {
+        let timeout;
+        return function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(func, wait);
+        };
+    }
+    </script>
 @endsection
