@@ -24,7 +24,7 @@ class ApartmentFactory extends Factory
             'beds' => fake() -> randomDigitNotNull(),
             'bathrooms' => fake() -> randomDigitNotNull(),
             'square_meters' => fake() -> numberBetween(20, 500),
-            'picture' => fake() -> imageUrl(360, 360, "house", true),
+            'picture' => fake() ->regexify(),
             'price' => fake() -> numberBetween(100, 1000000),
             'visible' => fake() -> boolean(),
             'address' => fake() -> streetAddress(),

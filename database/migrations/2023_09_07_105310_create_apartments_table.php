@@ -23,7 +23,7 @@ return new class extends Migration
             $table -> integer("beds");
             $table -> integer("bathrooms");
             $table -> integer("square_meters");
-            $table -> text("picture");
+            $table -> text("picture") -> nullable();
             $table -> integer("price");
             $table -> text("address");
             $table -> float("latitude");
