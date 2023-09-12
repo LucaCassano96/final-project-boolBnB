@@ -7,7 +7,7 @@
         </h2> --}}
         <div class="row justify-content-center">
             <div class="col">
-                <div class="card m-5 p-3 border-white border border-3 rounded" style="background-color: #5c80bc">
+                <div class="card m-5 p-3 bordo-gradient rounded" style="background-color: #5c80bc">
                     {{-- <div class="card-header">{{ __('User Dashboard') }}</div>
 
                     <div class="card-body">
@@ -26,13 +26,13 @@
                     @foreach ($users as $user)
                         @if ($user->id === Auth::user()->id)
 
-                        <div class="text-end m-3 d-flex justify-content-between">
-                                <h2 class="text-white mt-3" style="display:inline">I tuoi appartamenti</h2>
+                        <div class="text-end m-3 d-flex justify-content-around">
+                                <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
                                 <a class="add-apartment text-decoration-none d-flex align-items-center "  href="{{ route('apartment.create') }}"><i class="bi bi-plus-circle"></i></a>
                         </div>
 
                         {{-- CARD APPARTAMENTO --}}
-                        <div class="apartment border-white border border-3 rounded p-3 m-auto d-flex" style="background-color: #2d3047; flex-direction:row;">
+                        <div class="apartment border-white p-3 m-auto d-flex" style="flex-direction:row;">
 
                             @foreach ($user->apartments as $apartment)
 
@@ -42,7 +42,7 @@
                                 </h3>
 
                                 <span>
-                                    Prezzo Appartamento: {{ $apartment->price }}€
+                                    Prezzo: {{ $apartment->price }}€ / notte
                                 </span>
 
                                 <div class="picture mt-3" style="max-width:275px; height:200px">
