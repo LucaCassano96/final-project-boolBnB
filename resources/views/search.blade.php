@@ -6,7 +6,8 @@
     <div class="row d-flex justify-content-center">
         <div class="col">
             <div class="card p-4 mt-4 rounded-4">
-                <h1 class="my-5 text-center" style="color:#2d3047">Seleziona i tuoi filtri</h1>
+                <h1 class="my-5 text-center" style="color:#2d3047">Seleziona i tuoi filtri o rinnova la ricerca</h1>
+
                 <form method="POST" action="{{ route('search') }}">
 
                     @csrf
@@ -24,46 +25,133 @@
         </div>
     </div>
 
-    <div class="row mt-4">
-        @foreach ($apts as $apt)
-            <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-                <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
+    <div class="row d-flex justify-content-center">
+        {{-- Filters --}}
+        <div class="col mb-lg-5">
+            <div class="card p-4 mt-4 rounded-4">
+                <h3 class="my-3 text-center" style="color:#2d3047">Filtri di ricerca</h3>
 
-                    {{-- Card Header --}}
-                    <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
-                        <h5 class="text-uppercase m-0">
-                            <a class="d-inline-block
-                            text-decoration-none border p-2 rounded my-3"
-                            style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                            href="{{ route('apartment.show', $apt->id) }}"> {{ $apt->title }}</a>
-                        </h5>
-                    </div>
+                <form method="POST" id="form" action="">
 
-                    {{-- Card Body --}}
-                    <div class="card-body p-4">
-                        {{-- immagine --}}
-                        <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                            <img class="rounded" src="{{
-                                asset(
-                                    $apt->picture
-                                    ? 'storage/' . $apt->picture
-                                    : 'storage/images/apartment.jpg')
-                                }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    @csrf
+
+                    {{-- NUMERO STANZE --}}
+                    <div class="my-3 input-group mb-3">
+                        <span class="input-group-text"></span>
+                        <input type="number" id="rooms" name="rooms" placeholder="stanze"
+                            class="form-control">
                         </div>
-                        {{-- dati appartamento --}}
-                        <div class="my-4">
-                            <ul class="list-unstyled" style="color: #fffdeb">
-                                <li> {{ $apt->address }}</li>
-                                <li class="p-0 mt-5">
-                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apt->price }} € </span><span><small>/ notte</small></span>
-                                </li>
-                            </ul>
+                    {{-- @error('rooms')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror --}}
+
+                    {{-- NUMERO LETTI --}}
+                    <div class="my-3 input-group mb-3">
+                        <span class="input-group-text"></span>
+                        <input type="number" id="beds" name="beds" placeholder="letti"
+                            class="form-control">
                         </div>
+                    {{-- @error('beds')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror --}}
+
+                    {{-- NUMERO BAGNI --}}
+                    <div class="my-3 input-group mb-3">
+                        <span class="input-group-text"></span>
+                        <input type="number" id="bathrooms" name="bathrooms" placeholder="bagni"
+                            class="form-control">
+                        </div>
+                    {{-- @error('bathrooms')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror --}}
+
+                    {{-- METRI QUADRATI --}}
+                    <div class="my-3 input-group mb-3">
+                        <span class="input-group-text"></span>
+                        <input type="number" id="square_meters" name="square_meters" placeholder="metri quadrati"
+                            class="form-control">
+                        </div>
+                    {{-- @error('square_meters')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror --}}
+
+                    {{-- PREZZO --}}
+                    <div class="my-3 input-group mb-3">
+                        <span class="input-group-text">€</span>
+                        <input type="number" id="price" name="price" placeholder="prezzo" class="form-control">
                     </div>
-                </div>
+                    {{-- @error('price')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror --}}
+
+                    {{-- SERVIZI --}}
+                    <div class="mt-3 mb-3">
+                        <div>
+                            Seleziona i servizi
+                        </div>
+                        @foreach ($amenities as $amenity)
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" value="{{ $amenity->id }}"
+                                    name="amenities[]" id="amenity-{{ $amenity->id }}">
+                                <label class="form-check-label" for="amenity-{{ $amenity->id }}">
+                                    {{ $amenity->title }}
+                                </label>
+                            </div>
+                        @endforeach
+                            {{-- @error('amenities')
+                                <div class="alert alert-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror --}}
+                    </div>
+                </form>
             </div>
-        @endforeach
+        </div>
+
+        {{-- Apartments Preview --}}
+        <div class="col-12 col-lg-9 col-xl-9">
+            <div class="row mt-4">
+                @foreach ($apts as $apt)
+                    <div class="col-12 col-md-6 col-lg-5 col-xl-4 p-3">
+                        <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
+                            {{-- Card Header --}}
+                            <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
+                                <h5 class="text-uppercase m-0">
+                                    <a class="d-inline-block
+                                    text-decoration-none border p-2 rounded my-3"
+                                    style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                    href="{{ route('apartment.show', $apt->id) }}"> {{ $apt->title }}</a>
+                                </h5>
+                            </div>
+                            {{-- Card Body --}}
+                            <div class="card-body p-4">
+                                {{-- immagine --}}
+                                <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                                    <img class="rounded" src="{{
+                                        asset(
+                                            $apt->picture
+                                            ? 'storage/' . $apt->picture
+                                            : 'storage/images/apartment.jpg')
+                                        }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                {{-- dati appartamento --}}
+                                <div class="my-4">
+                                    <ul class="list-unstyled" style="color: #fffdeb">
+                                        <li> {{ $apt->address }}</li>
+                                        <li class="p-0 mt-5">
+                                            <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apt->price }} € </span><span><small>/ notte</small></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
+
+
 </div>
 
 <script>

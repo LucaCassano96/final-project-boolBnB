@@ -10,8 +10,7 @@
 
                 <h2 class="my-4">Crea un nuovo appartamento</h2>
 
-                <form method="POST" id="form" action="{{ route('apartment.store') }}"
-                enctype="multipart/form-data">
+                <form method="POST" id="form" action="{{ route('apartment.store') }}" enctype="multipart/form-data">
 
                     @csrf
 
