@@ -132,7 +132,7 @@ class ApartmentController extends Controller
                 $latitude = $apartmentsDbCoordinate["latitude"];
                 $lon = $apartmentsCoordinate["lon"];
                 $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 3;
+                $numDigits = 2;
 
                 if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
                 {

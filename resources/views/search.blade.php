@@ -27,7 +27,7 @@
     <div class="row mt-4">
         @foreach ($apts as $apt)
             <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-                <div class="card border text-center p-0" style="min-height:400px; background-color:#5c7fbc32; border-color:#fffdeb">
+                <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                     {{-- Card Header --}}
                     <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
