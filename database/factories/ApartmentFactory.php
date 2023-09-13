@@ -28,8 +28,8 @@ class ApartmentFactory extends Factory
             'price' => fake() -> numberBetween(50, 1000),
             'visible' => fake() -> boolean(),
             'address' => fake() -> streetAddress(),
-            'latitude' => fake() -> latitude(),
-            'longitude' => fake() -> longitude(),
+            'latitude' => fake() -> latitude($min = 35.0, $max = 47.0),
+            'longitude' => fake() -> longitude($min = 6.0, $max = 18.0),
 
         ];
     }
