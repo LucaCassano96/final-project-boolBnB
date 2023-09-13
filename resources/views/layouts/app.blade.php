@@ -27,7 +27,7 @@
     <div id="app">
 
 
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #2d3047;">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #2d3047; height: 100px">
             <div class="container">
 
 
@@ -83,7 +83,7 @@
             </div>
         </nav>
 
-        <main style="background-color: #2d3047;">
+        <main style="background-color: #2d3047; min-height: calc(100vh - 100px)">
             @yield('content')
         </main>
     </div>

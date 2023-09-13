@@ -32,11 +32,11 @@
                 <div class="card border text-center p-0" style="min-height:400px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                     {{-- Card Header --}}
-                    <div class="card-header p-2" style="border-color: #fffdeb;">
+                    <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
                         <h5 class="text-uppercase m-0">
                             <a class="d-inline-block
                             text-decoration-none border p-2 rounded my-3"
-                            style="color: #fffdeb; border-color: #fffdeb;"
+                            style="color: #fffdeb; border-color: #fffdeb; width: 100%"
                             href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
                         </h5>
                     </div>
@@ -44,13 +44,13 @@
                     {{-- Card Body --}}
                     <div class="card-body p-4">
                         {{-- immagine --}}
-                        <div class="img rounded" style="width: 100%;">
+                        <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
                             <img class="rounded" src="{{
                                 asset(
                                     $apartment->picture
                                     ? 'storage/' . $apartment->picture
                                     : 'storage/images/apartment.jpg')
-                                }}" alt="" style="width: 100%; border: 2px solid #e0a458;">
+                                }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         {{-- dati appartamento --}}
                         <div class="my-4">

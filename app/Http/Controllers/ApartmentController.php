@@ -17,6 +17,44 @@ use Illuminate\Support\Facades\Http;
 class ApartmentController extends Controller
 {
 
+    /* ADDRESS FUNCTION */
+    private function geocodeAddress($address) {
+        $apiKey = config('services.tomtom.api_key');
+        $apiUrl = 'https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json';
+
+        return Http::get($apiUrl, [
+            'key' => $apiKey,
+        ]);
+    }
+
+    /* ADDRESS RADIUS FUNCTION */
+    private function geocodeRadius($lat, $lon) {
+    $apiKey = config('services.tomtom.api_key');
+    $apiUrl = "https://api.tomtom.com/search/2/nearbySearch/.json";
+
+    return Http::get($apiUrl, [
+        'key' => $apiKey,
+        'lat' => $lat,
+        'lon' => $lon,
+        'limit' => 10000,
+        'radius' => 20000, // 20 kilometers
+        'view' => 'Unified',
+    ]);
+    }
+
+    public function haveSameFirstDigits($number1, $number2, $numDigits) {
+        // Convert the numbers to strings
+        $number1Str = (string)$number1;
+        $number2Str = (string)$number2;
+
+        // Extract the first $numDigits digits from both strings
+        $firstDigits1 = substr($number1Str, 0, $numDigits);
+        $firstDigits2 = substr($number2Str, 0, $numDigits);
+
+        // Compare the first digits
+        return $firstDigits1 === $firstDigits2;
+    }
+
     /* HOME */
     public function index(){
 
@@ -26,7 +64,7 @@ class ApartmentController extends Controller
         return view("home", compact("apartments"));
     }
 
-    /* HOME */
+    /* DASHBOARD */
     public function dashboard(){
 
         $apartments = Apartment :: all();
@@ -35,7 +73,7 @@ class ApartmentController extends Controller
         return view("dashboard", compact("apartments", "users"));
     }
 
-/* SHOW */
+    /* SHOW */
     public function show($id){
 
         $apartment = Apartment :: FindOrFail($id);
@@ -43,7 +81,7 @@ class ApartmentController extends Controller
         return view("apartment.show", compact("apartment"));
     }
 
-/* SEARCH*/
+    /* SEARCH*/
     public function search(Request $request){
 
         $data =  $request -> all();
@@ -51,23 +89,78 @@ class ApartmentController extends Controller
 
         // Geocode the address using the TomTom Geocoding API
         $geocodingResponse = $this->geocodeAddress($data['address']);
+        $geocodingData = $geocodingResponse->json();
 
-        if ($geocodingResponse && $geocodingResponse->successful()) {
-            $geocodingData = $geocodingResponse->json();
+        // Extract latitude and longitude from the geocoding response
+        $searchLat = $geocodingData['results'][0]['position']['lat'];
+        $searchLon = $geocodingData['results'][0]['position']['lon'];
 
-            // Extract latitude and longitude from the geocoding response
-            $searchLat = $geocodingData['results'][0]['position']['lat'];
-            $searchLon = $geocodingData['results'][0]['position']['lon'];
+        // Getting the addresses in a radius
+        $geoRadiusResponse = $this->geocodeRadius($searchLat, $searchLon);
+        $geoRadiusData = $geoRadiusResponse->json();
+        $radiusApartments = $geoRadiusData['results'];
 
-        } else {
-            // Handle geocoding API request failure
-            throw ValidationException::withMessages(['address' => "Geolocalizzazione fallita. Controlla che l'indirizzo sia corretto."]);
+        //Position for every address from research (lat + lon)
+        $apartmentsCoordinates = [];
+
+        foreach ($radiusApartments as $radiusApartment) {
+            array_push($apartmentsCoordinates, $radiusApartment['position']);
         }
 
-        return view("search", compact("apartments"));
+        //Position for every apartment in DB (lat + lon + id)
+        $apartmentsDbCoordinates = [];
+
+        foreach ($apartments as $apartment) {
+
+            $position = [
+                "latitude" => $apartment->latitude,
+                "longitude" => $apartment->longitude,
+                "address" => $apartment->address,
+                "id" => $apartment->id,
+            ];
+
+            $apartmentsDbCoordinates[] = $position;
+        }
+
+        // Initialize an empty result array
+        $resultApartments = [];
+
+        foreach ($apartmentsDbCoordinates as $apartmentsDbCoordinate) {
+            foreach ($apartmentsCoordinates as $apartmentsCoordinate) {
+
+                $lat = $apartmentsCoordinate["lat"];
+                $latitude = $apartmentsDbCoordinate["latitude"];
+                $lon = $apartmentsCoordinate["lon"];
+                $longitude = $apartmentsDbCoordinate["longitude"];
+                $numDigits = 3;
+
+                if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
+                {
+                    // Add the matching element to the result array
+                    $resultApartments[] = $apartmentsDbCoordinate;
+                    break; // Exit the inner loop since a match is found
+                }
+            }
+        }
+
+        /* dd($resultApartments); */
+
+        $apts = [];
+
+        foreach ($resultApartments as $resultApartment) {
+            foreach ($apartments as $apartment) {
+                if ($resultApartment["id"] == $apartment->id) {
+                    $apts[] = $apartment;
+                    break;
+                }
+            }
+        }
+
+
+        return view("search", compact("apts"));
     }
 
-/* CREATE */
+    /* CREATE */
     public function create(){
 
         $amenities = Amenity :: all();
@@ -76,8 +169,7 @@ class ApartmentController extends Controller
 
     }
 
-/* STORE APARTMENT */
-
+    /* STORE */
     public function store(Request $request){
 
 
@@ -164,18 +256,9 @@ class ApartmentController extends Controller
              // Handle geocoding API request failure
              throw ValidationException::withMessages(['address' => 'Geocoding failed. Please check the address.']);
          }
-  }
+    }
 
-  private function geocodeAddress($address) {
-     $apiKey = config('services.tomtom.api_key');
-     $apiUrl = 'https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json';
-
-     return Http::get($apiUrl, [
-         'key' => $apiKey,
-     ]);
- }
-
-    //  /* EDIT */
+    /* EDIT */
     public function edit($id){
 
         $amenities = Amenity :: all();
@@ -183,9 +266,9 @@ class ApartmentController extends Controller
         return view("apartment.edit", compact("apartment", "amenities"));
 
 
-        }
+    }
 
-    //  /* UPDATE */
+    /* UPDATE */
     public function update(Request $request, $id){
 
         // validazioni update
@@ -275,7 +358,7 @@ class ApartmentController extends Controller
 
     }
 
-    // /* DELETE */
+    /* DELETE */
     public function delete($id) {
 
         $apartment = Apartment::findOrFail($id);

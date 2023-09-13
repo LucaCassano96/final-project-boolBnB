@@ -26,8 +26,8 @@ return new class extends Migration
             $table -> text("picture") -> nullable();
             $table -> integer("price");
             $table -> text("address");
-            $table -> float("latitude");
-            $table -> float("longitude");
+            $table -> double("latitude", 10,8) -> nullable();
+            $table -> double("longitude", 11,8)->nullable();
 
             $table -> boolean("visible") -> default(true);
 
