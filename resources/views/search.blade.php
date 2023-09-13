@@ -1,19 +1,19 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container" style="background-color: #2d3047">
+<div  class="container pt-4" style="background-color: #2d3047">
 
     <div class="row d-flex justify-content-center">
-        <div class="col-md-10">
+        <div class="col">
             <div class="card p-4 mt-4 rounded-4">
-                <h1 class="my-5 text-center" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
+                <h1 class="my-5 text-center" style="color:#2d3047">Seleziona i tuoi filtri</h1>
                 <form method="POST" action="{{ route('search') }}">
 
                     @csrf
 
                     <div class="search mt-5 d-flex justify-content-center" style="width: 100%;">
-                        <input type="text" id="searchInput" class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
-                        <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 p-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
+                        <input type="text" id="searchInput" class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
+                        <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 px-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -24,9 +24,7 @@
         </div>
     </div>
 
-
-
-    <div class="row mt-4">
+    <div class="row">
         @foreach ($apartments as $apartment)
             <div class="col-md-6 col-lg-4 col-xl-3 p-3">
                 <div class="card border text-center p-0" style="min-height:400px; background-color:#5c7fbc32; border-color:#fffdeb">
@@ -69,7 +67,7 @@
 </div>
 
 <script>
-//TomTom Autocomplete con fuzzy search
+    //TomTom Autocomplete con fuzzy search
 
     //Richiamo gli elementi del form
     const searchInput = document.getElementById('searchInput');

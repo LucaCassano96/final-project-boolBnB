@@ -26,7 +26,6 @@ class ApartmentController extends Controller
         return view("home", compact("apartments"));
     }
 
-
     /* HOME */
     public function dashboard(){
 
@@ -36,8 +35,6 @@ class ApartmentController extends Controller
         return view("dashboard", compact("apartments", "users"));
     }
 
-
-
 /* SHOW */
     public function show($id){
 
@@ -46,6 +43,29 @@ class ApartmentController extends Controller
         return view("apartment.show", compact("apartment"));
     }
 
+/* SEARCH*/
+    public function search(Request $request){
+
+        $data =  $request -> all();
+        $apartments = Apartment :: all();
+
+        // Geocode the address using the TomTom Geocoding API
+        $geocodingResponse = $this->geocodeAddress($data['address']);
+
+        if ($geocodingResponse && $geocodingResponse->successful()) {
+            $geocodingData = $geocodingResponse->json();
+
+            // Extract latitude and longitude from the geocoding response
+            $searchLat = $geocodingData['results'][0]['position']['lat'];
+            $searchLon = $geocodingData['results'][0]['position']['lon'];
+
+        } else {
+            // Handle geocoding API request failure
+            throw ValidationException::withMessages(['address' => "Geolocalizzazione fallita. Controlla che l'indirizzo sia corretto."]);
+        }
+
+        return view("search", compact("apartments"));
+    }
 
 /* CREATE */
     public function create(){

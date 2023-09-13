@@ -16,6 +16,9 @@ Route::get('/dashboard', [ApartmentController :: class, "dashboard"])->middlewar
 Route :: get("/show/{id}", [ApartmentController :: class, "show"])
 -> name("apartment.show");
 
+/* SEARCH PAGE*/
+Route::post('/search', [ApartmentController :: class, "search"])->name('search');
+
 /* CREATE APARTMENT */
 Route :: get("/create", [ApartmentController :: class,
 "create"])
