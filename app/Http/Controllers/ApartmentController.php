@@ -253,9 +253,6 @@ class ApartmentController extends Controller
             $apartment->amenities()->attach($data["amenities"]);
 
             return redirect()->route("apartment.show", $apartment->id);
-         } else {
-             // Handle geocoding API request failure
-             throw ValidationException::withMessages(['address' => 'Geocoding failed. Please check the address.']);
          }
     }
 
@@ -373,7 +370,44 @@ class ApartmentController extends Controller
         return redirect()->route("dashboard");
     }
 
+    /* MESSAGE CREATE*/
 
+    public function messagePage($id){
+
+        $message = Message :: all();
+        $apartment = Apartment :: FindOrFail($id);
+        return view("messagePage", compact("message", "apartment"));
+
+
+    }
+
+    // message store related to apartment
+    public function messageStore(Request $request, $id){
+
+        // validazioni backend messaggio
+        $request -> validate([
+            "sender_email" => "required|email|max:255",
+            "content" => "required",
+        ],
+        // messaggi validazioni personalizzati
+        [
+            'sender_email.required'=> "È necessario inserire una email",
+            'sender_email.email'=> "È necessario inserire una email valida",
+            'sender_email.max'=> "La email non può superare i 255 caratteri",
+
+            'content.required'=> "È necessario inserire un messaggio",
+        ]
+        );
+
+        $data = $request -> all();
+        $data['apartment_id'] = $id;
+        Message :: create($data);
+
+
+
+
+        return redirect() -> route("apartment.show", $id) -> with('success', 'Messaggio inviato con successo!');
+    }
 
 }
 

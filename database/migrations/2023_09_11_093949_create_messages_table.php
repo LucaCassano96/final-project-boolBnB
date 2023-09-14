@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('sender_name');
             $table->string('sender_email');
             $table->string('sender_surname');
+            // $table->unsignedBigInteger('apartment_id');
 
             $table->timestamps();
         });
