@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class AutocompleteController extends Controller
 {
-    public function autocomplete(Request $request)
+    public function autocompleteApi(Request $request)
     {
         $query = $request->input('query');
         $apiKey = config('services.tomtom.api_key');
