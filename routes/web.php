@@ -40,8 +40,11 @@ Route :: delete ('/delete/{id}', [ApartmentController :: class, "delete"]) -> na
 // -----------------------------------------------------------------
 //TOM TOM
 
+//SearchApi
+Route::post('/searchApi', [ApartmentController::class, 'searchApi']) -> name("searchApi");
+
 //Autocomplete
-Route::get('/autocomplete', [AutocompleteController::class, 'autocompleteApi']);
+Route::get('/autocomplete', [AutocompleteController::class, 'autocompleteApi']) -> name("autocompleteApi");
 
 // MESSAGE
 
