@@ -167,11 +167,14 @@
 
 <script>
 
+const autocompleteSelect = document.getElementById('autocompleteSelect');
+
     // Gestione del clic sul pulsante "Cerca"
 document.getElementById('searchForm').addEventListener('submit', function (event) {
     const address = document.getElementById('searchInput').value;
     const radius = document.getElementById('radius').value;
     event.preventDefault();
+    autocompleteSelect.style.display = 'none';
     axios.post('/searchApi', { address, radius })
         .then(response => {
             // Ricevi i risultati
@@ -243,7 +246,7 @@ function createApartmentCard(apartment) {
 
     //Richiamo gli elementi del form
     const searchInput = document.getElementById('searchInput');
-    const autocompleteSelect = document.getElementById('autocompleteSelect');
+
 
     //Prendo il contenuto dell'input
     searchInput.addEventListener('input', debounce(function () {
