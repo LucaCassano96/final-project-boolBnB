@@ -36,7 +36,7 @@ class ApartmentController extends Controller
         'key' => $apiKey,
         'lat' => $lat,
         'lon' => $lon,
-        'limit' => 10000,
+        'limit' => 100,
         'radius' => 20000, // 20 kilometers
         'view' => 'Unified',
     ]);
@@ -133,7 +133,7 @@ class ApartmentController extends Controller
                 $latitude = $apartmentsDbCoordinate["latitude"];
                 $lon = $apartmentsCoordinate["lon"];
                 $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 2;
+                $numDigits = 3;
 
                 if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
                 {
