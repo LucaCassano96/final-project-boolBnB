@@ -44,6 +44,13 @@ Route :: delete ('/delete/{id}', [ApartmentController :: class, "delete"]) -> na
 
 Route::get('/autocomplete', [AutocompleteController::class, 'autocomplete']);
 
+// MESSAGE
+
+    // CREATE
+Route :: get("/messagePage/{id}", [ApartmentController :: class, "messagePage"]) -> name("messagePage");
+
+    // STORE
+Route :: post("/messageStore/{id}", [ApartmentController :: class, "messageStore"]) -> name("message.store");
 // -----------------------------------------------------------------
 
 

@@ -253,9 +253,6 @@ class ApartmentController extends Controller
             $apartment->amenities()->attach($data["amenities"]);
 
             return redirect()->route("apartment.show", $apartment->id);
-         } else {
-             // Handle geocoding API request failure
-             throw ValidationException::withMessages(['address' => 'Geocoding failed. Please check the address.']);
          }
     }
 
@@ -373,7 +370,47 @@ class ApartmentController extends Controller
         return redirect()->route("dashboard");
     }
 
+    /* MESSAGE CREATE*/
 
+    public function messagePage($id){
+
+        $message = Message :: all();
+        $apartment = Apartment :: FindOrFail($id);
+        return view("messagePage", compact("message", "apartment"));
+
+
+    }
+
+    // message store related to apartment
+    public function messageStore(Request $request, $id){
+
+        $data = $request -> all();
+        $data['apartment_id'] = $id;
+        Message :: create($data);
+        return redirect() -> route("apartment.show", $id);
+    }
+        /* public function create() {
+
+        $farms = Farm :: all();
+
+        return view('pages.farmer.farmer-create', compact('farms'));
+    }
+    public function store(Request $request) {
+
+        $data = $request -> validate([
+            "name" => "required|string|min:3|max:64",
+            "lastname" => "required|string|min:3|max:64",
+            "dateOfBirth" => "required|date",
+            "farms" => "nullable|array",
+        ]);
+
+        $farmer = Farmer :: create($data);
+        $farmer -> farms() -> attach($data['farms']);
+
+        return redirect() -> route('farmer.show', $farmer -> id);
+    }
+
+    */
 
 }
 
