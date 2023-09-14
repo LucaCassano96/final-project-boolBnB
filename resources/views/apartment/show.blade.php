@@ -3,6 +3,16 @@
 
 <div class="container-fluid" style="background-color: #2d3047; height:100vh">
 
+    {{-- Messaggio conferma invio messaggio --}}
+    @if (session('success'))
+
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('success') }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+    @endif
+
         {{-- Bottoni edit/delete solo se loggato e proprietario --}}
         @auth
             @if (Auth::user()->id == $apartment->user_id)

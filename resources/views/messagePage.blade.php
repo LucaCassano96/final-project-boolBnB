@@ -23,6 +23,7 @@
                     {{ Auth::user()->name }}
                     @endauth>
 
+
                 {{-- Cognome mittente --}}
                 <label for="sender_surname">Inserisci il tuo cognome:</label>
                 <input type="text" class="form-control" id="sender_surname" name="sender_surname"
@@ -31,6 +32,7 @@
                     {{ Auth::user()->surname }}
                     @endauth>
 
+
                 {{-- Email mittente --}}
                 <label for="sender_email">Inserisci la tua email:</label>
                 <input type="email" class="form-control" id="sender_email" name="sender_email"
@@ -38,10 +40,16 @@
                     value=@auth
                     {{ Auth::user()->email }}
                     @endauth>
+                    @error('sender_email')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
 
                 {{-- Contenuto messaggio --}}
                 <label for="content">Inserisci il tuo messaggio:</label>
                 <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+                @error('content')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
 
 
 

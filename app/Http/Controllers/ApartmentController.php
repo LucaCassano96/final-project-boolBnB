@@ -384,33 +384,30 @@ class ApartmentController extends Controller
     // message store related to apartment
     public function messageStore(Request $request, $id){
 
+        // validazioni backend messaggio
+        $request -> validate([
+            "sender_email" => "required|email|max:255",
+            "content" => "required",
+        ],
+        // messaggi validazioni personalizzati
+        [
+            'sender_email.required'=> "È necessario inserire una email",
+            'sender_email.email'=> "È necessario inserire una email valida",
+            'sender_email.max'=> "La email non può superare i 255 caratteri",
+
+            'content.required'=> "È necessario inserire un messaggio",
+        ]
+        );
+
         $data = $request -> all();
         $data['apartment_id'] = $id;
         Message :: create($data);
-        return redirect() -> route("apartment.show", $id);
+
+
+
+
+        return redirect() -> route("apartment.show", $id) -> with('success', 'Messaggio inviato con successo!');
     }
-        /* public function create() {
-
-        $farms = Farm :: all();
-
-        return view('pages.farmer.farmer-create', compact('farms'));
-    }
-    public function store(Request $request) {
-
-        $data = $request -> validate([
-            "name" => "required|string|min:3|max:64",
-            "lastname" => "required|string|min:3|max:64",
-            "dateOfBirth" => "required|date",
-            "farms" => "nullable|array",
-        ]);
-
-        $farmer = Farmer :: create($data);
-        $farmer -> farms() -> attach($data['farms']);
-
-        return redirect() -> route('farmer.show', $farmer -> id);
-    }
-
-    */
 
 }
 
