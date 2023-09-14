@@ -157,8 +157,12 @@ class ApartmentController extends Controller
             }
         }
 
+        $aptsJson = json_encode($apts);
+        $amenitiesJson = json_encode($amenities);
 
-        return view("search", compact("apts", "amenities"));
+        return view('search', compact('aptsJson', 'amenitiesJson'));
+
+        //return view("search", compact("apts", "amenities"));
     }
 
     /* CREATE */
