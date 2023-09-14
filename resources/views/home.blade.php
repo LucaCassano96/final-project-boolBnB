@@ -6,12 +6,12 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-10">
             <div class="card p-4 mt-4 rounded-4">
-                <h1 class="my-5 text-center" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
+                <h1 class="my-3 text-center fw-bold" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
                 <form method="POST" action="{{ route('search') }}">
 
                     @csrf
 
-                    <div class="search mt-5 d-flex justify-content-center" style="width: 100%;">
+                    <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
                         <input type="text" id="searchInput" class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
                         <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 p-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
                             <i class="bi bi-search"></i>

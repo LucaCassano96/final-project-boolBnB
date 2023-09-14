@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" style="background-color: #2d3047">
 
 
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #2d3047; height: 100px">
@@ -39,7 +39,10 @@
                     <!-- Left Side Of Navbar -->
                     <a class="navbar-brand" style="color: #fffdeb" href="{{ url('/') }}">
                         <div class="logo_laravel">
-                            <h1 class="logo-bnb"><i class="bi bi-house-heart"></i>BoolBnB</h1>
+                            <h1 class="logo-bnb">
+                                <i class="bi bi-house-heart-fill"></i>
+                                BoolBnB
+                            </h1>
                         </div>
                         {{-- config('app.name', 'Laravel') --}}
                     </a>
