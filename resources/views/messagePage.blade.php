@@ -58,7 +58,8 @@
 
                 {{-- BUTTON CREAZIONE --}}
                 <button class="btn btn-primary mt-3" type="submit">Crea </button>
-
+                {{-- BOTTONE ANNULLA --}}
+                <a class="btn btn-danger mt-3" href="{{ route('apartment.show', $apartment->id) }}">Annulla</a>
             </form>
 
         </div>

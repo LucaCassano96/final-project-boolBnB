@@ -18,6 +18,10 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
+                    @error('address')
+                        <div class="alert alert-danger">{{ $message }}</div>
+
+                    @enderror
                     {{-- Hidden select --}}
                     <select id="autocompleteSelect" class="form-select" size="5" style="display: none; cursor: pointer;"></select>
                 </form>

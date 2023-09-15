@@ -102,66 +102,8 @@
         </div>
 
         {{-- bottone invio messaggio --}}
-        <a href="{{route('messagePage', $apartment -> id)}}">Invia messaggio</a>
-        <!-- bottone messaggio -->
-        <!-- Button trigger modal -->
-{{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Invia messaggio
-  </button>
+        <a class="btn btn-primary" role="button" href="{{route('messagePage', $apartment -> id)}}">Invia messaggio</a>
 
-  <!-- Modale Bootstrap Invio Messaggio -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5 text-black" id="exampleModalLabel">Messaggio</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-
-            {{-- FORM INVIO MESSAGGIO --}}
-            {{-- <form class="text-black" id="messageForm" action="{{ route('send.message', $apartment->id) }}" method="POST">
-                @csrf
-
-                {{-- name --}}
-                {{-- <label for="name">Inserisci qui il tuo nome:</label>
-                <br>
-                <input type="text" name="name" id="sender_name" value=@auth
-                    {{Auth::user()->name}}
-                @endauth>
-                <br> --}}
-
-                {{-- email --}}
-                {{-- <label for="email">Inserisci qui la tua mail:</label>
-                <br>
-                <input type="email" name="email" id="sender_email " value=@auth
-                    {{Auth::user()->email}}
-                @endauth>
-                <br> --}}
-
-                {{-- Contenuto --}}
-                {{-- <label for="testo-messaggio">Inserisci qui il tuo messaggio:</label>
-                <br>
-                <textarea name="testo-messaggio" id="">
-                </textarea>
-            </form>
-
-        </div> --}}
-
-        {{-- BOTTONI INVIO MESSAGGIO --}}
-        {{-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          <button type="submit" id="showMessageForm" class="btn btn-primary">Invia</button>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-</div> --}}
 
     @endsection
 
