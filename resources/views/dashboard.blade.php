@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid" style="background-color: #2d3047; height:100vh">
+    <div class="container-fluid" style="background-color: #2d3047;">
         {{-- <h2 class="fs-4 text-secondary my-4 text-white">
             {{ __('Dashboard') }}
         </h2> --}}
         <div class="row justify-content-center">
             <div class="col">
-                <div class="card m-5 p-3 bordo-gradient rounded" style="background-color: #5c80bc">
+                <div class="card m-5 bordo-gradient rounded" style="background-color: #5c80bc">
                     {{-- <div class="card-header">{{ __('User Dashboard') }}</div>
 
                     <div class="card-body">
@@ -23,37 +23,52 @@
 
                     @if (Auth::check())
 
-                    @foreach ($users as $user)
-                        @if ($user->id === Auth::user()->id)
+                        @foreach ($users as $user)
+                            @if ($user->id === Auth::user()->id)
 
-                        <div class="text-end m-3 d-flex justify-content-around">
-                                <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
-                                <a class="add-apartment text-decoration-none d-flex align-items-center "  href="{{ route('apartment.create') }}"><i class="bi bi-plus-circle"></i></a>
-                        </div>
-
-                        {{-- CARD APPARTAMENTO --}}
-                        <div class="apartment border-white p-3 m-auto d-flex" style="flex-direction:row;">
-
-                            @foreach ($user->apartments as $apartment)
-
-                            <div class="card border m-3 p-2" style="background-color: #e0a458; max-width:300px">
-                                <h3 class="text-uppercase fst-italic">
-                                    <a href="{{ route('apartment.show', $apartment->id) }}" class="text-black text-decoration-none">{{ $apartment->title }}</a>
-                                </h3>
-
-                                <span>
-                                    Prezzo: {{ $apartment->price }}€ / notte
-                                </span>
-
-                                <div class="picture mt-3" style="max-width:275px; height:200px">
-                                    <img class="rounded" style="max-width: 100%" src="{{asset('storage/' . $apartment -> picture) }}" alt="{{ $apartment->title }}">
+                                <div class="card-header">
+                                    <div class="container">
+                                        <div class="row justify-content-center align-items-center p-2">
+                                            <div class="col col-lg-5">
+                                                <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" style="height: 50px" href="{{ route('apartment.create') }}">
+                                                    <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            @endforeach
-                        </div>
-                        @endif
-                    @endforeach
+                                {{-- SEZIONE APPARTAMENTI --}}
+                                <div class="card-body apartment border-white m-auto d-flex row"style="flex-direction:row;">
+
+                                    @foreach ($user->apartments as $apartment)
+                                        {{-- Card APPARTAMENTO --}}
+                                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 p-3">
+                                            <div class="card border text-center" style="background-color: #e0a458;">
+                                                <div class="card-header d-flex align-items-center justify-content-center" style="min-height: 70px">
+                                                    <h5 class="text-uppercase fst-italic m-0">
+                                                        <a href="{{ route('apartment.show', $apartment->id) }}" class="text-black text-decoration-none">{{ $apartment->title }}</a>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body p-2">
+                                                    {{-- immagine --}}
+                                                    <div class="rounded" style="width:100%; aspect-ratio: 16 / 10;">
+                                                        <img class="rounded" src="{{asset('storage/' . $apartment -> picture) }}" alt="{{ $apartment->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </div>
+                                                    <div class="my-2">
+                                                        Prezzo: {{ $apartment->price }}€ / notte
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
                     @endif
 
                 </div>
