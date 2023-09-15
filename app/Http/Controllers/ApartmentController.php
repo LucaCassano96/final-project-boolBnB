@@ -140,7 +140,7 @@ class ApartmentController extends Controller
                 $latitude = $apartmentsDbCoordinate["latitude"];
                 $lon = $apartmentsCoordinate["lon"];
                 $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 2;
+                $numDigits = 3;
 
                 if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
                 {
@@ -167,7 +167,8 @@ class ApartmentController extends Controller
         $response['radius'] = $radius;
 
         return response()->json($response);
-        dd($radius);
+        /* dd($radius); */
+
     }
 
     /* SEARCH*/
@@ -196,7 +197,6 @@ class ApartmentController extends Controller
         foreach ($radiusApartments as $radiusApartment) {
             array_push($apartmentsCoordinates, $radiusApartment['position']);
         }
-
         //Position for every apartment in DB (lat + lon + id)
         $apartmentsDbCoordinates = [];
 
@@ -222,7 +222,7 @@ class ApartmentController extends Controller
                 $latitude = $apartmentsDbCoordinate["latitude"];
                 $lon = $apartmentsCoordinate["lon"];
                 $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 2;
+                $numDigits = 3;
 
                 if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
                 {
