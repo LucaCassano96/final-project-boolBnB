@@ -28,6 +28,7 @@
 
                         <div class="text-end m-3 d-flex justify-content-around">
                                 <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
+                                <a href="{{ route('messageApartment')}}" class="add-apartment"><i class="bi bi-envelope"></i></a>
                                 <a class="add-apartment text-decoration-none d-flex align-items-center "  href="{{ route('apartment.create') }}"><i class="bi bi-plus-circle"></i></a>
                         </div>
 
