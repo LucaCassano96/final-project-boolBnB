@@ -35,7 +35,7 @@
                             </div>
 
                             {{-- SEZIONE APPARTAMENTI --}}
-                            <div class="card-body apartment border-white m-auto d-flex row"style="flex-direction:row;">
+                            <div class="card-body border-white d-flex row">
 
                                 @foreach ($user->apartments as $apartment)
                                     {{-- Card APPARTAMENTO --}}
