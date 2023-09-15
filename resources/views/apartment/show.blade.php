@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container-fluid" style="background-color: #2d3047; height:100vh">
+<div class="container" style="background-color: #2d3047;">
 
     {{-- Messaggio conferma invio messaggio --}}
     @if (session('success'))
@@ -41,73 +41,71 @@
         @endauth
 
 
-    <div class="apartment m-3 text-light d-flex rounded justify-content-center align-items-center" style="background-color: #5c80bc; border: 3px solid #e0a458;">
+    <div class="apartment mt-5 text-light" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
-        {{-- CARD LEFT --}}
-        <div class="card-left m-3 p-2">
-
-            {{-- titolo appartamento --}}
-            <h2 class="text-uppercase" >
-                {{ $apartment->title }}
-            </h2>
-
-            {{-- indirizzo appartamento --}}
-            <div class="mb-3">
-                {{$apartment->address}}
-            </div>
-
-             {{-- immagine --}}
-             <div class="img rounded" style="width: 350px;">
-                <img class="rounded" src="{{
-                    asset(
-                        $apartment->picture
-                        ? 'storage/' . $apartment->picture
-                        : 'storage/images/apartment.jpg')
-
-                    }}" alt="" style="width: 100%; border: 3px solid #e0a458;">
-            </div>
-
+        <div class="send-button d-flex justify-content-end">
+            <a class="btn text-white m-3" style="background-color: #2d3047" role="button" href="{{route('messagePage', $apartment -> id)}}">Invia messaggio</a>
         </div>
 
-        {{-- CARD RIGHT --}}
-        <div class="card-center m-3 p-2">
+        <div class="dettagli-ap d-flex rounded justify-content-center align-items-center">
+            {{-- CARD LEFT --}}
+            <div class="card-left m-3 p-2">
 
-            {{-- descrizione appartamento --}}
-            <div class="rounded p-2 m-2" style="border: 2px solid #e0a458;">
-                {{ $apartment->description }}
+                {{-- titolo appartamento --}}
+                <h2 class="text-uppercase" style="color: #2d3047">
+                    {{ $apartment->title }}
+                </h2>
+
+                {{-- indirizzo appartamento --}}
+                <div class="mb-3">
+                    {{$apartment->address}}
+                </div>
+
+                 {{-- immagine --}}
+                 <div class="img rounded" style="width: 350px;">
+                    <img class="rounded" style="object-fit: cover" src="{{
+                        asset(
+                            $apartment->picture
+                            ? 'storage/' . $apartment->picture
+                            : 'storage/images/apartment.jpg')
+
+                        }}" alt="" style="width: 100%; border: 3px solid #e0a458;">
+                </div>
+
             </div>
 
-            {{-- dati appartamento --}}
-            <ul>
-                <li> Stanze: {{ $apartment->rooms }}</li>
-                <li> Letti: {{ $apartment->beds }}</li>
-                <li> Bagni: {{ $apartment->bathrooms }}</li>
-                <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
-            </ul>
+            {{-- CARD RIGHT --}}
+            <div class="card-center m-3 p-2">
 
-            {{-- prezzo appartamento --}}
-            <div class="fw-bold text-center rounded p-2" style="border: 2px solid #e0a458;">
-                Prezzo: {{ $apartment->price }}€
+                {{-- descrizione appartamento --}}
+                <div class="rounded p-2 m-2" style="border: 2px solid #e0a458; background-color:#2d3047">
+                    {{ $apartment->description }}
+                </div>
+
+                {{-- dati appartamento --}}
+                <ul>
+                    <li> Stanze: {{ $apartment->rooms }}</li>
+                    <li> Letti: {{ $apartment->beds }}</li>
+                    <li> Bagni: {{ $apartment->bathrooms }}</li>
+                    <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
+                </ul>
+
+                {{-- prezzo appartamento --}}
+                <div class="fw-bold text-center rounded p-2 mb-5" style="border: 2px solid #e0a458; background-color:#2d3047">
+                    Prezzo: {{ $apartment->price }}€
+                </div>
+            </div>
+
+            {{-- amenities stampa show --}}
+            <div class="card-right m-3 p-2">
+                <h3>SERVIZI</h3>
+                <ul>
+                    @foreach ($apartment->amenities as $amenity)
+                        <li class="">{{ $amenity->title }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
-
-        {{-- amenities stampa show --}}
-        <div class="card-right m-3 p-2">
-            <h3>SERVIZI</h3>
-            <ul>
-                @foreach ($apartment->amenities as $amenity)
-                    <li class="">{{ $amenity->title }}</li>
-                @endforeach
-            </ul>
-        </div>
-
-        {{-- bottone invio messaggio --}}
-        <a class="btn btn-primary" role="button" href="{{route('messagePage', $apartment -> id)}}">Invia messaggio</a>
-
 
     @endsection
 
-    <script>
-        // AL CLICK DEL TASTO INVIO MESSAGGIO
-
-    </script>

@@ -8,11 +8,23 @@
             <div class="card p-4 mt-4 rounded-4">
                 <h1 class="my-5 text-center" style="color:#2d3047">Seleziona i tuoi filtri o rinnova la ricerca</h1>
 
-                <form method="POST" action="{{ route('search') }}">
+                <form method="POST" id="searchForm">
 
                     @csrf
 
-                    <div class="search mt-5 d-flex justify-content-center" style="width: 100%;">
+                    {{-- RAGGIO DI RICERCA --}}
+                    <div class="row my-2">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">Km</span>
+                                <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- BARRA DI RICERCA --}}
+                    <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
                         <input type="text" id="searchInput" class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
                         <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 px-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
                             <i class="bi bi-search"></i>
@@ -114,7 +126,7 @@
 
         {{-- Apartments Preview --}}
         <div class="col-12 col-lg-9 col-xl-9">
-            <div class="row mt-4">
+            <div class="row mt-4" id="resultsContainer">
                 @foreach ($apts as $apt)
                     <div class="col-12 col-md-6 col-lg-5 col-xl-4 p-3">
                         <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
@@ -155,15 +167,90 @@
         </div>
     </div>
 
-
 </div>
 
 <script>
+
+const autocompleteSelect = document.getElementById('autocompleteSelect');
+
+    // Gestione del clic sul pulsante "Cerca"
+document.getElementById('searchForm').addEventListener('submit', function (event) {
+    const address = document.getElementById('searchInput').value;
+    const radius = document.getElementById('radius').value;
+    event.preventDefault();
+    autocompleteSelect.style.display = 'none';
+    axios.post('/searchApi', { address, radius })
+        .then(response => {
+            // Ricevi i risultati
+            const results = response.data;
+
+            // Chiamata per aggiornare la visualizzazione dei risultati
+            updateResultsView(results);
+        })
+        .catch(error => {
+            console.error('Errore durante la ricerca', error);
+        });
+});
+
+// Funzione per aggiornare la visualizzazione dei risultati
+function updateResultsView(results) {
+
+    const resultsContainer = document.getElementById('resultsContainer');
+
+    // Pulisci il contenuto attuale
+    resultsContainer.innerHTML = '';
+
+    // Itera sui risultati e aggiungi elementi alla vista
+    results.apts.forEach(apartment => {
+        // Crea un elemento HTML (ad esempio una card) per ogni appartamento e aggiungilo a 'resultsContainer'.
+        const apartmentCard = createApartmentCard(apartment);
+        resultsContainer.appendChild(apartmentCard);
+    });
+
+}
+
+// Funzione per creare un elemento HTML per una card di appartamento
+function createApartmentCard(apartment) {
+    // Crea un elemento div per la card di appartamento e popolalo con i dati dell'appartamento.
+    const card = document.createElement('div');
+    card.classList.add('col-12', 'col-md-6', 'col-lg-5', 'col-xl-4', 'p-3');
+    card.innerHTML = `
+        <div class="card border text-center p-0" style="min-height: 530px; background-color: #5c7fbc32; border-color: #fffdeb;">
+            <!-- Card Header -->
+            <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px;">
+                <h5 class="text-uppercase m-0">
+                    <a class="d-inline-block text-decoration-none border p-2 rounded my-3"
+                        style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                        href="{{ route('apartment.show', $apt->id) }}"> ${apartment.title} </a>
+                </h5>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body p-4">
+                <!-- Image -->
+                <div class="rounded" style="width: 100%; aspect-ratio: 16/10; border: 2px solid #e0a458;">
+                    <img class="rounded" src="${apartment.picture ? 'storage/' + apartment.picture : 'storage/images/apartment.jpg'}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <!-- Apartment Details -->
+                <div class="my-4">
+                    <ul class="list-unstyled" style="color: #fffdeb">
+                        <li>${apartment.address}</li>
+                        <li class="p-0 mt-5">
+                            <span class="p-0 mt-5" style="font-size: 30px; font-weight: 800;">${apartment.price} € </span><span><small>/ notte</small></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+
     //TomTom Autocomplete con fuzzy search
 
     //Richiamo gli elementi del form
     const searchInput = document.getElementById('searchInput');
-    const autocompleteSelect = document.getElementById('autocompleteSelect');
+
 
     //Prendo il contenuto dell'input
     searchInput.addEventListener('input', debounce(function () {

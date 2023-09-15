@@ -6,13 +6,13 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-10">
             <div class="card p-4 mt-4 rounded-4">
-                <h1 class="my-5 text-center" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
+                <h1 class="my-3 text-center fw-bold" style="color:#2d3047">Trova la tua prossima destinazione!</h1>
                 <form method="POST" action="{{ route('search') }}">
 
                     @csrf
 
-                    <div class="search mt-5 d-flex justify-content-center" style="width: 100%;">
-                        <input type="text" id="searchInput" class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
+                    <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
+                        <input type="text" id="searchInput" required class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
                         <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 p-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
                             <i class="bi bi-search"></i>
                         </button>
@@ -77,31 +77,31 @@
 
     //Prendo il contenuto dell'input
     searchInput.addEventListener('input', debounce(function () {
-    const query = searchInput.value.trim();
+        const query = searchInput.value.trim();
 
-    if (query.length === 0) {
-        autocompleteSelect.style.display = 'none';
-        return;
-    }
-    //Chiamata axios alla rotta autocomplete + query (testo input)
-    axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
-        .then(response => {
-            const suggestions = response.data.results;
+        if (query.length === 0) {
+            autocompleteSelect.style.display = 'none';
+            return;
+        }
+        //Chiamata axios alla rotta autocomplete + query (testo input)
+        axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                const suggestions = response.data.results;
 
-            autocompleteSelect.innerHTML = '';
-            //per ogni risultato della chiamata creo una option per la select
-            suggestions.forEach(suggestion => {
-                const option = document.createElement('option');
-                option.textContent = suggestion.address.freeformAddress;
-                option.value = suggestion.address.freeformAddress;
-                autocompleteSelect.appendChild(option);
+                autocompleteSelect.innerHTML = '';
+                //per ogni risultato della chiamata creo una option per la select
+                suggestions.forEach(suggestion => {
+                    const option = document.createElement('option');
+                    option.textContent = suggestion.address.freeformAddress;
+                    option.value = suggestion.address.freeformAddress;
+                    autocompleteSelect.appendChild(option);
+                });
+                //rendo la select visibile
+                autocompleteSelect.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Autocomplete request failed', error);
             });
-            //rendo la select visibile
-            autocompleteSelect.style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Autocomplete request failed', error);
-        });
 }, 100));
 //Il valore della option selezionata diventa il valore dell'input e la select torna a essere nascosta
 autocompleteSelect.addEventListener('change', function () {
