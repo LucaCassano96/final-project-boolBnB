@@ -53,6 +53,11 @@ Route :: get("/messagePage/{id}", [ApartmentController :: class, "messagePage"])
 
     // STORE
 Route :: post("/messageStore/{id}", [ApartmentController :: class, "messageStore"]) -> name("message.store");
+
+// CREO LA ROTTA PER APARTMENT.MESSAGE
+Route :: get("/messageApartment", [ApartmentController :: class, "messageApartment"]) -> name("messageApartment");
+
+
 // -----------------------------------------------------------------
 
 Route::middleware('auth')->group(function () {

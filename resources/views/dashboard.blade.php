@@ -29,17 +29,47 @@
                                 <div class="card-header">
                                     <div class="container">
                                         <div class="row justify-content-center align-items-center p-2">
-                                            <div class="col col-lg-5">
+                                            <div class="col col-lg-7">
                                                 <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
+
                                             </div>
-                                            <div class="col-sm-2">
-                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" style="height: 50px" href="{{ route('apartment.create') }}">
-                                                    <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
-                                                </a>
+                                            <div class="col-md-4">
+                                                <div class="d-flex justify-content-around align-items-center">
+                                                    <a href="{{ route('messageApartment')}}" class="add-apartment">
+                                                        <i class="bi bi-envelope"></i>
+                                                    </a>
+                                                    <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('apartment.create') }}">
+                                                        <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
+                                                    </a>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                        {{-- <div class="text-end m-3 d-flex justify-content-around">
+                                <h2 class="text-white my-apartment">I tuoi appartamenti</h2>
+                                <a href="{{ route('messageApartment')}}" class="add-apartment"><i class="bi bi-envelope"></i></a>
+                                <a class="add-apartment text-decoration-none d-flex align-items-center "  href="{{ route('apartment.create') }}"><i class="bi bi-plus-circle"></i></a>
+                        </div> --}}
+
+                        {{-- CARD APPARTAMENTO --}}
+                        {{-- <div class="apartment border-white p-3 m-auto d-flex" style="flex-direction:row;">
+
+                            @foreach ($user->apartments as $apartment)
+
+                            <div class="card border m-3 p-2" style="background-color: #e0a458; max-width:300px">
+                                <h3 class="text-uppercase fst-italic">
+                                    <a href="{{ route('apartment.show', $apartment->id) }}" class="text-black text-decoration-none">{{ $apartment->title }}</a>
+                                </h3>
+
+                                <span>
+                                    Prezzo: {{ $apartment->price }}€ / notte
+                                </span>
+
+                                <div class="picture mt-3" style="max-width:275px; height:200px">
+                                    <img class="rounded" style="max-width: 100%" src="{{asset('storage/' . $apartment -> picture) }}" alt="{{ $apartment->title }}">
+                                </div> --}}
 
                                 {{-- SEZIONE APPARTAMENTI --}}
                                 <div class="card-body apartment border-white m-auto d-flex row"style="flex-direction:row;">

@@ -498,6 +498,16 @@ class ApartmentController extends Controller
         return redirect() -> route("apartment.show", $id) -> with('success', 'Messaggio inviato con successo!');
     }
 
+    /* MESSAGE APARTMENT */
+    public function messageApartment(){
+
+        $apartments = Apartment :: all();
+        $messages = Message :: all();
+        $users = User :: all();
+
+        return view("messageApartment", compact("apartments", "messages", "users"));
+    }
+
 }
 
 

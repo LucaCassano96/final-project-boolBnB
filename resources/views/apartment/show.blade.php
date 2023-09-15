@@ -50,17 +50,17 @@
         <div class="dettagli-ap d-flex rounded justify-content-center align-items-center">
             {{-- CARD LEFT --}}
             <div class="card-left m-3 p-2">
-    
+
                 {{-- titolo appartamento --}}
                 <h2 class="text-uppercase" style="color: #2d3047">
                     {{ $apartment->title }}
                 </h2>
-    
+
                 {{-- indirizzo appartamento --}}
                 <div class="mb-3">
                     {{$apartment->address}}
                 </div>
-    
+
                  {{-- immagine --}}
                  <div class="img rounded" style="width: 350px;">
                     <img class="rounded" style="object-fit: cover" src="{{
@@ -68,20 +68,20 @@
                             $apartment->picture
                             ? 'storage/' . $apartment->picture
                             : 'storage/images/apartment.jpg')
-    
+
                         }}" alt="" style="width: 100%; border: 3px solid #e0a458;">
                 </div>
-    
+
             </div>
-    
+
             {{-- CARD RIGHT --}}
             <div class="card-center m-3 p-2">
-    
+
                 {{-- descrizione appartamento --}}
                 <div class="rounded p-2 m-2" style="border: 2px solid #e0a458; background-color:#2d3047">
                     {{ $apartment->description }}
                 </div>
-    
+
                 {{-- dati appartamento --}}
                 <ul>
                     <li> Stanze: {{ $apartment->rooms }}</li>
@@ -89,13 +89,13 @@
                     <li> Bagni: {{ $apartment->bathrooms }}</li>
                     <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
                 </ul>
-    
+
                 {{-- prezzo appartamento --}}
                 <div class="fw-bold text-center rounded p-2 mb-5" style="border: 2px solid #e0a458; background-color:#2d3047">
                     Prezzo: {{ $apartment->price }}€
                 </div>
             </div>
-    
+
             {{-- amenities stampa show --}}
             <div class="card-right m-3 p-2">
                 <h3>SERVIZI</h3>
@@ -106,6 +106,6 @@
                 </ul>
             </div>
         </div>
-        
+
     @endsection
 
