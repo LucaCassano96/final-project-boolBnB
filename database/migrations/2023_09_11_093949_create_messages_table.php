@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
 
             $table->text('content');
-            $table->string('sender_name');
+            $table->string('sender_name') -> nullable();
             $table->string('sender_email');
-            $table->string('sender_surname');
-            // $table->unsignedBigInteger('apartment_id');
+            $table->string('sender_surname') -> nullable();
+
 
             $table->timestamps();
         });
