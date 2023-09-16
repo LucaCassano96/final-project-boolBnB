@@ -97,8 +97,10 @@ class ApartmentController extends Controller
             ->orderBy('distance')
             ->get();
 
+            $aptsJson = json_encode($apartments);
+            $amenitiesJson = json_encode($amenities);
 
-        return view("search", compact("apartments", "amenities"));
+            return view('search', compact('aptsJson', 'amenitiesJson'));
     }
 
     /* HOME */
@@ -126,6 +128,7 @@ class ApartmentController extends Controller
 
         return view("apartment.show", compact("apartment"));
     }
+
 
     /* CREATE */
     public function create(){
