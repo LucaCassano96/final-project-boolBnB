@@ -12,17 +12,6 @@
                 <form method="POST" id="searchForm">
                         @csrf
 
-                        <div class="search mt-5 d-flex justify-content-center" style="width: 100%;">
-                            <input type="text" id="searchInput"
-                                class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3"
-                                placeholder="Cerca qui..." name="address">
-                            <button type="submit"
-                                class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 px-3 mx-0 text-center"
-                                style="color: #e0a458; font-size: 25px;">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-
                     {{-- RAGGIO DI RICERCA --}}
                     <div class="row my-2">
                         <div class="col-md-4">
@@ -331,14 +320,54 @@ function getFilteredApartments() {
 
 }
 
-
 function updateApartments(filteredApartments) {
 
     const apartmentsList = document.getElementById("apartmentsList")
 
-    apartmentsList.innerHTML = "";
+    /* apartmentsList.innerHTML = ""; */
+filteredApartments.forEach(apartament => {
+    const apartmentElement = document.createElement('div');
+    apartmentElement.className = 'col-12 col-md-6 col-lg-5 col-xl-4 p-3';
+    apartmentElement.innerHTML = `
+        <div class="card border text-center p-0"
+            style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
+            {{-- Card Header --}}
+            <div class="d-flex card-header p-2 align-items-center justify-content-center"
+                style="bordzer-color: #fffdeb; min-height: 130px">
+                <h5 class="text-uppercase m-0">
 
-    const FilteredApartmentsHtml = filteredApartments.map((apartament) => {
+                    <a class="d-inline-block
+                text-decoration-none border p-2 rounded my-3"
+                    style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                    href="http://127.0.0.1:8000/show/${apartament.id}"
+                    >${apartament.title}</a>
+                </h5>
+            </div>
+            {{-- Card Body --}}
+            <div class="card-body p-4">
+                {{-- immagine --}}
+                <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                    <img class="rounded"
+                    src="${apartament.picture ? "storage/" + apartament.picture : "storage/images/apartment.jpg"}"
+                    alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                {{-- dati appartamento --}}
+                <div class="my-4">
+                    <ul class="list-unstyled" style="color: #fffdeb">
+                        <li>${apartament.address}</li>
+                    <li class="p-0 mt-5">
+                        <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">${apartament.price} €
+                        </span><span><small>/ notte</small></span>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+        </div>`
+    });
+
+
+
+    /* const FilteredApartmentsHtml = filteredApartments.map((apartament) => {
         return `<div class="col-12 col-md-6 col-lg-5 col-xl-4 p-3">
         <div class="card border text-center p-0"
             style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
@@ -375,10 +404,12 @@ function updateApartments(filteredApartments) {
             </div>
         </div>
     </div>`
-    })
-    /* resultsContainer.appendChild(apartmentElement); */
-    apartmentsList.innerHTML = FilteredApartmentsHtml
+    }) */
+
+    apartmentsList.appendChild(apartmentElement);
 
 }
         </script>
     @endsection
+
+

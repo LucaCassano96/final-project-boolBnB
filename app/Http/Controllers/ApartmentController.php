@@ -97,9 +97,10 @@ class ApartmentController extends Controller
             ->orderBy('distance')
             ->get();
 
-            $aptsJson = json_encode($apartments);
-            $amenitiesJson = json_encode($amenities);
 
+            $amenitiesJson = $amenities->isNotEmpty() ? json_encode($amenities) : '[]';
+            $aptsJson = json_encode($apartments);
+            
             return view('search', compact('aptsJson', 'amenitiesJson'));
     }
 
