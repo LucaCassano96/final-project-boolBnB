@@ -67,9 +67,9 @@
 .add-apartment{
     color: $tertiary;
     font-size: 60px;
-    transition: rotate 0.5s ease-in-out;
+
     &:hover{
-        rotate: 180deg;
+        color: $quinary;
 
     }
 

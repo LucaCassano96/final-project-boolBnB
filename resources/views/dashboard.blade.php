@@ -22,12 +22,20 @@
                                         {{-- Icone --}}
                                         <div class="col-md-4">
                                             <div class="d-flex justify-content-around align-items-center">
+                                                {{-- Messaggi --}}
                                                 <a href="{{ route('messageApartment')}}" class="add-apartment">
                                                     <i class="bi bi-envelope"></i>
                                                 </a>
+                                                {{-- Statistiche --}}
+                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('statistics') }}">
+                                                    <i class="bi bi-graph-up"></i>
+                                                </a>
+                                                {{-- Aggiungi --}}
                                                 <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('apartment.create') }}">
                                                     <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
                                                 </a>
+
+
                                             </div>
                                         </div>
                                     </div>

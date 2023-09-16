@@ -508,7 +508,14 @@ class ApartmentController extends Controller
         return view("messageApartment", compact("apartments", "messages", "users"));
     }
 
+    // STATISTICS
+    public function statistics(){
+
+        $apartments = Apartment :: all();
+        $views = View :: all();
+
+        return view("statistics", compact("apartments", "views"));
+    }
+
+
 }
-
-
-
