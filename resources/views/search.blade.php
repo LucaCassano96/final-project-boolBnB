@@ -44,9 +44,6 @@
                             <span class="input-group-text"></span>
                             <input type="number" id="rooms" name="rooms" placeholder="stanze" class="form-control">
                         </div>
-                        {{-- @error('rooms')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror --}}
 
                         {{-- NUMERO LETTI --}}
                         <div class="my-3 input-group mb-3">
@@ -81,26 +78,23 @@
                             <span class="input-group-text">€</span>
                             <input type="number" id="price" name="price" placeholder="prezzo" class="form-control">
                         </div>
-                        {{-- @error('price')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror --}}
 
                         {{-- SERVIZI --}}
-                        {{--  <div class="mt-3 mb-3">
+                        <div class="mt-3 mb-3">
                             <div>
                                 Seleziona i servizi
                             </div>
-                            @foreach ($amenities as $amenity)
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" value="{{ $amenity->id }}" name="amenities[]"
-                                    id="amenity-{{ $amenity->id }}">
-                                <label class="form-check-label" for="amenity-{{ $amenity->id }}">
-                                    {{ $amenity->title }}
-                                </label>
-                            </div>
+                            @foreach (json_decode($amenitiesJson) as $amenity)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="{{ $amenity->id }}"
+                                        name="amenities[]" id="amenity-{{ $amenity->id }}">
+                                    <label class="form-check-label" for="amenity-{{ $amenity->id }}">
+                                        {{ $amenity->title }}
+                                    </label>
+                                </div>
                             @endforeach
 
-                        </div> --}}
+                        </div>
 
                     </form>
                 </div>
@@ -166,65 +160,77 @@
 
             //LOGICA DEI FILTRI
 
-            const roomsInput = document.getElementById("rooms");
-            const bedsInput = document.getElementById("beds");
-            const bathroomsInput = document.getElementById("bathrooms");
-            const squareMetersInput = document.getElementById("square_meters");
-            const priceInput = document.getElementById("price");
-            let roomsFilterValue = "";
-            let bedsFilterValue = "";
-            let bathroomsFilterValue = "";
-            let squareMetersFilterValue = "";
-            let priceFilterValue = "";
+            const filters = {
+                amenities: []
+            }
 
-            roomsInput.addEventListener("input", function(event) {
-                roomsFilterValue = event.target.value;
-                getFilteredApartments()
+            const inputs = document.querySelectorAll('input');
+
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+
+                    if (input.type === "checkbox") {
+
+                        const amenityId = input.id.substring(8, 9)
+
+                        if (filters.amenities.includes(amenityId)) {
+                            filters.amenities.splice(filters.amenities.indexOf(amenityId), 1)
+                        } else {
+                            filters.amenities.push(amenityId)
+                        }
+
+                    } else {
+                        filters[input.id] = input.value
+                    }
+
+                    getFilteredApartments()
+                })
+
             });
-
-            bedsInput.addEventListener("input", function(event) {
-                bedsFilterValue = event.target.value;
-                getFilteredApartments()
-            });
-
-            bathroomsInput.addEventListener("input", function(event) {
-                bathroomsFilterValue = event.target.value;
-                getFilteredApartments()
-            });
-
-            squareMetersInput.addEventListener("input", function(event) {
-                squareMetersFilterValue = event.target.value;
-                getFilteredApartments()
-            });
-
-            priceInput.addEventListener("input", function(event) {
-                priceFilterValue = event.target.value;
-                getFilteredApartments()
-            });
-
 
             const apartments = {!! $aptsJson !!};
+            const amenities = {!! $amenitiesJson !!};
 
             getFilteredApartments()
+
 
             function getFilteredApartments() {
 
                 const filteredApartments = apartments.filter(apartment => {
 
-                    const roomsMatch = roomsFilterValue === "" ? true : apartment.rooms <= Number(roomsFilterValue)
+                    const roomsMatch = (filters?.rooms == null || filters?.rooms === "") ? true : apartment.rooms <=
+                        Number(filters.rooms)
 
-                    const bedsMatch = bedsFilterValue === "" ? true : apartment.beds <= Number(bedsFilterValue)
+                    const bedsMatch = (filters?.beds == null || filters?.beds === "") ? true : apartment.beds <= Number(
+                        filters.beds)
 
-                    const bathroomsMatch = bathroomsFilterValue === "" ? true : apartment.bathrooms <= Number(
-                        bathroomsFilterValue)
+                    const bathroomsMatch = (filters?.bathrooms == null || filters?.bathrooms === "") ? true : apartment
+                        .bathrooms <= Number(
+                            filters.bathrooms)
 
-                    const squareMetersMatch = squareMetersFilterValue === "" ? true : apartment.square_meters <=
-                        Number(squareMetersFilterValue)
+                    const squareMetersMatch = (filters?.square_meters == null || filters?.square_meters === "") ? true :
+                        apartment.square_meters <=
+                        Number(filters.square_meters)
 
-                    const priceMatch = priceFilterValue === "" ? true : apartment.price >=
-                        Number(priceFilterValue)
+                    const priceMatch = (filters?.price == null || filters?.price === "") ? true : apartment.price >=
+                        Number(filters.price)
 
-                    if (roomsMatch && bedsMatch && bathroomsMatch && squareMetersMatch && priceMatch) {
+                    let amenitiesMatch = true;
+
+                    apartmentAmenityIds = apartment.amenities.map(amenity => {
+                        return amenity.id.toString()
+                    })
+
+                    filters.amenities.forEach(amenity => {
+
+                        if (!apartmentAmenityIds.includes(amenity)) {
+                            amenitiesMatch = false
+                        }
+
+                    })
+
+                    if (roomsMatch && bedsMatch && bathroomsMatch && squareMetersMatch && priceMatch &&
+                        amenitiesMatch) {
                         return apartment
                     }
 
@@ -233,6 +239,7 @@
                 updateApartments(filteredApartments)
 
             }
+
 
             function updateApartments(filteredApartments) {
 
@@ -244,12 +251,13 @@
                         style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
                         {{-- Card Header --}}
                         <div class="d-flex card-header p-2 align-items-center justify-content-center"
-                            style="border-color: #fffdeb; min-height: 130px">
+                            style="bordzer-color: #fffdeb; min-height: 130px">
                             <h5 class="text-uppercase m-0">
 
                                 <a class="d-inline-block
                             text-decoration-none border p-2 rounded my-3"
                                 style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                href="http://127.0.0.1:8000/show/${apartament.id}"
                                 >${apartament.title}</a>
                             </h5>
                         </div>
