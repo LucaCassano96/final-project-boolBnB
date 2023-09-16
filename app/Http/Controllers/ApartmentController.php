@@ -72,6 +72,7 @@ class ApartmentController extends Controller
 
         $data =  $request -> all();
         $address = $data['address'];
+        $apartments = Apartment::with('amenities')->get();
         $amenities = Amenity::all();
 
         // Geocode the address using the TomTom Geocoding API
@@ -95,6 +96,7 @@ class ApartmentController extends Controller
             ->having('distance', '<=', $radius)
             ->orderBy('distance')
             ->get();
+
 
         return view("search", compact("apartments", "amenities"));
     }
