@@ -17,15 +17,14 @@
                         <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text">Km</span>
-                                <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca"
-                                    class="form-control">
+                                <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca" class="form-control" required>
                             </div>
                         </div>
                     </div>
 
                     {{-- BARRA DI RICERCA --}}
                     <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
-                        <input type="text" id="searchInput" class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
+                        <input type="text" id="searchInput" class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address" required>
                         <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 px-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">
                             <i class="bi bi-search"></i>
                         </button>
@@ -127,7 +126,7 @@
         {{-- Apartments Preview --}}
         <div class="col-12 col-lg-9 col-xl-9">
             <div class="row mt-4" id="resultsContainer">
-                @foreach ($apts as $apt)
+                @foreach ($apartments as $apartment)
                     <div class="col-12 col-md-6 col-lg-5 col-xl-4 p-3">
                         <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
                             {{-- Card Header --}}
@@ -136,7 +135,7 @@
                                     <a class="d-inline-block
                                     text-decoration-none border p-2 rounded my-3"
                                     style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                    href="{{ route('apartment.show', $apt->id) }}"> {{ $apt->title }}</a>
+                                    href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
                                 </h5>
                             </div>
                             {{-- Card Body --}}
@@ -145,17 +144,17 @@
                                 <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
                                     <img class="rounded" src="{{
                                         asset(
-                                            $apt->picture
-                                            ? 'storage/' . $apt->picture
+                                            $apartment->picture
+                                            ? 'storage/' . $apartment->picture
                                             : 'storage/images/apartment.jpg')
                                         }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                                 {{-- dati appartamento --}}
                                 <div class="my-4">
                                     <ul class="list-unstyled" style="color: #fffdeb">
-                                        <li> {{ $apt->address }}</li>
+                                        <li> {{ $apartment->address }}</li>
                                         <li class="p-0 mt-5">
-                                            <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apt->price }} € </span><span><small>/ notte</small></span>
+                                            <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -172,88 +171,79 @@
 <script>
 
 const autocompleteSelect = document.getElementById('autocompleteSelect');
+const searchForm = document.getElementById('searchForm');
+const searchInput = document.getElementById('searchInput');
+const radiusSelect = document.getElementById('radius');
+const resultsContainer = document.getElementById('resultsContainer');
 
-    // Gestione del clic sul pulsante "Cerca"
-document.getElementById('searchForm').addEventListener('submit', function (event) {
-    const address = document.getElementById('searchInput').value;
-    const radius = document.getElementById('radius').value;
+ // Gestione del clic sul pulsante "Cerca"
+ searchForm.addEventListener('submit', function (event) {
+    const address = searchInput.value.trim();
+    const radius = radiusSelect.value;
     event.preventDefault();
-    autocompleteSelect.style.display = 'none';
     axios.post('/searchApi', { address, radius })
         .then(response => {
-            // Ricevi i risultati
-            const results = response.data;
+            const apartments = response.data.apartments;
 
-            // Chiamata per aggiornare la visualizzazione dei risultati
-            updateResultsView(results);
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            apartments.forEach(apartment => {
+
+                const apartmentElement = document.createElement('div');
+                apartmentElement.className = 'col-12 col-md-6 col-lg-5 col-xl-4 p-3';
+                apartmentElement.innerHTML = `
+                <div class="card border text-center p-0" style="min-height: 530px; background-color: #5c7fbc32; border-color: #fffdeb;">
+                    <!-- Card Header -->
+                    <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px;">
+                        <h5 class="text-uppercase m-0">
+                            <a class="d-inline-block text-decoration-none border p-2 rounded my-3"
+                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                href="{{ route('apartment.show', '')}}" data-apartment-id="${apartment.id}"> ${apartment.title} </a>
+                        </h5>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body p-4">
+                        <!-- Image -->
+                        <div class="rounded" style="width: 100%; aspect-ratio: 16/10; border: 2px solid #e0a458;">
+                            <img class="rounded" src="${apartment.picture ? 'storage/' + apartment.picture : 'storage/images/apartment.jpg'}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <!-- Apartment Details -->
+                        <div class="my-4">
+                            <ul class="list-unstyled" style="color: #fffdeb">
+                                <li>${apartment.address}</li>
+                                <li class="p-0 mt-5">
+                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight: 800;">${apartment.price} € </span><span><small>/ notte</small></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const apartmentLinks = document.querySelectorAll('[data-apartment-id]');
+            apartmentLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const apartmentId = this.getAttribute('data-apartment-id');
+                    const apartmentRoute = `{{ route('apartment.show', '') }}/${apartmentId}`;
+                    window.location.href = apartmentRoute;
+                });
+            });
+                resultsContainer.appendChild(apartmentElement);
+            });
         })
         .catch(error => {
-            console.error('Errore durante la ricerca', error);
+            console.error('Error during live search', error);
         });
 });
 
-// Funzione per aggiornare la visualizzazione dei risultati
-function updateResultsView(results) {
 
-    const resultsContainer = document.getElementById('resultsContainer');
+//TomTom Autocomplete con fuzzy search
 
-    // Pulisci il contenuto attuale
-    resultsContainer.innerHTML = '';
-
-    // Itera sui risultati e aggiungi elementi alla vista
-    results.apts.forEach(apartment => {
-        // Crea un elemento HTML (ad esempio una card) per ogni appartamento e aggiungilo a 'resultsContainer'.
-        const apartmentCard = createApartmentCard(apartment);
-        resultsContainer.appendChild(apartmentCard);
-    });
-
-}
-
-// Funzione per creare un elemento HTML per una card di appartamento
-function createApartmentCard(apartment) {
-    // Crea un elemento div per la card di appartamento e popolalo con i dati dell'appartamento.
-    const card = document.createElement('div');
-    card.classList.add('col-12', 'col-md-6', 'col-lg-5', 'col-xl-4', 'p-3');
-    card.innerHTML = `
-        <div class="card border text-center p-0" style="min-height: 530px; background-color: #5c7fbc32; border-color: #fffdeb;">
-            <!-- Card Header -->
-            <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px;">
-                <h5 class="text-uppercase m-0">
-                    <a class="d-inline-block text-decoration-none border p-2 rounded my-3"
-                        style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                        href="{{ route('apartment.show', $apt->id) }}"> ${apartment.title} </a>
-                </h5>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body p-4">
-                <!-- Image -->
-                <div class="rounded" style="width: 100%; aspect-ratio: 16/10; border: 2px solid #e0a458;">
-                    <img class="rounded" src="${apartment.picture ? 'storage/' + apartment.picture : 'storage/images/apartment.jpg'}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <!-- Apartment Details -->
-                <div class="my-4">
-                    <ul class="list-unstyled" style="color: #fffdeb">
-                        <li>${apartment.address}</li>
-                        <li class="p-0 mt-5">
-                            <span class="p-0 mt-5" style="font-size: 30px; font-weight: 800;">${apartment.price} € </span><span><small>/ notte</small></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `;
-    return card;
-}
-
-
-    //TomTom Autocomplete con fuzzy search
-
-    //Richiamo gli elementi del form
-    const searchInput = document.getElementById('searchInput');
-
-
-    //Prendo il contenuto dell'input
-    searchInput.addEventListener('input', debounce(function () {
+//Prendo il contenuto dell'input
+searchInput.addEventListener('input', debounce(function () {
     const query = searchInput.value.trim();
 
     if (query.length === 0) {

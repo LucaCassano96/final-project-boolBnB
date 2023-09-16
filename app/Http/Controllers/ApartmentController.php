@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Apartment;
 use App\Models\Amenity;
@@ -27,33 +28,75 @@ class ApartmentController extends Controller
         ]);
     }
 
-    /* ADDRESS RADIUS FUNCTION */
-    private function geocodeRadius($lat, $lon, $radius) {
-        $apiKey = config('services.tomtom.api_key');
-        $apiUrl = "https://api.tomtom.com/search/2/nearbySearch/.json";
+    /* SEARCH API*/
+    public function searchApi(Request $request){
 
-        return Http::get($apiUrl, [
-            'key' => $apiKey,
-            'lat' => $lat,
-            'lon' => $lon,
-            'limit' => 100,
-            'radius' => $radius, // in meters
-            'view' => 'Unified',
-        ]);
+        $data =  $request -> all();
+        $address = $data['address'];
+        $amenities = Amenity :: all();
+
+        $response = [];
+
+        // Geocode the address using the TomTom Geocoding API
+        $geocodingResponse = $this->geocodeAddress($address);
+        $geocodingData = $geocodingResponse->json();
+
+        // Extract latitude and longitude from the geocoding response
+        $searchLat = $geocodingData['results'][0]['position']['lat'];
+        $searchLon = $geocodingData['results'][0]['position']['lon'];
+
+        //Radius for the apartment search (in km)
+        $radius = $data['radius'];
+
+        // Query apartments within the specified radius
+        $apartments = DB::table('apartments')
+            ->select('*')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$searchLat, $searchLon, $searchLat]
+            )
+            ->having('distance', '<=', $radius)
+            ->orderBy('distance')
+            ->get();
+
+        $response['apartments'] = $apartments;
+        /* $response['amenities'] = $amenities; */
+        $response['radius'] = $radius;
+
+        return response()->json($response);
+        /* dd($radius); */
     }
 
-    /* SAME FIRST DIGITS */
-    public function haveSameFirstDigits($number1, $number2, $numDigits) {
-        // Convert the numbers to strings
-        $number1Str = (string)$number1;
-        $number2Str = (string)$number2;
+    /* SEARCH*/
+    public function search(Request $request){
 
-        // Extract the first $numDigits digits from both strings
-        $firstDigits1 = substr($number1Str, 0, $numDigits);
-        $firstDigits2 = substr($number2Str, 0, $numDigits);
+        $data =  $request -> all();
+        $address = $data['address'];
+        $amenities = Amenity::all();
 
-        // Compare the first digits
-        return $firstDigits1 === $firstDigits2;
+        // Geocode the address using the TomTom Geocoding API
+        $geocodingResponse = $this->geocodeAddress($address);
+        $geocodingData = $geocodingResponse->json();
+
+        // Extract latitude and longitude from the geocoding response
+        $searchLat = $geocodingData['results'][0]['position']['lat'];
+        $searchLon = $geocodingData['results'][0]['position']['lon'];
+
+        //Radius for the apartment search (in km)
+        $radius = 20;
+
+        // Query apartments within the specified radius
+        $apartments = DB::table('apartments')
+            ->select('*')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$searchLat, $searchLon, $searchLat]
+            )
+            ->having('distance', '<=', $radius)
+            ->orderBy('distance')
+            ->get();
+
+        return view("search", compact("apartments", "amenities"));
     }
 
     /* HOME */
@@ -80,174 +123,6 @@ class ApartmentController extends Controller
         $apartment = Apartment :: FindOrFail($id);
 
         return view("apartment.show", compact("apartment"));
-    }
-
-    /* SEARCH API*/
-    public function searchApi(Request $request){
-
-        $data =  $request -> all();
-        $apartments = Apartment :: all();
-        $amenities = Amenity :: all();
-        $radius = 20000;
-        if ($data['radius'] && $data['radius'] > 0 && $data['radius'] <= 50) {
-            $radius = $data['radius'] * 1000;
-        }
-
-        $response = [];
-
-        // Geocode the address using the TomTom Geocoding API
-        $geocodingResponse = $this->geocodeAddress($data['address']);
-        $geocodingData = $geocodingResponse->json();
-
-        // Extract latitude and longitude from the geocoding response
-        $searchLat = $geocodingData['results'][0]['position']['lat'];
-        $searchLon = $geocodingData['results'][0]['position']['lon'];
-
-        // Getting the addresses in a radius
-        $geoRadiusResponse = $this->geocodeRadius($searchLat, $searchLon, $radius);
-        $geoRadiusData = $geoRadiusResponse->json();
-        $radiusApartments = $geoRadiusData['results'];
-
-        //Position for every address from research (lat + lon)
-        $apartmentsCoordinates = [];
-
-        foreach ($radiusApartments as $radiusApartment) {
-            array_push($apartmentsCoordinates, $radiusApartment['position']);
-        }
-
-        //Position for every apartment in DB (lat + lon + id)
-        $apartmentsDbCoordinates = [];
-
-        foreach ($apartments as $apartment) {
-
-            $position = [
-                "latitude" => $apartment->latitude,
-                "longitude" => $apartment->longitude,
-                "address" => $apartment->address,
-                "id" => $apartment->id,
-            ];
-
-            $apartmentsDbCoordinates[] = $position;
-        }
-
-        // Initialize an empty result array
-        $resultApartments = [];
-
-        foreach ($apartmentsDbCoordinates as $apartmentsDbCoordinate) {
-            foreach ($apartmentsCoordinates as $apartmentsCoordinate) {
-
-                $lat = $apartmentsCoordinate["lat"];
-                $latitude = $apartmentsDbCoordinate["latitude"];
-                $lon = $apartmentsCoordinate["lon"];
-                $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 3;
-
-                if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
-                {
-                    // Add the matching element to the result array
-                    $resultApartments[] = $apartmentsDbCoordinate;
-                    break; // Exit the inner loop since a match is found
-                }
-            }
-        }
-
-        $apts = [];
-
-        foreach ($resultApartments as $resultApartment) {
-            foreach ($apartments as $apartment) {
-                if ($resultApartment["id"] == $apartment->id) {
-                    $apts[] = $apartment;
-                    break;
-                }
-            }
-        }
-
-        $response['apts'] = $apts;
-        /* $response['amenities'] = $amenities; */
-        $response['radius'] = $radius;
-
-        return response()->json($response);
-        /* dd($radius); */
-
-    }
-
-    /* SEARCH*/
-    public function search(Request $request){
-
-        $data =  $request -> all();
-        $apartments = Apartment :: all();
-        $amenities = Amenity :: all();
-        $radius = 20000;
-        // Geocode the address using the TomTom Geocoding API
-        $geocodingResponse = $this->geocodeAddress($data['address']);
-        $geocodingData = $geocodingResponse->json();
-
-        // Extract latitude and longitude from the geocoding response
-        $searchLat = $geocodingData['results'][0]['position']['lat'];
-        $searchLon = $geocodingData['results'][0]['position']['lon'];
-
-        // Getting the addresses in a radius
-        $geoRadiusResponse = $this->geocodeRadius($searchLat, $searchLon, $radius);
-        $geoRadiusData = $geoRadiusResponse->json();
-        $radiusApartments = $geoRadiusData['results'];
-
-        //Position for every address from research (lat + lon)
-        $apartmentsCoordinates = [];
-
-        foreach ($radiusApartments as $radiusApartment) {
-            array_push($apartmentsCoordinates, $radiusApartment['position']);
-        }
-        //Position for every apartment in DB (lat + lon + id)
-        $apartmentsDbCoordinates = [];
-
-        foreach ($apartments as $apartment) {
-
-            $position = [
-                "latitude" => $apartment->latitude,
-                "longitude" => $apartment->longitude,
-                "address" => $apartment->address,
-                "id" => $apartment->id,
-            ];
-
-            $apartmentsDbCoordinates[] = $position;
-        }
-
-        // Initialize an empty result array
-        $resultApartments = [];
-
-        foreach ($apartmentsDbCoordinates as $apartmentsDbCoordinate) {
-            foreach ($apartmentsCoordinates as $apartmentsCoordinate) {
-
-                $lat = $apartmentsCoordinate["lat"];
-                $latitude = $apartmentsDbCoordinate["latitude"];
-                $lon = $apartmentsCoordinate["lon"];
-                $longitude = $apartmentsDbCoordinate["longitude"];
-                $numDigits = 3;
-
-                if ($this->haveSameFirstDigits($lat, $latitude, $numDigits) && $this->haveSameFirstDigits($lon, $longitude, $numDigits))
-                {
-                    // Add the matching element to the result array
-                    $resultApartments[] = $apartmentsDbCoordinate;
-                    break; // Exit the inner loop since a match is found
-                }
-            }
-        }
-
-        /* dd($resultApartments); */
-
-        $apts = [];
-
-        foreach ($resultApartments as $resultApartment) {
-            foreach ($apartments as $apartment) {
-                if ($resultApartment["id"] == $apartment->id) {
-                    $apts[] = $apartment;
-                    break;
-                }
-            }
-        }
-
-
-        return view("search", compact("apts", "amenities"));
     }
 
     /* CREATE */
@@ -351,8 +226,6 @@ class ApartmentController extends Controller
         $amenities = Amenity :: all();
         $apartment = Apartment :: FindOrFail($id);
         return view("apartment.edit", compact("apartment", "amenities"));
-
-
     }
 
     /* UPDATE */
@@ -460,17 +333,14 @@ class ApartmentController extends Controller
     }
 
     /* MESSAGE CREATE*/
-
     public function messagePage($id){
 
         $message = Message :: all();
         $apartment = Apartment :: FindOrFail($id);
         return view("messagePage", compact("message", "apartment"));
-
-
     }
 
-    // message store related to apartment
+    /* MESSAGE STORE RELATED TO APARTMENT */
     public function messageStore(Request $request, $id){
 
         // validazioni backend messaggio
