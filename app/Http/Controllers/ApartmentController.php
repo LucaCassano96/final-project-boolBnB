@@ -34,8 +34,12 @@ class ApartmentController extends Controller
         $data =  $request -> all();
         $address = $data['address'];
         $amenities = Amenity :: all();
-
-        $response = [];
+        //FILTERS
+        $rooms = $data['rooms'];
+        $beds = $data['beds'];
+        $bathrooms = $data['bathrooms'];
+        $squareMeters = $data['square_meters'];
+        $maxPrice = $data['price'];
 
         // Geocode the address using the TomTom Geocoding API
         $geocodingResponse = $this->geocodeAddress($address);
@@ -44,9 +48,7 @@ class ApartmentController extends Controller
         // Extract latitude and longitude from the geocoding response
         $searchLat = $geocodingData['results'][0]['position']['lat'];
         $searchLon = $geocodingData['results'][0]['position']['lon'];
-
-        //Radius for the apartment search (in km)
-        $radius = $data['radius'];
+        $radius = $data['radius'];//(in km)
 
         // Query apartments within the specified radius
         $apartments = DB::table('apartments')
@@ -59,9 +61,19 @@ class ApartmentController extends Controller
             ->orderBy('distance')
             ->get();
 
+        // Query apartments based on filter criteria
+        $filteredApartments = Apartment::where('rooms', '>=', $rooms)
+            ->where('beds', '>=', $beds)
+            ->where('bathrooms', '>=', $bathrooms)
+            ->where('square_meters', '>=', $squareMeters)
+            ->where('price', '<=', $maxPrice)
+            ->get();
+
+        $response = [];
         $response['apartments'] = $apartments;
         /* $response['amenities'] = $amenities; */
         $response['radius'] = $radius;
+        /* $response['apartments'] = $filteredApartments; */
 
         return response()->json($response);
         /* dd($radius); */

@@ -46,7 +46,7 @@
             <div class="card p-4 mt-4 rounded-4">
                 <h3 class="my-3 text-center" style="color:#2d3047">Filtri di ricerca</h3>
 
-                <form method="POST" id="form" action="">
+                <form method="POST" id="filterForm" action="">
 
                     @csrf
 
@@ -176,7 +176,7 @@ const searchInput = document.getElementById('searchInput');
 const radiusSelect = document.getElementById('radius');
 const resultsContainer = document.getElementById('resultsContainer');
 
- // Gestione del clic sul pulsante "Cerca"
+// GESTIONE RICERCA (CON CLICK)
  searchForm.addEventListener('submit', function (event) {
     const address = searchInput.value.trim();
     const radius = radiusSelect.value;
@@ -239,9 +239,77 @@ const resultsContainer = document.getElementById('resultsContainer');
         });
 });
 
+// GESTIONE FILTRI RICERCA
+const filterForm = document.getElementById('filterForm');
 
-//TomTom Autocomplete con fuzzy search
+function filterApartments() {
+    const rooms = parseInt(document.getElementById('rooms').value) || 0;
+    const beds = parseInt(document.getElementById('beds').value) || 0;
+    const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+    const squareMeters = parseInt(document.getElementById('square_meters').value) || 0;
+    const maxPrice = parseInt(document.getElementById('price').value) || Infinity;
 
+    axios.post('/searchApi', { address, radius, rooms, beds, bathrooms, square_meters, price })
+    .then(response => {
+        const apartments = response.data.apartments;
+
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        /* apartments.forEach(apartment => {
+            const apartmentElement = document.createElement('div');
+            apartmentElement.className = 'col-12 col-md-6 col-lg-5 col-xl-4 p-3';
+            apartmentElement.innerHTML = `
+            <div class="card border text-center p-0" style="min-height: 530px; background-color: #5c7fbc32; border-color: #fffdeb;">
+                <!-- Card Header -->
+                <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px;">
+                    <h5 class="text-uppercase m-0">
+                        <a class="d-inline-block text-decoration-none border p-2 rounded my-3"
+                            style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                            href="{{ route('apartment.show', '')}}" data-apartment-id="${apartment.id}"> ${apartment.title} </a>
+                    </h5>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-4">
+                    <!-- Image -->
+                    <div class="rounded" style="width: 100%; aspect-ratio: 16/10; border: 2px solid #e0a458;">
+                        <img class="rounded" src="${apartment.picture ? 'storage/' + apartment.picture : 'storage/images/apartment.jpg'}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Apartment Details -->
+                    <div class="my-4">
+                        <ul class="list-unstyled" style="color: #fffdeb">
+                            <li>${apartment.address}</li>
+                            <li class="p-0 mt-5">
+                                <span class="p-0 mt-5" style="font-size: 30px; font-weight: 800;">${apartment.price} € </span><span><small>/ notte</small></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            const apartmentLinks = document.querySelectorAll('[data-apartment-id]');
+            apartmentLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const apartmentId = this.getAttribute('data-apartment-id');
+                    const apartmentRoute = `{{ route('apartment.show', '') }}/${apartmentId}`;
+                    window.location.href = apartmentRoute;
+                });
+            });
+            resultsContainer.appendChild(apartmentElement);
+        });
+        })
+        .catch(error => {
+            console.error('Error during live search', error);*/
+        });
+}
+
+filterForm.addEventListener('input', filterApartments());
+
+
+//TOMTOM AUTOCOMPLETE con fuzzy search
 //Prendo il contenuto dell'input
 searchInput.addEventListener('input', debounce(function () {
     const query = searchInput.value.trim();
