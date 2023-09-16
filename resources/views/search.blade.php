@@ -157,6 +157,7 @@
                     timeout = setTimeout(func, wait);
                 };
             }
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
 
             //LOGICA DEI FILTRI
 
@@ -245,6 +246,8 @@
 
                 const apartmentsList = document.getElementById("apartmentsList")
 
+                apartmentsList.innerHTML = "";
+
                 const FilteredApartmentsHtml = filteredApartments.map((apartament) => {
                     return `<div class="col-12 col-md-6 col-lg-5 col-xl-4 p-3">
                     <div class="card border text-center p-0"
@@ -283,7 +286,7 @@
                     </div>
                 </div>`
                 })
-
+                /* resultsContainer.appendChild(apartmentElement); */
                 apartmentsList.innerHTML = FilteredApartmentsHtml
 
             }
