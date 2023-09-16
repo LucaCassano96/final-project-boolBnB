@@ -31,7 +31,6 @@
                     </div>
                     @error('address')
                         <div class="alert alert-danger">{{ $message }}</div>
-
                     @enderror
                     {{-- Hidden select --}}
                     <select id="autocompleteSelect" class="form-select" size="5" style="display: none; cursor: pointer;"></select>
@@ -176,6 +175,50 @@ const searchInput = document.getElementById('searchInput');
 const radiusSelect = document.getElementById('radius');
 const resultsContainer = document.getElementById('resultsContainer');
 
+//TOMTOM AUTOCOMPLETE con fuzzy search
+//Prendo il contenuto dell'input
+searchInput.addEventListener('input', debounce(function () {
+    const query = searchInput.value.trim();
+
+    if (query.length === 0) {
+        autocompleteSelect.style.display = 'none';
+        return;
+    }
+    //Chiamata axios alla rotta autocomplete + query (testo input)
+    axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
+        .then(response => {
+            const suggestions = response.data.results;
+
+            autocompleteSelect.innerHTML = '';
+            //per ogni risultato della chiamata creo una option per la select
+            suggestions.forEach(suggestion => {
+                const option = document.createElement('option');
+                option.textContent = suggestion.address.freeformAddress;
+                option.value = suggestion.address.freeformAddress;
+                autocompleteSelect.appendChild(option);
+            });
+            //rendo la select visibile
+            autocompleteSelect.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Autocomplete request failed', error);
+        });
+}, 100));
+//Il valore della option selezionata diventa il valore dell'input e la select torna a essere nascosta
+autocompleteSelect.addEventListener('change', function () {
+    searchInput.value = autocompleteSelect.value;
+    autocompleteSelect.style.display = 'none';
+});
+
+//Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
+function debounce(func, wait) {
+    let timeout;
+    return function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(func, wait);
+    };
+}
+
 // GESTIONE RICERCA (CON CLICK)
  searchForm.addEventListener('submit', function (event) {
     const address = searchInput.value.trim();
@@ -242,20 +285,20 @@ const resultsContainer = document.getElementById('resultsContainer');
 // GESTIONE FILTRI RICERCA
 const filterForm = document.getElementById('filterForm');
 
-function filterApartments() {
+/* function filterApartments() {
     const rooms = parseInt(document.getElementById('rooms').value) || 0;
     const beds = parseInt(document.getElementById('beds').value) || 0;
     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
     const squareMeters = parseInt(document.getElementById('square_meters').value) || 0;
     const maxPrice = parseInt(document.getElementById('price').value) || Infinity;
 
-    axios.post('/searchApi', { address, radius, rooms, beds, bathrooms, square_meters, price })
+    axios.post('/searchApiFilters', { address, radius, rooms, beds, bathrooms, square_meters, price })
     .then(response => {
         const apartments = response.data.apartments;
 
         resultsContainer.innerHTML = ''; // Clear previous results
 
-        /* apartments.forEach(apartment => {
+        apartments.forEach(apartment => {
             const apartmentElement = document.createElement('div');
             apartmentElement.className = 'col-12 col-md-6 col-lg-5 col-xl-4 p-3';
             apartmentElement.innerHTML = `
@@ -302,56 +345,11 @@ function filterApartments() {
         });
         })
         .catch(error => {
-            console.error('Error during live search', error);*/
+            console.error('Error during live search', error);
         });
-}
+} */
 
-filterForm.addEventListener('input', filterApartments());
-
-
-//TOMTOM AUTOCOMPLETE con fuzzy search
-//Prendo il contenuto dell'input
-searchInput.addEventListener('input', debounce(function () {
-    const query = searchInput.value.trim();
-
-    if (query.length === 0) {
-        autocompleteSelect.style.display = 'none';
-        return;
-    }
-    //Chiamata axios alla rotta autocomplete + query (testo input)
-    axios.get(`/autocomplete?query=${encodeURIComponent(query)}`)
-        .then(response => {
-            const suggestions = response.data.results;
-
-            autocompleteSelect.innerHTML = '';
-            //per ogni risultato della chiamata creo una option per la select
-            suggestions.forEach(suggestion => {
-                const option = document.createElement('option');
-                option.textContent = suggestion.address.freeformAddress;
-                option.value = suggestion.address.freeformAddress;
-                autocompleteSelect.appendChild(option);
-            });
-            //rendo la select visibile
-            autocompleteSelect.style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Autocomplete request failed', error);
-        });
-}, 100));
-//Il valore della option selezionata diventa il valore dell'input e la select torna a essere nascosta
-autocompleteSelect.addEventListener('change', function () {
-    searchInput.value = autocompleteSelect.value;
-    autocompleteSelect.style.display = 'none';
-});
-
-//Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
-function debounce(func, wait) {
-    let timeout;
-    return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(func, wait);
-    };
-}
+/* filterForm.addEventListener('input', filterApartments()); */
 </script>
 
 @endsection

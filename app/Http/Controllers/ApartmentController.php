@@ -35,6 +35,57 @@ class ApartmentController extends Controller
         $address = $data['address'];
         $amenities = Amenity :: all();
         //FILTERS
+        /* $rooms = $data['rooms'];
+        $beds = $data['beds'];
+        $bathrooms = $data['bathrooms'];
+        $squareMeters = $data['square_meters'];
+        $maxPrice = $data['price']; */
+
+        // Geocode the address using the TomTom Geocoding API
+        $geocodingResponse = $this->geocodeAddress($address);
+        $geocodingData = $geocodingResponse->json();
+
+        // Extract latitude and longitude from the geocoding response
+        $searchLat = $geocodingData['results'][0]['position']['lat'];
+        $searchLon = $geocodingData['results'][0]['position']['lon'];
+        $radius = $data['radius'];//(in km)
+
+        // Query apartments within the specified radius
+        $apartments = DB::table('apartments')
+            ->select('*')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$searchLat, $searchLon, $searchLat]
+            )
+            ->having('distance', '<=', $radius)
+            ->orderBy('distance')
+            ->get();
+
+        // Query apartments based on filter criteria
+        /* $filteredApartments = Apartment::where('rooms', '>=', $rooms)
+            ->where('beds', '>=', $beds)
+            ->where('bathrooms', '>=', $bathrooms)
+            ->where('square_meters', '>=', $squareMeters)
+            ->where('price', '<=', $maxPrice)
+            ->get(); */
+
+        $response = [];
+        $response['apartments'] = $apartments;
+        /* $response['amenities'] = $amenities; */
+        $response['radius'] = $radius;
+        /* $response['apartments'] = $filteredApartments; */
+
+        return response()->json($response);
+        /* dd($radius); */
+    }
+
+    /* SEARCH API FILTERS */
+    public function searchApiFilters(Request $request){
+
+        $data =  $request -> all();
+        $address = $data['address'];
+        $amenities = Amenity :: all();
+        //FILTERS
         $rooms = $data['rooms'];
         $beds = $data['beds'];
         $bathrooms = $data['bathrooms'];
@@ -78,7 +129,6 @@ class ApartmentController extends Controller
         return response()->json($response);
         /* dd($radius); */
     }
-
     /* SEARCH*/
     public function search(Request $request){
 
