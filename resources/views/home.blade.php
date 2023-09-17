@@ -59,7 +59,7 @@
                         <div class="card-body p-4">
                             {{-- immagine --}}
                             <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                                <img class="rounded" src="{{
+                                <img class="rounded" loading="lazy" src="{{
                                     asset(
                                         $apartment->picture
                                         ? 'storage/' . $apartment->picture
@@ -102,7 +102,7 @@
                     <div class="card-body p-4">
                         {{-- immagine --}}
                         <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                            <img class="rounded" src="{{
+                            <img class="rounded" loading="lazy" src="{{
                                 asset(
                                     $apartment->picture
                                     ? 'storage/' . $apartment->picture

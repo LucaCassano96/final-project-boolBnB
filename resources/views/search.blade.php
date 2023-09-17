@@ -191,7 +191,6 @@
             searchInput.value = autocompleteSelect.value;
             autocompleteSelect.style.display = 'none';
         });
-
         //Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
         function debounce(func, wait) {
             let timeout;
@@ -313,7 +312,7 @@
                 {{-- Card Body --}}
                 <div class="card-body p-4">
                     {{-- immagine --}}
-                    <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                    <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
                         <img class="rounded"
                         src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
                         alt="" style="width: 100%; height: 100%; object-fit: cover;">
