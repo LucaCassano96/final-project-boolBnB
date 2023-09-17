@@ -28,7 +28,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <form action="{{ route('apply-sponsorship', $apartment->id) }}" method="POST">
+                                    <form action="{{ route('apply-sponsorship', $apartment->id) }}" id="form" method="POST">
                                         @csrf
                                         <div class="row form-group justify-content-center align-items-center">
                                             <div class="col col-sm-6 col-md-5 p-3">
@@ -65,7 +65,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                 <button type="button" class="btn btn btn-danger" data-bs-dismiss="modal">Chiudi</button>
-                                                <button type="submit" id="submit-button" class="btn btn-success">Conferma</button>
+                                                <button type="button" id="submit-button" class="btn btn-success">Conferma</button>
                                                 </div>
                                             </div>
                                             </div>
@@ -84,7 +84,8 @@
 <script>
 
 //FORM DI PAGAMENTO
-var button = document.querySelector('#submit-button');
+const button = document.getElementById('submit-button');
+const form = document.getElementById('form');
 
 braintree.dropin.create({
   authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b',
@@ -92,7 +93,9 @@ braintree.dropin.create({
 }, function (err, instance) {
   button.addEventListener('click', function () {
     instance.requestPaymentMethod(function (err, payload) {
-      // Submit payload.nonce to your server
+        if (!err) {
+        form.submit();
+      }
     });
   })
 });
