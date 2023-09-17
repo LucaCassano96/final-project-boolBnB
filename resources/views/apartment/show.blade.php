@@ -32,8 +32,8 @@
                         @method('DELETE')
 
                         <button type="button" class="btn btn-danger" style="border: 2px solid #e0a458;"data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Elimina progetto
+                            data-bs-target="#exampleModal">
+                            Elimina progetto
                         </button>
 
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -56,6 +56,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             @endif
         @endauth
@@ -76,6 +77,21 @@
                     <h3 class="text-uppercase" style="color: #2d3047">
                         {{ $apartment->title }}
                     </h3>
+
+                    @if ($apartment->visible === 1)
+
+                    <div class="text-uppercase" style="color: #2d3047">
+                        Il tuo appartamento è visibile
+                    </div>
+
+                    @else
+
+                    <div class="text-uppercase" style="color: #2d3047">
+                        Il tuo appartamento non è visibile
+                    </div>
+
+                    @endif
+
 
                     {{-- indirizzo appartamento --}}
                     <div class="mb-3">

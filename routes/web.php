@@ -58,6 +58,7 @@ Route :: post("/messageStore/{id}", [ApartmentController :: class, "messageStore
 Route :: get("/messageApartment", [ApartmentController :: class, "messageApartment"]) -> name("messageApartment");
 
 
+
 // -----------------------------------------------------------------
 
 Route::middleware('auth')->group(function () {

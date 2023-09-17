@@ -388,6 +388,7 @@ class ApartmentController extends Controller
         return view("messageApartment", compact("apartments", "messages", "users"));
     }
 
+
 }
 
 

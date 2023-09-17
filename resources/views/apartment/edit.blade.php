@@ -147,7 +147,7 @@
                         <option value="0" {{ !$apartment->visible ? 'selected' : '' }}>Non visibile</option>
                     </select>
 
-                    {{-- BUTTON MODIFICA --}}
+
                     <button class="btn btn-primary mt-3" type="submit">Modifica</button>
 
                 </form>
