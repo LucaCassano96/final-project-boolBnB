@@ -1,16 +1,47 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container-fluid">
+<div class="card m-5 bordo-gradient rounded" style="background-color: #5c80bc">
+
+    {{-- SEZIONE CARD-HEADER --}}
+    <div class="card-header">
+        <div class="container">
+            <div class="row justify-content-center align-items-center p-2">
+                <div class="col col-lg-7">
+                    <h2 class="text-white my-apartment">I tuoi messaggi</h2>
+                </div>
+
+                {{-- Icone --}}
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-around align-items-center">
+                        {{-- Messaggi --}}
+                        <a href="{{ route('messageApartment')}}" class="add-apartment">
+                            <i class="bi bi-envelope"></i>
+                        </a>
+                        {{-- Statistiche --}}
+                        <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('statistics') }}">
+                            <i class="bi bi-graph-up"></i>
+                        </a>
+                        {{-- Aggiungi --}}
+                        <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('apartment.create') }}">
+                            <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
+                        </a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @foreach ($users as $user)
 
         @if ($user->id === Auth::user()->id)
-            <div class="border-white p-3 m-auto flex-row">
+            <div class=" p-3  flex-row">
                 @foreach ($user->apartments as $apartment)
 
                     {{-- CARD APPARTAMENTO + MESSAGGIO --}}
-                        <div class="card p-3 mb-3 d-flex flex-row">
+                        <div class="card card-messaggio p-3 mb-3 d-flex flex-row">
 
                             {{-- APPARTMENTO --}}
                             <div class="p-2 rounded" style="background-color: #e0a458; max-width:200px">
@@ -33,7 +64,7 @@
                                         <div class="dati-mittente d-flex">
                                             <div class="mb-3 px-3">
                                                 <span  class="d-block fw-bold">Email Mittente</span>
-                                                <a href="mailto:{{$message->sender_email}}">{{$message->sender_email}}</a>
+                                                <a class="inviatore" href="mailto:{{$message->sender_email}}">{{$message->sender_email}}</a>
                                             </div>
                                             <div class="mb-3 px-3">
                                                 <span class="d-block fw-bold">Dati Mittente</span>

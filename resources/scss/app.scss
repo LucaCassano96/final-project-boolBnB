@@ -65,10 +65,9 @@
 .add-apartment {
     color: $tertiary;
     font-size: 60px;
-    transition: rotate 0.5s ease-in-out;
 
-    &:hover {
-        rotate: 180deg;
+    &:hover{
+        color: $quinary;
 
     }
 
@@ -77,4 +76,17 @@
 .my-apartment {
     color: $tertiary;
     font-size: 40px;
+}
+
+.card-messaggio{
+    background-color: $secondary;
+    border: 2px solid $quinary;
+    color: $tertiary;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.inviatore{
+    color: $tertiary;
 }
