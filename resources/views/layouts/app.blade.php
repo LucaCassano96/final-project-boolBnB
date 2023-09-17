@@ -26,60 +26,58 @@
 <body>
     <div id="app" style="background-color: #2d3047">
 
+        <nav class=" p-4 navbar navbar-expand-md navbar-light shadow-sm"
+            style="background-color: #2d3047; height: 100px">
 
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #2d3047; height: 100px">
             <div class="container">
 
-
-                <button style="border-color: #fffdeb;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+                <div class="d-flex justify-content-between" id="navbarSupportedContent" style="width: 100%">
                     <!-- Left Side Of Navbar -->
-                    <a class="navbar-brand" style="color: #fffdeb" href="{{ url('/') }}">
-                        <div class="logo_laravel">
-                            <h1 class="logo-bnb">
-                                <i class="bi bi-house-heart-fill"></i>
-                                BoolBnB
-                            </h1>
-                        </div>
-                        {{-- config('app.name', 'Laravel') --}}
-                    </a>
+
+                        <h1 class="logo-bnb">
+                            <a style="color: #fffdeb" href="{{ url('/') }}"><i class="bi bi-house-heart-fill"></i> BoolBnB </a>
+                        </h1>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav text-end">
-                        <!-- Authentication Links -->
+                    <ul class="navbar-nav">
 
                         {{-- VISUALIZZAZIONE GUEST --}}
                         @guest
-                        <li class="nav-item login-link-1">
-                            <a class="nav-link hover-uline" style="color:#fffdeb" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        @if (Route::has('register'))
-                        <li class="nav-item login-link-2">
-                            <a class="nav-link hover-uline" style="color:#fffdeb" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                        @endif
+                            <li class="nav-item login-link-1">
+                                <a class="nav-link hover-uline " style="color:#fffdeb"
+                                    href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item login-link-2 ">
+                                    <a class="nav-link hover-uline" style="color:#fffdeb"
+                                        href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
                         @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" style="color:#fffdeb" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <i class="bi bi-person-circle"></i>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('dashboard') }}">{{__('I miei appartamenti')}}</a>
-                                <a class="dropdown-item" href="{{ url('profile') }}">{{__('Profilo')}}</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Esci') }}
+                            <li class="nav-item dropdown  text-start z-1 ">
+                                <a id="navbarDropdown" style="color:#fffdeb" class="nav-link dropdown-toggle "
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false" v-pre>
+                                    <i class="bi bi-person-circle"></i>
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
+                                <div class="dropdown-menu dropdown-menu-end " style="background-color: #E0A458"
+                                    aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-decoration-none"
+                                        href="{{ url('dashboard') }}">{{ __('I miei appartamenti') }}</a>
+                                    <a class="dropdown-item text-decoration-none"
+                                        href="{{ url('profile') }}">{{ __('Profilo') }}</a>
+                                    <a class="dropdown-item text-decoration-none" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Esci') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
                         @endguest
                     </ul>
                 </div>
