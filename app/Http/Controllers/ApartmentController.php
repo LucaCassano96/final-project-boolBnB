@@ -427,7 +427,8 @@ class ApartmentController extends Controller
     {
         $apartment = Apartment::findOrFail($id);
         $sponsors = Sponsor::all();
-        return view('sponsor', compact('apartment', 'sponsors'));
+        $users = User::all();
+        return view('sponsor', compact('apartment', 'sponsors', 'users'));
     }
 
     // Process the sponsorship form

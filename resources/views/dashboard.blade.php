@@ -5,7 +5,7 @@
 
     <div class="row justify-content-center">
         <div class="col">
-            <div class="card m-5 bordo-gradient rounded" style="background-color: #5c80bc">
+            <div class="card m-5 rounded" style="background-color: #5c80bc">
 
                 @if (Auth::check())
 
