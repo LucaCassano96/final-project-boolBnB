@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,9 +57,9 @@ class Apartment extends Model
     }
 
     /* Apartment--Sponsor */
-    public function sponsors() {
+    public function sponsor() {
 
-        return $this -> belongsToMany(Sponsor :: class) -> withPivot('start_date', 'end_date');
+        return $this->belongsToMany(Sponsor::class, 'apartment_sponsor')->withTimestamps();
     }
 }
 

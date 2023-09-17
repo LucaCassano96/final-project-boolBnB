@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 use App\Models\Apartment;
 use App\Models\Amenity;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\View;
+use App\Models\Sponsor;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -69,9 +71,10 @@ class ApartmentController extends Controller
     public function dashboard(){
 
         $apartments = Apartment :: all();
+        $sponsors = Sponsor::all();
         $users = User :: all();
 
-        return view("dashboard", compact("apartments", "users"));
+        return view("dashboard", compact("apartments", "users", 'sponsors'));
     }
 
     /* SHOW */
@@ -453,6 +456,7 @@ class ApartmentController extends Controller
         $apartment->amenities()->detach();
         $apartment->messages()->delete();
         $apartment->view()->delete();
+        $apartment->sponsor()->detach();
 
         $apartment->delete();
 
@@ -508,14 +512,82 @@ class ApartmentController extends Controller
         return view("messageApartment", compact("apartments", "messages", "users"));
     }
 
-    // STATISTICS
-    public function statistics(){
+    // // Prendere IP address di chi visita l'appartamento
+    // public function getIp() {
+    //     $ip = $_SERVER['REMOTE_ADDR'];
+    //     return $ip;
+    // }
 
-        $apartments = Apartment :: all();
-        $views = View :: all();
 
-        return view("statistics", compact("apartments", "views"));
+    // // store view
+    // public function storeView($id) {
+    //     // prendi ip
+    //     $ip = $this->getIp();
+    //     // inserisci nella tabella views
+    //     $view = View::create([
+    //         'apartment_id' => $id,
+    //         'ip_address' => $ip
+    //     ]);
+    //     return redirect()->route('apartment.show', $id, compact('view'));
+    // }
+
+
+    // // STATISTICS
+    // public function statistics(){
+
+
+
+    //     $apartments = Apartment :: all();
+    //     $views = View :: all();
+    //     $users = User :: all();
+
+    //     return view("statistics", compact("apartments", "views", "users"));
+    // }
+
+        // SPONSOR
+            // Show the sponsorship form
+    public function showSponsorshipForm($id)
+    {
+        $apartment = Apartment::findOrFail($id);
+        $sponsors = Sponsor::all();
+        return view('sponsor', compact('apartment', 'sponsors'));
     }
 
+    // Process the sponsorship form
+    public function applySponsorship(Request $request, $id)
+    {
+        $apartment = Apartment::findOrFail($id);
+        $sponsor = Sponsor::findOrFail($request->sponsor_id);
 
-}
+
+
+            // Prendi l'ultima sponsorizzazione per l'appartamento
+        // Ottieni tutte le sponsorizzazioni per l'appartamento
+        $sponsorships = $apartment->sponsor()->withPivot('end_date')->get();
+
+        // Ordina la collezione in base alla end_date
+        $lastSponsorship = $sponsorships->sortByDesc(function ($sponsorship) {
+            return $sponsorship->pivot->end_date;
+        })->first();
+
+
+        // Se esiste una sponsorizzazione e la sua end_date è nel futuro,
+        // usa quella come punto di partenza. Altrimenti, usa l'ora corrente.
+        $now = ($lastSponsorship && $lastSponsorship->pivot->end_date > Carbon::now())
+            ? Carbon::parse($lastSponsorship->pivot->end_date)
+            : Carbon::now();
+
+        $end_date = $now->copy()->addHours($sponsor->duration);
+        $apartment->sponsor()->attach($sponsor->id, [
+            'start_date' => $now,
+            'end_date' => $end_date,
+        ]);
+                // Se la nuova end_date della sponsorizzazione è nel futuro, allora aggiorna la flag sponsor a 1
+                if ($end_date > Carbon::now()) {
+                    $apartment->sponsor = 1;
+                    $apartment->save();
+                }
+                return redirect()->route('dashboard')->with('success', 'Sponsorship applied successfully!');
+            }
+    }
+

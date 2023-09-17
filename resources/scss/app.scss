@@ -79,3 +79,16 @@
     color: $tertiary;
     font-size: 40px;
 }
+
+.card-messaggio{
+    background-color: $secondary;
+    border: 2px solid $quinary;
+    color: $tertiary;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.inviatore{
+    color: $tertiary;
+}

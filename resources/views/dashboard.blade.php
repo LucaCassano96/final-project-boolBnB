@@ -27,7 +27,7 @@
                                                     <i class="bi bi-envelope"></i>
                                                 </a>
                                                 {{-- Statistiche --}}
-                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('statistics') }}">
+                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{-- {{ route('statistics') }} --}}">
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
                                                 {{-- Aggiungi --}}
@@ -63,6 +63,9 @@
                                                 <div class="my-2">
                                                     Prezzo: {{ $apartment->price }}€ / notte
                                                 </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="{{ route('sponsor-form', $apartment->id) }}" class="btn btn-secondary">Sponsorizza</a>
                                             </div>
                                         </div>
                                     </div>

@@ -57,8 +57,16 @@ Route :: post("/messageStore/{id}", [ApartmentController :: class, "messageStore
 // CREO LA ROTTA PER APARTMENT.MESSAGE
 Route :: get("/messageApartment", [ApartmentController :: class, "messageApartment"]) -> name("messageApartment");
 
-// ROTTA PER LE STATISTICHE
-Route :: get("/statistics", [ApartmentController :: class, "statistics"]) -> name("statistics");
+// // ROTTA PER LE STATISTICHE
+// Route :: get("/statistics", [ApartmentController :: class, "statistics"]) -> name("statistics");
+
+// ROTTA SPONSOR
+    // SPONSOR FORM
+    Route::get('/apartment/{id}/sponsor', [ApartmentController::class, 'showSponsorshipForm'])->name('sponsor-form');
+    // APPLICA SPONSOR
+        // Process the sponsorship form
+        Route::post('/apartment/{id}/sponsor', [ApartmentController::class, 'applySponsorship'])->name('apply-sponsorship');
+
 
 
 // -----------------------------------------------------------------
