@@ -300,7 +300,7 @@
                 style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
                 {{-- Card Header --}}
                 <div class="d-flex card-header p-2 align-items-center justify-content-center"
-                    style="bordzer-color: #fffdeb; min-height: 130px">
+                    style="border-color: #fffdeb; min-height: 130px">
                     <h5 class="text-uppercase m-0">
 
                         <a class="d-inline-block
