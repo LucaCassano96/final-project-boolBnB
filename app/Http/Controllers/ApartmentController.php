@@ -496,9 +496,6 @@ class ApartmentController extends Controller
         $data['apartment_id'] = $id;
         Message :: create($data);
 
-
-
-
         return redirect() -> route("apartment.show", $id) -> with('success', 'Messaggio inviato con successo!');
     }
 

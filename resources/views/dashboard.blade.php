@@ -27,9 +27,9 @@
                                                     <i class="bi bi-envelope"></i>
                                                 </a>
                                                 {{-- Statistiche --}}
-                                                <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{-- {{ route('statistics') }} --}}">
+                                                {{-- <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('statistics') }}">
                                                     <i class="bi bi-graph-up"></i>
-                                                </a>
+                                                </a> --}}
                                                 {{-- Aggiungi --}}
                                                 <a class="add-apartment d-flex justify-content-center align-items-center text-decoration-none" href="{{ route('apartment.create') }}">
                                                     <i class="bi bi-plus-circle" style="font-size: 50px;"></i>
@@ -65,7 +65,17 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <a href="{{ route('sponsor-form', $apartment->id) }}" class="btn btn-secondary">Sponsorizza</a>
+
+                                                @if ($apartment->sponsor)
+
+                                                <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
+                                                    Sponsorizzato
+                                                </div>
+
+                                                @else
+                                                <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </div>

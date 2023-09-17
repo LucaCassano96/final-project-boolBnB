@@ -16,7 +16,52 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Apply Sponsorship</button>
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    acquista sponsor
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        {{-- form pagamento --}}
+        <script src="https://js.braintreegateway.com/web/dropin/1.40.2/js/dropin.js"></script>
+
+        <div id="dropin-container"></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn btn-danger" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" id="submit-button" class="btn btn-success">Conferma</button>
+        </div>
+      </div>
+    </div>
+  </div>
     </form>
 </div>
+
+<script>
+
+//FORM DI PAGAMENTO
+var button = document.querySelector('#submit-button');
+
+braintree.dropin.create({
+  authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b',
+  selector: '#dropin-container'
+}, function (err, instance) {
+  button.addEventListener('click', function () {
+    instance.requestPaymentMethod(function (err, payload) {
+      // Submit payload.nonce to your server
+    });
+  })
+});
+
+</script>
+
 @endsection
