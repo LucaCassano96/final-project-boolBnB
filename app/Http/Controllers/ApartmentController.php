@@ -49,18 +49,21 @@ class ApartmentController extends Controller
         $radius = $data['radius'];
 
         // Query apartments within the specified radius
-        $apartments = DB::table('apartments')
-            ->select('*')
+        $apartments = Apartment::select('*')
             ->selectRaw(
                 '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
                 [$searchLat, $searchLon, $searchLat]
             )
             ->having('distance', '<=', $radius)
             ->orderBy('distance')
+            ->with('amenities')
             ->get();
 
+        $amenitiesJson = $amenities->isNotEmpty() ? json_encode($amenities) : '[]';
+        $aptsJson = json_encode($apartments);
+
         $response['apartments'] = $apartments;
-        /* $response['amenities'] = $amenities; */
+        $response['amenities'] = $amenities;
         $response['radius'] = $radius;
 
         return response()->json($response);
@@ -72,6 +75,7 @@ class ApartmentController extends Controller
 
         $data =  $request -> all();
         $address = $data['address'];
+        $radius = $data['radius'];
         $amenities = Amenity::all();
 
         // Geocode the address using the TomTom Geocoding API
@@ -83,7 +87,9 @@ class ApartmentController extends Controller
         $searchLon = $geocodingData['results'][0]['position']['lon'];
 
         //Radius for the apartment search (in km)
-        $radius = 20;
+        if (!$radius) {
+            $radius = 20;
+        }
 
         // Query apartments within the specified radius
         $apartments = Apartment::select('*')

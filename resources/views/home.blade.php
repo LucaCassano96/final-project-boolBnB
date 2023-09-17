@@ -11,6 +11,16 @@
 
                     @csrf
 
+                    {{-- HIDDEN - RAGGIO DI RICERCA --}}
+                    <div class="row my-2" hidden>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">Km</span>
+                                <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
                         <input type="text" id="searchInput" required class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
                         <button type="submit" class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 p-3 mx-0 text-center" style="color: #e0a458; font-size: 25px;">

@@ -7,8 +7,6 @@
                 <div class="card p-4 mt-4 rounded-4">
                     <h1 class="my-5 text-center" style="color:#2d3047">Seleziona i tuoi filtri o rinnova la ricerca</h1>
 
-
-
                 <form method="POST" id="searchForm">
                         @csrf
 
@@ -45,7 +43,7 @@
                 <div class="card p-4 mt-4 rounded-4">
                     <h3 class="my-3 text-center" style="color:#2d3047">Filtri di ricerca</h3>
 
-                    <form method="POST" id="form" action="">
+                    <form method="POST" id="form" action="{{ route('search') }}">
 
                         @csrf
 
@@ -129,7 +127,7 @@ const radiusSelect = document.getElementById('radius');
 const apartmentsList = document.getElementById('apartmentsList');
 
  // Gestione del clic sul pulsante "Cerca"
- searchForm.addEventListener('submit', function (event) {
+ /* searchForm.addEventListener('submit', function (event) {
     const address = searchInput.value.trim();
     const radius = radiusSelect.value;
     event.preventDefault();
@@ -139,56 +137,12 @@ const apartmentsList = document.getElementById('apartmentsList');
 
             apartmentsList.innerHTML = ''; // Clear previous results
 
-            apartments.forEach(apartment => {
-
-                const apartmentElement = document.createElement('div');
-                apartmentElement.className = 'col-12 col-md-6 col-lg-5 col-xl-4 p-3';
-                apartmentElement.innerHTML = `
-                <div class="card border text-center p-0" style="min-height: 530px; background-color: #5c7fbc32; border-color: #fffdeb;">
-                    <!-- Card Header -->
-                    <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px;">
-                        <h5 class="text-uppercase m-0">
-                            <a class="d-inline-block text-decoration-none border p-2 rounded my-3"
-                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                href="{{ route('apartment.show', '')}}" data-apartment-id="${apartment.id}"> ${apartment.title} </a>
-                        </h5>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="card-body p-4">
-                        <!-- Image -->
-                        <div class="rounded" style="width: 100%; aspect-ratio: 16/10; border: 2px solid #e0a458;">
-                            <img class="rounded" src="${apartment.picture ? 'storage/' + apartment.picture : 'storage/images/apartment.jpg'}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-
-                        <!-- Apartment Details -->
-                        <div class="my-4">
-                            <ul class="list-unstyled" style="color: #fffdeb">
-                                <li>${apartment.address}</li>
-                                <li class="p-0 mt-5">
-                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight: 800;">${apartment.price} € </span><span><small>/ notte</small></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>`;
-
-            const apartmentLinks = document.querySelectorAll('[data-apartment-id]');
-            apartmentLinks.forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const apartmentId = this.getAttribute('data-apartment-id');
-                    const apartmentRoute = `{{ route('apartment.show', '') }}/${apartmentId}`;
-                    window.location.href = apartmentRoute;
-                });
-            });
-                apartmentsList.appendChild(apartmentElement);
-            });
+            updateApartments(apartments)
         })
         .catch(error => {
             console.error('Error during live search', error);
         });
-});
+}); */
 
 //TomTom Autocomplete con fuzzy search
 //Prendo il contenuto dell'input
@@ -262,7 +216,7 @@ inputs.forEach(input => {
         }
 
 
-        getFilteredApartments()
+        getFilteredApartments(apartments)
 
     })
 });
@@ -271,10 +225,10 @@ const apartments = {!! $aptsJson !!};
 
 const amenities = {!! $amenitiesJson !!};
 
-getFilteredApartments()
+getFilteredApartments(apartments)
 
 
-function getFilteredApartments() {
+function getFilteredApartments(apartments) {
 
     const filteredApartments = apartments.filter(apartment => {
 
@@ -319,9 +273,7 @@ function getFilteredApartments() {
     })
 
     updateApartments(filteredApartments)
-
 }
-
 
 function updateApartments(filteredApartments) {
 
@@ -368,7 +320,7 @@ function updateApartments(filteredApartments) {
         </div>`
     });
     console.log(FilteredApartmentsHtml);
-    apartmentsList.innerHTML = FilteredApartmentsHtml;
+    apartmentsList.innerHTML = FilteredApartmentsHtml.join('');
 
 }
 </script>
