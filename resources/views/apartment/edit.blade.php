@@ -32,9 +32,16 @@
                     @enderror
 
                     {{-- IMMAGINE --}}
-                    <div class="form-floating">
-                        <input type="file" class="form-control" id="picture"  name="picture"
+                    <div class="form-floating d-flex">
+                        <input type="file" class="form-control me-2" id="picture"  name="picture"
                             value="{{$apartment->picture}}">
+                            <img  class="rounded" src="{{
+                                asset(
+                                    $apartment->picture
+                                    ? 'storage/' . $apartment->picture
+                                    : 'storage/images/apartment.jpg')
+
+                                }}" alt="{{ $apartment->title }}" style="width: 80px">
                         <label for="floatingPassword">Inserisci un'immagine</label>
                     </div>
                     @error('picture')
