@@ -1,30 +1,26 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container" style="background-color: #2d3047;">
+    <div class="container" style="background-color: #2d3047;" style="position:relative">
 
         {{-- Messaggio conferma invio messaggio --}}
+
+
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div id="div_message" class="alert alert-success alert-dismissible fade show" role="alert" style="position:absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);">
                 <strong>{{ session('success') }}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+
+
+        <select id="autocompleteSelect" class="form-select" size="5"
+                            style="display: none; cursor: pointer;"></select>
 
         {{-- Bottoni edit/delete solo se loggato e proprietario --}}
         @auth
             @if (Auth::user()->id == $apartment->user_id)
                 {{-- Buttons --}}
                 <div class="d-flex justify-content-end py-3">
-
-                    {{-- Edit Appartamento --}}
-                    <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;"
-                        href="{{ route('apartment.edit', $apartment->id) }}">Modifica Appartamento</a>
-                    {{-- Messaggio conferma edit --}}
-                    @if (session('edit'))
-                        <div class="alert alert-success">
-                            {{ session('edit') }}
-                        </div>
-                    @endif
 
                     {{-- Delete Appartamento --}}
                     <form action="{{ route('apartment.delete', $apartment->id) }}" method="POST">
@@ -33,7 +29,7 @@
 
                         <button type="button" class="btn btn-danger" style="border: 2px solid #e0a458;"data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
-                            Elimina progetto
+                            Elimina appartamento
                         </button>
 
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -57,6 +53,16 @@
                         </div>
                     </form>
 
+                    {{-- Edit Appartamento --}}
+                    <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;"
+                        href="{{ route('apartment.edit', $apartment->id) }}">Modifica Appartamento</a>
+                    {{-- Messaggio conferma edit --}}
+                    @if (session('edit'))
+                        <div class="alert alert-success">
+                            {{ session('edit') }}
+                        </div>
+                    @endif
+
                 </div>
             @endif
         @endauth
@@ -64,10 +70,29 @@
 
         <div class="mt-2 text-light p-3 pt-0" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
-            <div class="send-button d-flex justify-content-end pt-3">
-                <a class="btn text-white" style="background-color: #2d3047" role="button"
-                    href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
-            </div>
+            {{-- se sei proprietario dell'appartamento visualli i diversi bottoni --}}
+            @auth
+                @if (Auth::user()->id == $apartment->user_id)
+                    <div class="send-button d-flex justify-content-end pt-3">
+                        <a class="btn text-white" style="background-color: #2d3047" role="button"
+                            href="{{ route('messageApartment') }}">I tuoi messaggi</a>
+                    </div>
+                @else
+                    <div class="send-button d-flex justify-content-end pt-3">
+                        <a class="btn text-white" style="background-color: #2d3047" role="button"
+                            href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
+                    </div>
+                @endif
+            @endauth
+
+            @guest
+                <div class="send-button d-flex justify-content-end pt-3">
+                    <a class="btn text-white" style="background-color: #2d3047" role="button"
+                        href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
+                </div>
+            @endguest
+
+
 
             <div class="row rounded">
                 {{-- CARD LEFT --}}
@@ -78,19 +103,24 @@
                         {{ $apartment->title }}
                     </h3>
 
-                    @if ($apartment->visible === 1)
+                {{-- se sei proprietario dell'appartamento visualizzi il messaggio --}}
+                @auth
+                    @if (Auth::user()->id == $apartment->user_id)
+                        @if ($apartment->visible === 1)
 
-                    <div class="text-uppercase" style="color: #2d3047">
-                        Il tuo appartamento è visibile
-                    </div>
+                        <div class="text-uppercase" style="color: #2d3047">
+                            Il tuo appartamento è visibile
+                        </div>
 
-                    @else
+                        @else
 
-                    <div class="text-uppercase" style="color: #2d3047">
-                        Il tuo appartamento non è visibile
-                    </div>
+                        <div class="text-uppercase" style="color: #2d3047">
+                            Il tuo appartamento non è visibile
+                        </div>
 
+                        @endif
                     @endif
+                @endauth
 
 
                     {{-- indirizzo appartamento --}}
@@ -139,4 +169,26 @@
                     </ul>
                 </div>
             </div>
-        @endsection
+
+
+<script>
+
+const divMessage = document.getElementById('div_message');
+let opacity = 1;
+let fadeOutInterval = 20;
+let fadeOutDuration = 3500;
+
+function fadeOut() {
+    if (opacity > 0) {
+        opacity -= 0.01;
+        divMessage.style.opacity = opacity;
+        setTimeout(fadeOut, fadeOutInterval);
+    } else {
+        divMessage.style.display = 'none'; 
+    }
+}
+
+setTimeout(fadeOut, fadeOutDuration);
+
+</script>
+@endsection
