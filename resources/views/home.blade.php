@@ -25,8 +25,8 @@
         </div>
     </div>
 
+    <!--Appartamenti in evidenza-->
     @if (!empty($SponsoredVisibleApartments))
-        <!--Appartamenti in evidenza-->
         <div class="row align-items-center mt-5">
             <h2 class="p-2 m-0 text-warning">Appartamenti in evidenza</h2>
         </div>
@@ -72,7 +72,6 @@
         </div>
     @endif
 
-
     <!--Tutti gli appartamenti-->
     <div class="row mt-4">
         @foreach ($apartments as $apartment)
@@ -116,6 +115,7 @@
             @endif
         @endforeach
     </div>
+
 </div>
 
 <script>
