@@ -79,7 +79,7 @@
                                                     </button>
                                                 </p>
                                                 <div class="collapse" id="collapse-{{$message->id}}">
-                                                    <div class="card card-body overflow-auto">
+                                                    <div class="card card-body overflow-auto text-dark">
                                                     {{$message->content}}
                                                     </div>
                                                 </div>
