@@ -1,17 +1,17 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container" style="background-color: #2d3047;">
+    <div class="container" style="background-color: #2d3047;" style="position:relative">
 
         {{-- Messaggio conferma invio messaggio --}}
 
-        
+
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div id="div_message" class="alert alert-success alert-dismissible fade show" role="alert" style="position:absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);">
                 <strong>{{ session('success') }}</strong>
-                <button id="click-btn" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        
+
 
         <select id="autocompleteSelect" class="form-select" size="5"
                             style="display: none; cursor: pointer;"></select>
@@ -67,11 +67,11 @@
             @endif
         @endauth
 
-        
+
         <div class="mt-2 text-light p-3 pt-0" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
             {{-- se sei proprietario dell'appartamento visualli i diversi bottoni --}}
-            @auth   
+            @auth
                 @if (Auth::user()->id == $apartment->user_id)
                     <div class="send-button d-flex justify-content-end pt-3">
                         <a class="btn text-white" style="background-color: #2d3047" role="button"
@@ -82,7 +82,7 @@
                         <a class="btn text-white" style="background-color: #2d3047" role="button"
                             href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
                     </div>
-                @endif               
+                @endif
             @endauth
 
             @guest
@@ -91,8 +91,8 @@
                         href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
                 </div>
             @endguest
-            
-            
+
+
 
             <div class="row rounded">
                 {{-- CARD LEFT --}}
@@ -169,20 +169,26 @@
                     </ul>
                 </div>
             </div>
-        @endsection
 
 
-{{-- <script>
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            var mioBottone = document.getElementById('click-btn');
-            mioBottone.addEventListener('click', function() {
-                // Il tuo codice per l'evento del bottone dopo 5 secondi va qui
-                alert('Hai cliccato sul bottone dopo 5 secondi!');
-            });
-        }, 5000); // Delay di 5 secondi in millisecondi (5000ms)
-    });
- 
+<script>
 
-</script> --}}
+const divMessage = document.getElementById('div_message');
+let opacity = 1;
+let fadeOutInterval = 20;
+let fadeOutDuration = 3500;
+
+function fadeOut() {
+    if (opacity > 0) {
+        opacity -= 0.01;
+        divMessage.style.opacity = opacity;
+        setTimeout(fadeOut, fadeOutInterval);
+    } else {
+        divMessage.style.display = 'none'; 
+    }
+}
+
+setTimeout(fadeOut, fadeOutDuration);
+
+</script>
+@endsection
