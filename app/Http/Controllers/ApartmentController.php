@@ -153,7 +153,21 @@ class ApartmentController extends Controller
         $apartments = Apartment :: all();
         $apartments = Apartment::orderBy('created_at', 'desc')->get();
 
-        return view("home", compact("apartments"));
+        $sponsoredApartments = [];
+        $SponsoredVisibleApartments = [];
+
+        foreach ($apartments as $apartment) {
+           if ($apartment->sponsor) {
+            $sponsoredApartments[] = $apartment;
+           }
+        }
+        foreach ($sponsoredApartments as $sponsoredApartment) {
+            if ($sponsoredApartment->visible) {
+                $SponsoredVisibleApartments[] = $sponsoredApartment;
+               }
+        }
+
+        return view("home", compact("apartments", "SponsoredVisibleApartments"));
     }
 
     /* DASHBOARD */

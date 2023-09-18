@@ -11,16 +11,6 @@
 
                     @csrf
 
-                    {{-- HIDDEN - RAGGIO DI RICERCA --}}
-                    <div class="row my-2" hidden>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-text">Km</span>
-                                <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-
                     {{-- SEARCH BAR --}}
                     <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
                         <input type="text" id="searchInput" autocomplete="off" required class="col col-md-10 search-input p-3 mx-0 rounded-start-2 border border-3" placeholder="Cerca qui..." name="address">
@@ -35,53 +25,54 @@
         </div>
     </div>
 
-    <!--Appartamenti in evidenza-->
-    <div class="row align-items-center mt-5">
-        <h2 class="p-2 m-0 text-warning">Appartamenti in evidenza</h2>
-    </div>
-
-    <div class="row border border-warning rounded-2 p-0 justify-content-center">
-        @foreach ($apartments as $apartment)
-            @if ($apartment->visible && $apartment->sponsor)
-                <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-                    <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
-
-                        {{-- Card Header --}}
-                        <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
-                            <h5 class="text-uppercase m-0">
-                                <a class="d-inline-block
-                                text-decoration-none border p-2 rounded my-3"
-                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
-                            </h5>
-                        </div>
-
-                        {{-- Card Body --}}
-                        <div class="card-body p-4">
-                            {{-- immagine --}}
-                            <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                                <img class="rounded" loading="lazy" src="{{
-                                    asset(
-                                        $apartment->picture
-                                        ? 'storage/' . $apartment->picture
-                                        : 'storage/images/apartment.jpg')
-                                    }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+    @if (!empty($SponsoredVisibleApartments))
+        <!--Appartamenti in evidenza-->
+        <div class="row align-items-center mt-5">
+            <h2 class="p-2 m-0 text-warning">Appartamenti in evidenza</h2>
+        </div>
+        <div class="row border border-warning rounded-2 p-0 justify-content-center">
+            @foreach ($apartments as $apartment)
+                @if ($apartment->visible && $apartment->sponsor)
+                    <div class="col-md-6 col-lg-4 col-xl-3 p-3">
+                        <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
+                            {{-- Card Header --}}
+                            <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
+                                <h5 class="text-uppercase m-0">
+                                    <a class="d-inline-block
+                                    text-decoration-none border p-2 rounded my-3"
+                                    style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                    href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+                                </h5>
                             </div>
-                            {{-- dati appartamento --}}
-                            <div class="my-4">
-                                <ul class="list-unstyled" style="color: #fffdeb">
-                                    <li> {{ $apartment->address }}</li>
-                                    <li class="p-0 mt-5">
-                                        <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
-                                    </li>
-                                </ul>
+                            {{-- Card Body --}}
+                            <div class="card-body p-4">
+                                {{-- immagine --}}
+                                <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                                    <img class="rounded" loading="lazy" src="{{
+                                        asset(
+                                            $apartment->picture
+                                            ? 'storage/' . $apartment->picture
+                                            : 'storage/images/apartment.jpg')
+                                        }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                {{-- dati appartamento --}}
+                                <div class="my-4">
+                                    <ul class="list-unstyled" style="color: #fffdeb">
+                                        <li> {{ $apartment->address }}</li>
+                                        <li class="p-0 mt-5">
+                                            <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endif
-        @endforeach
-    </div>
+                @endif
+            @endforeach
+        </div>
+    @endif
+
+
     <!--Tutti gli appartamenti-->
     <div class="row mt-4">
         @foreach ($apartments as $apartment)
