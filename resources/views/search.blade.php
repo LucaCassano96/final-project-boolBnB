@@ -10,23 +10,12 @@
                     <form method="POST" id="searchForm">
                         @csrf
 
-                        {{-- RAGGIO DI RICERCA --}}
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <span class="input-group-text">Km</span>
-                                    <input type="number" id="radius" name="radius" placeholder="Raggio di ricerca"
-                                        class="form-control" required>
-                                </div>
-                            </div>
-                        </div>
-
                         {{-- BARRA DI RICERCA --}}
                         <div class="search mt-3 d-flex justify-content-center" style="width: 100%;">
                             <input type="text" id="searchInput"
                                 class="col col-md-10 search-input px-3 mx-0 rounded-start-2 border border-3"
-                                placeholder="Cerca qui..." name="address" required>
-                            <button type="submit"
+                                placeholder="Cerca qui..." name="address" value="{{ $address }}" autocomplete="off" required>
+                            <button type="submit" id="searchButton"
                                 class="col-md-2 d-inline-block rounded-end-2 border border-3 border-start-0 px-3 mx-0 text-center"
                                 style="color: #e0a458; font-size: 25px;">
                                 <i class="bi bi-search"></i>
@@ -52,18 +41,25 @@
 
                             @csrf
 
+                            {{-- RAGGIO DI RICERCA --}}
+                            <div class="my-3 input-group mb-3">
+                                <span class="input-group-text">km</span>
+                                <input type="number" id="filterRadius" name="filterRadius" placeholder="Raggio di ricerca"
+                                    class="form-control filter-input" value="20">
+                            </div>
+
                             {{-- NUMERO STANZE --}}
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="rooms" name="rooms" placeholder="stanze"
-                                    class="form-control">
+                                    class="form-control filter-input">
                             </div>
 
                             {{-- NUMERO LETTI --}}
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="beds" name="beds" placeholder="letti"
-                                    class="form-control">
+                                    class="form-control filter-input">
                             </div>
                             {{-- @error('beds')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -73,7 +69,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="bathrooms" name="bathrooms" placeholder="bagni"
-                                    class="form-control">
+                                    class="form-control filter-input">
                             </div>
                             {{-- @error('bathrooms')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -83,7 +79,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="square_meters" name="square_meters" placeholder="metri quadrati"
-                                    class="form-control">
+                                    class="form-control filter-input">
                             </div>
                             {{-- @error('square_meters')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -93,7 +89,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text">€</span>
                                 <input type="number" id="price" name="price" placeholder="prezzo"
-                                    class="form-control">
+                                    class="form-control filter-input">
                             </div>
 
                             {{-- SERVIZI --}}
@@ -103,7 +99,7 @@
                                 </div>
                                 @foreach (json_decode($amenitiesJson) as $amenity)
                                     <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" value="{{ $amenity->id }}"
+                                        <input class="form-check-input filter-input" type="checkbox" value="{{ $amenity->id }}"
                                             name="amenities[]" id="amenity-{{ $amenity->id }}">
                                         <label class="form-check-label" for="amenity-{{ $amenity->id }}">
                                             {{ $amenity->title }}
@@ -136,26 +132,39 @@
         const autocompleteSelect = document.getElementById('autocompleteSelect');
         const searchForm = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
-        const radiusSelect = document.getElementById('radius');
+        const radiusSelect = document.getElementById('filterRadius');
         const apartmentsList = document.getElementById('apartmentsList');
+        const searchButton = document.getElementById('searchButton');
+        const filterInputs = document.querySelectorAll('.filter-input');
 
         // Gestione del clic sul pulsante "Cerca"
-        /* searchForm.addEventListener('submit', function (event) {
-        const address = searchInput.value.trim();
-        const radius = radiusSelect.value;
-        event.preventDefault();
-        axios.post('/searchApi', { address, radius })
-            .then(response => {
-                const apartments = response.data.apartments;
 
-                apartmentsList.innerHTML = ''; // Clear previous results
+        const apartments = {!! $aptsJson !!};
+        const amenities = {!! $amenitiesJson !!};
 
-                updateApartments(apartments)
-            })
-            .catch(error => {
-                console.error('Error during live search', error);
-            });
-    }); */
+        let currentAddress = '';
+
+        currentAddress = searchInput.value.trim();
+
+        searchButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            autocompleteSelect.style.display = 'none';
+            const address = searchInput.value.trim();
+
+            axios.post('/searchApi', { address, radius: currentRadius })
+                .then(response => {
+                    const apartments = response.data.apartments;
+
+                    // Update the currentAddress
+                    currentAddress = address;
+
+                    apartmentsList.innerHTML = ''; // Clear previous results
+                    updateApartments(apartments);
+                })
+                .catch(error => {
+                    console.error('Error during search', error);
+                });
+        });
 
         //TomTom Autocomplete con fuzzy search
         //Prendo il contenuto dell'input
@@ -204,45 +213,79 @@
 
         //LOGICA DEI FILTRI
 
+        //RADIUS
+        let currentRadius = 20;
+
+        radiusSelect.addEventListener('change', function () {
+            const newRadius = radiusSelect.value;
+
+            handleRadiusChange(newRadius);
+        });
+
+        function handleRadiusChange(newRadius) {
+            currentRadius = newRadius === '' ? 20 : newRadius;
+
+            /* console.log('Address:', address); */
+            axios.post('/updateRadius', { currentRadius, address: currentAddress })
+            .then(response => {
+                const apartments = response.data.apartments;
+                updateApartments(apartments);
+            })
+            .catch(error => {
+                console.error('Error updating radius', error);
+            });
+        }
+
         const filters = {
             amenities: []
         }
 
         const inputs = document.querySelectorAll('input');
 
-        inputs.forEach(input => {
+        filterInputs.forEach(input => {
             input.addEventListener('input', () => {
+
+                const newRadius = radiusSelect.value;
 
                 if (input.type === "checkbox") {
 
-                    const amenityId = input.id.substring(8, 9)
+                const amenityId = input.id.substring(8, 9)
 
-                    if (filters.amenities.includes(amenityId)) {
-                        filters.amenities.splice(filters.amenities.indexOf(amenityId), 1)
-                    } else {
-                        filters.amenities.push(amenityId)
-                    }
-
+                if (filters.amenities.includes(amenityId)) {
+                    filters.amenities.splice(filters.amenities.indexOf(amenityId), 1)
                 } else {
-                    filters[input.id] = input.value
+                    filters.amenities.push(amenityId)
                 }
 
+                } else {
+                filters[input.id] = input.value
+                }
 
-                getFilteredApartments(apartments)
+                currentRadius = newRadius === '' ? 20 : newRadius;
+                address = searchInput.value.trim();
 
+                /* console.log('Address:', address); */
+                axios.post('/updateRadius', { currentRadius: currentRadius, address: address })
+                .then(response => {
+                    const apartments = response.data.apartments;
+
+                    getFilteredApartments(apartments, currentRadius);
+
+                })
+                .catch(error => {
+                    console.error('Error updating radius', error);
+                });
             })
         });
 
-        const apartments = {!! $aptsJson !!};
-
-        const amenities = {!! $amenitiesJson !!};
-
-        getFilteredApartments(apartments)
+        getFilteredApartments(apartments, currentRadius);
 
 
-        function getFilteredApartments(apartments) {
+        function getFilteredApartments(apartments, currentRadius) {
 
             const filteredApartments = apartments.filter(apartment => {
+
+                const distanceMatch = (currentRadius == null || currentRadius === "") ? true : apartment.distance <= Number(currentRadius);
 
                 const roomsMatch = (filters?.rooms == null || filters?.rooms === "") ? true : apartment.rooms >=
                     Number(filters.rooms)
@@ -262,12 +305,12 @@
                     Number(filters.price)
 
                 let amenitiesMatch = true;
-                console.log(apartment);
+                /* console.log(apartment); */
                 const apartmentAmenityIds = apartment.amenities.map(amenity => {
                     return amenity.id.toString()
                 })
 
-                console.log(apartmentAmenityIds);
+                /* console.log(apartmentAmenityIds); */
 
                 filters.amenities.forEach(amenity => {
 
@@ -277,7 +320,7 @@
 
                 })
 
-                if (roomsMatch && bedsMatch && bathroomsMatch && squareMetersMatch && priceMatch &&
+                if (distanceMatch && roomsMatch && bedsMatch && bathroomsMatch && squareMetersMatch && priceMatch &&
                     amenitiesMatch) {
                     return apartment
                 }
@@ -331,7 +374,7 @@
             </div>
         </div>`
             });
-            console.log(FilteredApartmentsHtml);
+           /*  console.log(FilteredApartmentsHtml); */
             apartmentsList.innerHTML = FilteredApartmentsHtml.join('');
 
         }

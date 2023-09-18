@@ -19,6 +19,9 @@ Route :: get("/show/{id}", [ApartmentController :: class, "show"])
 /* SEARCH PAGE*/
 Route::post('/search', [ApartmentController :: class, "search"])->name('search');
 
+/* UPDATE RADIUS */
+Route::post('/updateRadius', [ApartmentController :: class, "updateRadius"])->name('updateRadius');
+
 /* CREATE APARTMENT */
 Route :: get("/create", [ApartmentController :: class,
 "create"])

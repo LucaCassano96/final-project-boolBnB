@@ -68,6 +68,7 @@ class ApartmentController extends Controller
         $response['amenities'] = $amenities;
         $response['radius'] = $radius;
 
+
         return response()->json($response);
         /* dd($radius); */
     }
@@ -77,7 +78,7 @@ class ApartmentController extends Controller
 
         $data =  $request -> all();
         $address = $data['address'];
-        $radius = $data['radius'];
+        $radius = $data['radius'] ?? 20;
         $amenities = Amenity::all();
 
         // Geocode the address using the TomTom Geocoding API
@@ -89,9 +90,9 @@ class ApartmentController extends Controller
         $searchLon = $geocodingData['results'][0]['position']['lon'];
 
         //Radius for the apartment search (in km)
-        if (!$radius) {
+        /* if (!$radius) {
             $radius = 20;
-        }
+        } */
 
         // Query apartments within the specified radius
         $apartments = Apartment::select('*')
@@ -107,7 +108,43 @@ class ApartmentController extends Controller
         $amenitiesJson = $amenities->isNotEmpty() ? json_encode($amenities) : '[]';
         $aptsJson = json_encode($apartments);
 
-        return view('search', compact('aptsJson', 'amenitiesJson'));
+        return view('search', compact('aptsJson', 'amenitiesJson', 'address'));
+    }
+
+    /* UPDATE RADIUS */
+    public function updateRadius(Request $request){
+
+        $data =  $request -> all();
+        /* dd($data); */
+        $newRadius = $data['currentRadius'];
+        $address = $data['address'];
+        $amenities = Amenity::all();
+
+
+
+        // Geocode the address using the TomTom Geocoding API
+        $geocodingResponse = $this->geocodeAddress($address);
+        $geocodingData = $geocodingResponse->json();
+
+        // Extract latitude and longitude from the geocoding response
+        $searchLat = $geocodingData['results'][0]['position']['lat'];
+        $searchLon = $geocodingData['results'][0]['position']['lon'];
+
+        // Query apartments within the specified radius
+        $apartments = Apartment::select('*')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$searchLat, $searchLon, $searchLat]
+            )
+            ->having('distance', '<=', $newRadius)
+            ->orderBy('distance')
+            ->with('amenities')
+            ->get();
+
+        $response['apartments'] = $apartments;
+        $response['amenities'] = $amenities;
+
+        return response()->json($response);
     }
 
     /* HOME */
