@@ -45,21 +45,21 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text">km</span>
                                 <input type="number" id="filterRadius" name="filterRadius" placeholder="Raggio di ricerca"
-                                    class="form-control filter-input" value="20">
+                                    class="form-control filter-input" value="20" min="0">
                             </div>
 
                             {{-- NUMERO STANZE --}}
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="rooms" name="rooms" placeholder="stanze"
-                                    class="form-control filter-input">
+                                    class="form-control filter-input" min="0">
                             </div>
 
                             {{-- NUMERO LETTI --}}
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="beds" name="beds" placeholder="letti"
-                                    class="form-control filter-input">
+                                    class="form-control filter-input" min="0">
                             </div>
                             {{-- @error('beds')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -69,7 +69,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="bathrooms" name="bathrooms" placeholder="bagni"
-                                    class="form-control filter-input">
+                                    class="form-control filter-input" min="0">
                             </div>
                             {{-- @error('bathrooms')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -79,7 +79,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text"></span>
                                 <input type="number" id="square_meters" name="square_meters" placeholder="metri quadrati"
-                                    class="form-control filter-input">
+                                    class="form-control filter-input" min="0">
                             </div>
                             {{-- @error('square_meters')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -89,7 +89,7 @@
                             <div class="my-3 input-group mb-3">
                                 <span class="input-group-text">€</span>
                                 <input type="number" id="price" name="price" placeholder="prezzo"
-                                    class="form-control filter-input">
+                                    class="form-control filter-input" min="0">
                             </div>
 
                             {{-- SERVIZI --}}

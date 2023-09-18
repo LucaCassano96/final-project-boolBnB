@@ -188,7 +188,6 @@ class ApartmentController extends Controller
         return view("apartment.show", compact("apartment"));
     }
 
-
     /* CREATE */
     public function create(){
 

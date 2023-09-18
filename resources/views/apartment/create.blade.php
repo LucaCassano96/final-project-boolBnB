@@ -45,7 +45,7 @@
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
                         <input type="number" id="rooms" name="rooms" placeholder="inserisci il numero di stanze"
-                            class="form-control">
+                            class="form-control" min="0">
                         </div>
                     @error('rooms')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -55,7 +55,7 @@
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
                         <input type="number" id="beds" name="beds" placeholder="inserisci il numero di letti"
-                            class="form-control">
+                            class="form-control" min="0">
                         </div>
                     @error('beds')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -65,7 +65,7 @@
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
                         <input type="number" id="bathrooms" name="bathrooms" placeholder="inserisci il numero di bagni"
-                            class="form-control">
+                            class="form-control" min="0">
                         </div>
                     @error('bathrooms')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -75,7 +75,7 @@
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text"></span>
                         <input type="number" id="square_meters" name="square_meters" placeholder="inserisci il numero di metri quadrati"
-                            class="form-control">
+                            class="form-control" min="0">
                         </div>
                     @error('square_meters')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -84,7 +84,7 @@
                     {{-- PREZZO --}}
                     <div class="my-3 input-group mb-3">
                         <span class="input-group-text">€</span>
-                        <input type="number" id="price" name="price" placeholder="inserisci il prezzo" class="form-control">
+                        <input type="number" id="price" name="price" placeholder="inserisci il prezzo" class="form-control" min="0">
                     </div>
                     @error('price')
                         <div class="alert alert-danger">{{ $message }}</div>
