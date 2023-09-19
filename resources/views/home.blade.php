@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container" style="background-color: #2d3047">
+<div class="container-fluid px-xl-5" style="background-color: #2d3047">
 
     <div class="row d-flex justify-content-center">
         <div class="col-md-10">
@@ -26,29 +26,20 @@
     </div>
 
     <!--Tutti gli appartamenti-->
-    <div class="row mt-4">
+    <div class="row mt-4 mx-md-4 mx-lg-5">
         <!--Appartamenti in evidenza-->
         @foreach ($apartments as $apartment)
             @if ($apartment->visible && $apartment->sponsor)
-                <div class="col-md-6 col-lg-4 col-xl-3 p-3">
+                <div class="col-md-6 col-lg-4 col-xl-2 p-3">
                     {{-- card --}}
-                    <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:530px; background-color:#353f5c; border-color:#fffdeb">
+                    <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:430px; background-color:#353f5c; border-color:#fffdeb">
                         {{-- logo sponsor - position absolute top right --}}
-                        <i class="bi bi-badge-ad text-warning" style="position: absolute; top:-1%; right:0%; font-size:30px;"></i>
+                        <i class="bi bi-badge-ad text-warning" style="position: absolute; bottom:-1%; right:2%; font-size:30px;"></i>
 
-                        {{-- Card Header --}}
-                        <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
-                            <h5 class="text-uppercase m-0">
-                                <a class="d-inline-block
-                                text-decoration-none border p-2 rounded my-3"
-                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
-                            </h5>
-                        </div>
                         {{-- Card Body --}}
-                        <div class="card-body p-4">
+                        <div class="card-body p-2">
                             {{-- immagine --}}
-                            <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                            <div class="rounded mb-2" style="width:100%; aspect-ratio: 1 / 1; border: 2px solid #e0a458;">
                                 <img class="rounded" loading="lazy" src="{{
                                     asset(
                                         $apartment->picture
@@ -56,14 +47,24 @@
                                         : 'storage/images/apartment.jpg')
                                     }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
+
                             {{-- dati appartamento --}}
-                            <div class="my-4">
-                                <ul class="list-unstyled" style="color: #fffdeb">
-                                    <li> {{ $apartment->address }}</li>
-                                    <li class="p-0 mt-5">
-                                        <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
-                                    </li>
-                                </ul>
+                            <div class="my-2" style="color: #fffdeb">
+                                {{-- titolo --}}
+                                <h6 class="text-uppercase m-0">
+                                    <a class="d-flex justify-content-center align-items-center
+                                    text-decoration-none border p-2 rounded"
+                                    style="height:60px; color: #fffdeb; border-color: #fffdeb; width: 100% overflow:ellipsis;"
+                                    href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+                                </h6>
+                                {{-- indirizzo --}}
+                                <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
+                                    <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
+                                </div>
+                                <div class="p-1">
+                                    <span class="p-0" style="font-size: 25px; font-weight:800;">{{ $apartment->price }} € </span>
+                                    <span><small>/ notte</small></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -74,23 +75,13 @@
         <!--Appartamenti non in evidenza-->
         @foreach ($apartments as $apartment)
             @if ($apartment->visible && !$apartment->sponsor)
-                <div class="col-md-6 col-lg-4 col-xl-3 p-3 d-flex align-items-end">
-                    <div class="card border text-center p-0" style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
-
-                        {{-- Card Header --}}
-                        <div class="d-flex card-header p-2 align-items-center justify-content-center" style="border-color: #fffdeb; min-height: 130px">
-                            <h5 class="text-uppercase m-0">
-                                <a class="d-inline-block
-                                text-decoration-none border p-2 rounded my-3"
-                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
-                            </h5>
-                        </div>
+                <div class="col-md-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
+                    <div class="card border text-center p-0" style="min-height:430px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                         {{-- Card Body --}}
-                        <div class="card-body p-4">
+                        <div class="card-body p-2">
                             {{-- immagine --}}
-                            <div class="rounded" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                            <div class="rounded mb-2" style="width:100%; aspect-ratio: 1 / 1; border: 2px solid #e0a458;">
                                 <img class="rounded" loading="lazy" src="{{
                                     asset(
                                         $apartment->picture
@@ -98,14 +89,24 @@
                                         : 'storage/images/apartment.jpg')
                                     }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
+
                             {{-- dati appartamento --}}
-                            <div class="my-4">
-                                <ul class="list-unstyled" style="color: #fffdeb">
-                                    <li> {{ $apartment->address }}</li>
-                                    <li class="p-0 mt-5">
-                                        <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">{{ $apartment->price }} € </span><span><small>/ notte</small></span>
-                                    </li>
-                                </ul>
+                            <div class="my-2" style="color: #fffdeb">
+                                {{-- titolo --}}
+                                <h6 class="text-uppercase m-0">
+                                    <a class="d-flex justify-content-center align-items-center
+                                    text-decoration-none border p-2 rounded"
+                                    style="height:60px; color: #fffdeb; border-color: #fffdeb; width: 100% overflow:ellipsis;"
+                                    href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+                                </h6>
+                                {{-- indirizzo --}}
+                                <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
+                                    <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
+                                </div>
+                                <div class="p-1">
+                                    <span class="p-0" style="font-size: 25px; font-weight:800;">{{ $apartment->price }} € </span>
+                                    <span><small>/ notte</small></span>
+                            </div>
                             </div>
                         </div>
                     </div>
