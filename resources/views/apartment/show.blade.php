@@ -73,9 +73,15 @@
             {{-- se sei proprietario dell'appartamento visualli i diversi bottoni --}}
             @auth
                 @if (Auth::user()->id == $apartment->user_id)
-                    <div class="send-button d-flex justify-content-end pt-3">
-                        <a class="btn text-white" style="background-color: #2d3047" role="button"
-                            href="{{ route('messageApartment') }}">I tuoi messaggi</a>
+                    <div class="d-flex justify-content-end">
+                        <div class="send-button d-flex justify-content-end pt-3 mx-2">
+                            <a class="btn text-white" style="background-color: #2d3047" role="button"
+                                href="{{ route('dashboard') }}">I tuoi appartamenti</a>
+                        </div>
+                        <div class="send-button d-flex justify-content-end pt-3">
+                            <a class="btn text-white" style="background-color: #2d3047" role="button"
+                                href="{{ route('messageApartment') }}"><i class="bi bi-envelope mx-1"></i> I tuoi messaggi</a>
+                        </div>
                     </div>
                 @else
                     <div class="send-button d-flex justify-content-end pt-3">
@@ -184,7 +190,7 @@ function fadeOut() {
         divMessage.style.opacity = opacity;
         setTimeout(fadeOut, fadeOutInterval);
     } else {
-        divMessage.style.display = 'none'; 
+        divMessage.style.display = 'none';
     }
 }
 
