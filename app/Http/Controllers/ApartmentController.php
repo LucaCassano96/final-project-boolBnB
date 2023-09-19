@@ -439,42 +439,9 @@ class ApartmentController extends Controller
         return view("messageApartment", compact("apartments", "messages", "users"));
     }
 
-    // // Prendere IP address di chi visita l'appartamento
-    // public function getIp() {
-    //     $ip = $_SERVER['REMOTE_ADDR'];
-    //     return $ip;
-    // }
-
-
-    // // store view
-    // public function storeView($id) {
-    //     // prendi ip
-    //     $ip = $this->getIp();
-    //     // inserisci nella tabella views
-    //     $view = View::create([
-    //         'apartment_id' => $id,
-    //         'ip_address' => $ip
-    //     ]);
-    //     return redirect()->route('apartment.show', $id, compact('view'));
-    // }
-
-
-    // // STATISTICS
-    // public function statistics(){
-
-
-
-    //     $apartments = Apartment :: all();
-    //     $views = View :: all();
-    //     $users = User :: all();
-
-    //     return view("statistics", compact("apartments", "views", "users"));
-    // }
-
-        // SPONSOR
-            // Show the sponsorship form
-    public function showSponsorshipForm($id)
-    {
+    // SPONSOR
+    // Show the sponsorship form
+    public function showSponsorshipForm($id){
         $apartment = Apartment::findOrFail($id);
         $sponsors = Sponsor::all();
         $users = User::all();
@@ -482,14 +449,11 @@ class ApartmentController extends Controller
     }
 
     // Process the sponsorship form
-    public function applySponsorship(Request $request, $id)
-    {
+    public function applySponsorship(Request $request, $id){
         $apartment = Apartment::findOrFail($id);
         $sponsor = Sponsor::findOrFail($request->sponsor_id);
 
-
-
-            // Prendi l'ultima sponsorizzazione per l'appartamento
+        // Prendi l'ultima sponsorizzazione per l'appartamento
         // Ottieni tutte le sponsorizzazioni per l'appartamento
         $sponsorships = $apartment->sponsor()->withPivot('end_date')->get();
 
@@ -510,12 +474,12 @@ class ApartmentController extends Controller
             'start_date' => $now,
             'end_date' => $end_date,
         ]);
-                // Se la nuova end_date della sponsorizzazione è nel futuro, allora aggiorna la flag sponsor a 1
-                if ($end_date > Carbon::now()) {
-                    $apartment->sponsor = 1;
-                    $apartment->save();
-                }
-                return redirect()->route('dashboard')->with('success', 'Sponsorship applied successfully!');
-            }
+        // Se la nuova end_date della sponsorizzazione è nel futuro, allora aggiorna la flag sponsor a 1
+        if ($end_date > Carbon::now()) {
+            $apartment->sponsor = 1;
+            $apartment->save();
+        }
+        return redirect()->route('dashboard')->with('success', 'Pagamento andato a buon fine');
     }
+}
 

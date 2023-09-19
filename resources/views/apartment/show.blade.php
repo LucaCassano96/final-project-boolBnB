@@ -3,8 +3,6 @@
     <div class="container" style="background-color: #2d3047;" style="position:relative">
 
         {{-- Messaggio conferma invio messaggio --}}
-
-
         @if (session('success'))
             <div id="div_message" class="alert alert-success alert-dismissible fade show" role="alert" style="position:absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);">
                 <strong>{{ session('success') }}</strong>

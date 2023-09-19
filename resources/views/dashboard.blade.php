@@ -7,6 +7,14 @@
         <div class="col">
             <div class="card m-5 rounded" style="background-color: #5c80bc">
 
+                {{-- Messaggio conferma invio messaggio --}}
+                @if (session('success'))
+                    <div id="paymentConfirm" class="alert alert-success alert-dismissible fade show" role="alert" style="position:absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);">
+                        <strong>{{ session('success') }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 @if (Auth::check())
 
                     @foreach ($users as $user)
@@ -94,4 +102,23 @@
     </div>
 
 </div>
+<script>
+    const paymentConfirm = document.getElementById('paymentConfirm');
+let opacity = 1;
+let fadeOutInterval = 20;
+let fadeOutDuration = 3500;
+
+function fadeOut() {
+    if (opacity > 0) {
+        opacity -= 0.01;
+        paymentConfirm.style.opacity = opacity;
+        setTimeout(fadeOut, fadeOutInterval);
+    } else {
+        paymentConfirm.style.display = 'none';
+    }
+}
+
+setTimeout(fadeOut, fadeOutDuration);
+
+</script>
 @endsection
