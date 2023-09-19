@@ -147,15 +147,40 @@
                         <option value="0" {{ !$apartment->visible ? 'selected' : '' }}>Non visibile</option>
                     </select>
 
+                    <div class="d-flex align-items-center py-3">
+                        <button class="btn btn-primary me-3" type="submit">Modifica</button>
 
-                    <button class="btn btn-primary mt-3" type="submit">Modifica</button>
+                        @if ($apartment->sponsor)
+                            <div id="alertSponsor">
+                            </div>
+                        @endif
+
+                    </div>
 
                 </form>
             </div>
         </div>
+
     </div>
 
     <script>
+
+    //Alert for non visible if sponsor
+     const selectVisible = document.getElementById('visible');
+     const alertContainer = document.getElementById('alertSponsor');
+
+     selectVisible.addEventListener('change', function() {
+        const selectedOption = selectVisible.value;
+
+        // Perform your condition here based on the selected option
+        if (selectedOption === '0') {
+            alertContainer.innerHTML = `
+            <div class="border border-2 border-danger rounded p-2 text-danger">Stai rendendo non visibile un appartamento sponsorizzato</div>`;
+        } else {
+        alertContainer.innerHTML = ''; // Clear the container if another option is selected
+    }
+
+    });
 
     //TomTom Autocomplete con fuzzy search
 
