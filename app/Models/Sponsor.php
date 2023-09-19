@@ -18,6 +18,7 @@ class Sponsor extends Model
     /* Apartment--Sponsor */
     public function apartments() {
 
-        return $this -> belongsToMany(Apartment :: class);
+        return $this -> belongsToMany(Apartment :: class)
+        ->withPivot('start_date', 'end_date');
     }
 }

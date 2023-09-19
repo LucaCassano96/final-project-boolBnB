@@ -210,7 +210,7 @@ class ApartmentController extends Controller
             "rooms" => "required|integer|max:30",
             "beds" => "required|integer|max:80",
             "bathrooms" => "required|integer|max:10",
-            "square_meters" => "required|integer|min:10|max:5000",
+            "square_meters" => "required|integer|min:9|max:5000",
             "address" => "required|max:255",
             "picture" => "required|image|file|max:2048",
             "price" => "required|integer",
@@ -453,7 +453,6 @@ class ApartmentController extends Controller
         $apartment = Apartment::findOrFail($id);
         $sponsor = Sponsor::findOrFail($request->sponsor_id);
 
-        // Prendi l'ultima sponsorizzazione per l'appartamento
         // Ottieni tutte le sponsorizzazioni per l'appartamento
         $sponsorships = $apartment->sponsor()->withPivot('end_date')->get();
 
@@ -461,7 +460,6 @@ class ApartmentController extends Controller
         $lastSponsorship = $sponsorships->sortByDesc(function ($sponsorship) {
             return $sponsorship->pivot->end_date;
         })->first();
-
 
         // Se esiste una sponsorizzazione e la sua end_date è nel futuro,
         // usa quella come punto di partenza. Altrimenti, usa l'ora corrente.
@@ -479,6 +477,7 @@ class ApartmentController extends Controller
             $apartment->sponsor = 1;
             $apartment->save();
         }
+
         return redirect()->route('dashboard')->with('success', 'Pagamento andato a buon fine');
     }
 }

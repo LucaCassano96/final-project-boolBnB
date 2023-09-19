@@ -33,17 +33,17 @@
                     @enderror
 
                     {{-- IMMAGINE --}}
-                    <div class="form-floating">
-                        <input type="file" id="picture" class="form-control" placeholder="inserisci un'immagine" name="picture">
-                        <label for="picture">Inserisci un'immagine</label>
+                    <div class="py-2" style="width: 40%" for="picture">Inserisci un'immagine </div>
+                    <div class="input-group mb-3">
+                        <input type="file" id="picture" class="form-control" name="picture">
                     </div>
                     @error('picture')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
 
                     {{-- NUMERO STANZE --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                    <div class="my-3 input-group">
+                        <span class="input-group-text" style="width:90px;">Stanze</span>
                         <input type="number" id="rooms" name="rooms" placeholder="inserisci il numero di stanze"
                             class="form-control" min="0">
                         </div>
@@ -52,8 +52,8 @@
                     @enderror
 
                     {{-- NUMERO LETTI --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                    <div class="my-3 input-group">
+                        <span class="input-group-text" style="width:90px;">Letti</span>
                         <input type="number" id="beds" name="beds" placeholder="inserisci il numero di letti"
                             class="form-control" min="0">
                         </div>
@@ -62,8 +62,8 @@
                     @enderror
 
                     {{-- NUMERO BAGNI --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                    <div class="my-3 input-group" >
+                        <span class="input-group-text" style="width:90px;">Bagni</span>
                         <input type="number" id="bathrooms" name="bathrooms" placeholder="inserisci il numero di bagni"
                             class="form-control" min="0">
                         </div>
@@ -72,18 +72,18 @@
                     @enderror
 
                     {{-- METRI QUADRATI --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                    <div class="my-3 input-group">
+                        <span class="input-group-text" style="width:90px;">M <sup>2</sup> </span>
                         <input type="number" id="square_meters" name="square_meters" placeholder="inserisci il numero di metri quadrati"
-                            class="form-control" min="0">
+                            class="form-control" min="10">
                         </div>
                     @error('square_meters')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
 
                     {{-- PREZZO --}}
-                    <div class="my-3 input-group mb-3">
-                        <span class="input-group-text">€</span>
+                    <div class="my-3 input-group">
+                        <span class="input-group-text" style="width:90px;">€ / notte</span>
                         <input type="number" id="price" name="price" placeholder="inserisci il prezzo" class="form-control" min="0">
                     </div>
                     @error('price')
@@ -92,7 +92,7 @@
 
                     {{-- INDIRIZZO --}}
                     <div class=" mt-3 input-group">
-                        <span class="input-group-text"></span>
+                        <span class="input-group-text" style="width:90px;">Indirizzo</span>
                         <input type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control">
                     </div>
                     {{-- Hidden select --}}

@@ -32,17 +32,21 @@
                     @enderror
 
                     {{-- IMMAGINE --}}
-                    <div class="form-floating d-flex">
-                        <input type="file" class="form-control me-2" id="picture"  name="picture"
-                            value="{{$apartment->picture}}">
-                            <img  class="rounded" src="{{
-                                asset(
-                                    $apartment->picture
-                                    ? 'storage/' . $apartment->picture
-                                    : 'storage/images/apartment.jpg')
-
-                                }}" alt="{{ $apartment->title }}" style="width: 80px">
-                        <label for="floatingPassword">Inserisci un'immagine</label>
+                    <div class="py-0" style="width: 40%" for="picture">Inserisci un'immagine </div>
+                    <div class="input-group mb-3">
+                        <div class="row align-items-center g-3">
+                            <div class="col-12 col-sm-9" style="height:fit-content">
+                                <input type="file" id="picture" class="form-control" name="picture" value="{{$apartment->picture}}" style="height:100%;">
+                            </div>
+                            <div class="col">
+                                <img  class="rounded" src="{{
+                                    asset(
+                                        $apartment->picture
+                                        ? 'storage/' . $apartment->picture
+                                        : 'storage/images/apartment.jpg')
+                                    }}" alt="{{ $apartment->title }}" style="width: 100%">
+                            </div>
+                        </div>
                     </div>
                     @error('picture')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -50,7 +54,7 @@
 
                     {{-- STANZE --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">Stanze</span>
                         <input value="{{$apartment->rooms}}" type="number" id="rooms" name="rooms" placeholder="inserisci il numero di stanze"
                             class="form-control" min="0">
                     </div>
@@ -60,7 +64,7 @@
 
                     {{-- LETTI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">Letti</span>
                         <input value="{{$apartment->beds}}" type="number" id="beds" name="beds" placeholder="inserisci il numero di letti"
                             class="form-control" min="0">
                     </div>
@@ -70,7 +74,7 @@
 
                     {{-- BAGNI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">Bagni</span>
                         <input value="{{$apartment->bathrooms}}" type="number" id="bathrooms" name="bathrooms" placeholder="inserisci il numero di bagni"
                             class="form-control" min="0">
                     </div>
@@ -80,9 +84,9 @@
 
                     {{-- METRI QUADRATI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">M <sup>2</sup> </span>
                         <input value="{{$apartment->square_meters}}" type="number" id="square_meters" name="square_meters" placeholder="inserisci il numero di metri quadrati"
-                            class="form-control" min="0">
+                            class="form-control" min="10">
                     </div>
                     @error('square_meters')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -90,7 +94,7 @@
 
                     {{-- PREZZO --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text">€</span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">€ / notte</span>
                         <input value="{{$apartment->price}}" type="number" id="price" name="price" placeholder="inserisci il prezzo" class="form-control" min="0">
                     </div>
                     @error('price')
@@ -99,7 +103,7 @@
 
                     {{-- INDIRIZZO --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span class="d-inline-block input-group-text" style="width:90px;">Indirizzo</span>
                         <input value="{{$apartment->address}}" type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control">
                     </div>
 

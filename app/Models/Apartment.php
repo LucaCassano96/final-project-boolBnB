@@ -59,8 +59,7 @@ class Apartment extends Model
     /* Apartment--Sponsor */
     public function sponsor() {
 
-        return $this->belongsToMany(Sponsor::class, 'apartment_sponsor')->withTimestamps();
+        return $this->belongsToMany(Sponsor::class, 'apartment_sponsor')->withTimestamps()
+        ->withPivot('start_date', 'end_date');
     }
 }
-
-
