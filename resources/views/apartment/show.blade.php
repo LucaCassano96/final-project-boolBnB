@@ -68,17 +68,21 @@
 
         <div class="mt-2 text-light p-3 pt-0" style="background-color: #5c80bc; border: 3px solid #e0a458;">
 
-            {{-- se sei proprietario dell'appartamento visualli i diversi bottoni --}}
+            {{-- se sei proprietario dell'appartamento visualizzi i diversi bottoni --}}
             @auth
                 @if (Auth::user()->id == $apartment->user_id)
-                    <div class="d-flex justify-content-end">
-                        <div class="send-button d-flex justify-content-end pt-3 mx-2">
-                            <a class="btn text-white" style="background-color: #2d3047" role="button"
-                                href="{{ route('dashboard') }}">I tuoi appartamenti</a>
+                    <div class="row justify-content-end mb-3">
+                        <div class="col-6 col-md-3 d-flex justify-content-center justify-content-lg-end px-3">
+                            <div class="send-button d-flex justify-content-end pt-3">
+                                <a class="btn text-white" style="background-color: #2d3047" role="button"
+                                    href="{{ route('dashboard') }}">I tuoi appartamenti</a>
+                            </div>
                         </div>
-                        <div class="send-button d-flex justify-content-end pt-3">
-                            <a class="btn text-white" style="background-color: #2d3047" role="button"
-                                href="{{ route('messageApartment') }}"><i class="bi bi-envelope mx-1"></i> I tuoi messaggi</a>
+                        <div class="col-6 col-md-3 col-xxl-2 d-flex justify-content-center px-3">
+                            <div class="send-button d-flex justify-content-end pt-3">
+                                <a class="btn text-white px-2" style="background-color: #2d3047" role="button"
+                                    href="{{ route('messageApartment') }}"><i class="bi bi-envelope mx-1"></i> I tuoi messaggi</a>
+                            </div>
                         </div>
                     </div>
                 @else
