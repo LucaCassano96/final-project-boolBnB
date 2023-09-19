@@ -107,7 +107,15 @@
         {{-- Apartments preview --}}
         <div class="col-12 col-md-9">
             @foreach (json_decode($aptsJson) as $apartment)
-                @if ($apartment->visible === 1)
+                @if ($apartment->visible && $apartment->sponsor)
+                    <div class="row mt-2" id="sponsoredApartments">
+
+                    </div>
+                @endif
+            @endforeach
+
+            @foreach (json_decode($aptsJson) as $apartment)
+                @if ($apartment->visible)
                     <div class="row mt-2" id="apartmentsList">
 
                     </div>
@@ -123,17 +131,19 @@
     const searchInput = document.getElementById('searchInput');
     const radiusSelect = document.getElementById('filterRadius');
     const apartmentsList = document.getElementById('apartmentsList');
+    const sponsoredApartments = document.getElementById('sponsoredApartments');
     const searchButton = document.getElementById('searchButton');
     const filterInputs = document.querySelectorAll('.filter-input');
+
+    // Gestione del clic sul pulsante "Cerca"
 
     const apartments = {!! $aptsJson !!};
     const amenities = {!! $amenitiesJson !!};
 
-    let currentAddress = searchInput.value.trim();
+    let currentAddress = '';
 
-    /* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
+    currentAddress = searchInput.value.trim();
 
-    // GESTIONE CLICK sul pulsante "CERCA"
     searchButton.addEventListener('click', function (event) {
         event.preventDefault();
         autocompleteSelect.style.display = 'none';
@@ -142,8 +152,10 @@
         axios.post('/searchApi', { address, radius: currentRadius })
             .then(response => {
                 const apartments = response.data.apartments;
+
                 // Update the currentAddress
                 currentAddress = address;
+
                 apartmentsList.innerHTML = ''; // Clear previous results
                 updateApartments(apartments);
             })
@@ -152,9 +164,7 @@
             });
     });
 
-    /* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
-
-    //TOMTOM AUTOCOMPLETE con fuzzy search
+    //TomTom Autocomplete con fuzzy search
     //Prendo il contenuto dell'input
     searchInput.addEventListener('input', debounce(function() {
         const query = searchInput.value.trim();
@@ -188,26 +198,32 @@
         searchInput.value = autocompleteSelect.value;
         autocompleteSelect.style.display = 'none';
     });
-
+    //Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(func, wait);
+        };
+    }
 
     /* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
 
     //LOGICA DEI FILTRI
-    const filters = {
-        amenities: []
-    }
 
     //RADIUS
     let currentRadius = 20;
 
     radiusSelect.addEventListener('change', function () {
         const newRadius = radiusSelect.value;
+
         handleRadiusChange(newRadius);
     });
 
     function handleRadiusChange(newRadius) {
         currentRadius = newRadius === '' ? 20 : newRadius;
 
+        /* console.log('Address:', address); */
         axios.post('/updateRadius', { currentRadius, address: currentAddress })
         .then(response => {
             const apartments = response.data.apartments;
@@ -218,6 +234,10 @@
         });
     }
 
+    const filters = {
+        amenities: []
+    }
+
     const inputs = document.querySelectorAll('input');
 
     filterInputs.forEach(input => {
@@ -226,19 +246,23 @@
             const newRadius = radiusSelect.value;
 
             if (input.type === "checkbox") {
-                const amenityId = input.id.substring(8, 9)
-                if (filters.amenities.includes(amenityId)) {
-                    filters.amenities.splice(filters.amenities.indexOf(amenityId), 1)
-                } else {
-                    filters.amenities.push(amenityId)
-                }
+
+            const amenityId = input.id.substring(8, 9)
+
+            if (filters.amenities.includes(amenityId)) {
+                filters.amenities.splice(filters.amenities.indexOf(amenityId), 1)
             } else {
-                filters[input.id] = input.value
+                filters.amenities.push(amenityId)
+            }
+
+            } else {
+            filters[input.id] = input.value
             }
 
             currentRadius = newRadius === '' ? 20 : newRadius;
             address = searchInput.value.trim();
 
+            /* console.log('Address:', address); */
             axios.post('/updateRadius', { currentRadius: currentRadius, address: address })
             .then(response => {
                 const apartments = response.data.apartments;
@@ -253,6 +277,7 @@
     });
 
     getFilteredApartments(apartments, currentRadius);
+
 
     function getFilteredApartments(apartments, currentRadius) {
 
@@ -278,10 +303,12 @@
                 Number(filters.price)
 
             let amenitiesMatch = true;
-
+            /* console.log(apartment); */
             const apartmentAmenityIds = apartment.amenities.map(amenity => {
                 return amenity.id.toString()
             })
+
+            /* console.log(apartmentAmenityIds); */
 
             filters.amenities.forEach(amenity => {
 
@@ -303,56 +330,99 @@
 
     function updateApartments(filteredApartments) {
 
-        const FilteredApartmentsHtml = filteredApartments.map((apartment) => {
-            return `
-            <div class="col-12 col-lg-6 col-xl-4 p-3">
-                <div class="card border text-center p-0"
-                    style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
-                    {{-- Card Header --}}
-                    <div class="d-flex card-header p-2 align-items-center justify-content-center"
-                        style="border-color: #fffdeb; min-height: 130px">
-                        <h5 class="text-uppercase m-0">
+        /* const apartmentsList = document.getElementById("apartmentsList") */
 
-                            <a class="d-inline-block
-                        text-decoration-none border p-2 rounded my-3"
-                            style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                            href="http://127.0.0.1:8000/show/${apartment.id}"
-                            >${apartment.title}</a>
-                        </h5>
-                    </div>
-                    {{-- Card Body --}}
-                    <div class="card-body p-4">
-                        {{-- immagine --}}
-                        <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                            <img class="rounded"
-                            src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
-                            alt="" style="width: 100%; height: 100%; object-fit: cover;">
+        /* apartmentsList.innerHTML = ""; */
+        const filteredApartmentsHtml = filteredApartments.map((apartment) => {
+            if (!apartment.sponsor) {
+                return `
+                <div class="col-12 col-lg-6 col-xl-4 p-3">
+                    <div class="card border text-center p-0"
+                        style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
+                        {{-- Card Header --}}
+                        <div class="d-flex card-header p-2 align-items-center justify-content-center"
+                            style="border-color: #fffdeb; min-height: 130px">
+                            <h5 class="text-uppercase m-0">
+
+                                <a class="d-inline-block
+                            text-decoration-none border p-2 rounded my-3"
+                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                href="http://127.0.0.1:8000/show/${apartment.id}"
+                                >${apartment.title}</a>
+                            </h5>
                         </div>
-                        {{-- dati appartamento --}}
-                        <div class="my-4">
-                            <ul class="list-unstyled" style="color: #fffdeb">
-                                <li>${apartment.address}</li>
-                            <li class="p-0 mt-5">
-                                <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">${apartment.price} €
-                                </span><span><small>/ notte</small></span>
-                            </li>
-                            </ul>
+                        {{-- Card Body --}}
+                        <div class="card-body p-4">
+                            {{-- immagine --}}
+                            <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                                <img class="rounded"
+                                src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
+                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            {{-- dati appartamento --}}
+                            <div class="my-4">
+                                <ul class="list-unstyled" style="color: #fffdeb">
+                                    <li>${apartment.address}</li>
+                                <li class="p-0 mt-5">
+                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">${apartment.price} €
+                                    </span><span><small>/ notte</small></span>
+                                </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>`
+                </div>`
+            }
         });
-        apartmentsList.innerHTML = FilteredApartmentsHtml.join('');
-    }
+        const sponsoredApartmentsHtml = filteredApartments.map((apartment) => {
+            if (apartment.sponsor) {
+                return`
+                <div class="col-12 col-lg-6 col-xl-4 p-3">
+                    {{-- card --}}
+                    <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:530px; background-color:#353f5c;border-color:#fffdeb">
+                        {{-- logo sponsor - position absolute top right --}}
+                        <i class="bi bi-badge-ad text-warning" style="position: absolute; top:-1%; right:0%; font-size:30px;"></i>
 
-    /* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
-    //Funzione di delay per limitare la frequenza di chiamate axios (per non appesantire toppo la pagina)
-    function debounce(func, wait) {
-        let timeout;
-        return function() {
-            clearTimeout(timeout);
-            timeout = setTimeout(func, wait);
-        };
+                        {{-- Card Header --}}
+                        <div class="d-flex card-header p-2 align-items-center justify-content-center"
+                            style="border-color: #fffdeb; min-height: 130px">
+                            <h5 class="text-uppercase m-0">
+
+                                <a class="d-inline-block
+                            text-decoration-none border p-2 rounded my-3"
+                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
+                                href="http://127.0.0.1:8000/show/${apartment.id}"
+                                >${apartment.title}</a>
+                            </h5>
+                        </div>
+                        {{-- Card Body --}}
+                        <div class="card-body p-4">
+                            {{-- immagine --}}
+                            <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
+                                <img class="rounded"
+                                src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
+                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            {{-- dati appartamento --}}
+                            <div class="my-4">
+                                <ul class="list-unstyled" style="color: #fffdeb">
+                                    <li>${apartment.address}</li>
+                                <li class="p-0 mt-5">
+                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">${apartment.price} €
+                                    </span><span><small>/ notte</small></span>
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            }
+        }
+
+        )
+        sponsoredApartments.innerHTML = sponsoredApartmentsHtml.join('');
+        apartmentsList.innerHTML = filteredApartmentsHtml.join('');
+
     }
 </script>
 @endsection
