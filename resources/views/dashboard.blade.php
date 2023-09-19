@@ -48,7 +48,13 @@
                                 @foreach ($user->apartments as $apartment)
                                     {{-- Card APPARTAMENTO --}}
                                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 p-3">
-                                        <div class="card border text-center" style="background-color: #e0a458;">
+
+                                        <div class="card border text-center" style="position:relative; background-color: #e0a458;">
+                                            @if (!$apartment->visible)
+                                                <a href="{{ route('apartment.show', $apartment->id) }}" class="d-flex text-decoration-none text-dark justify-content-center align-items-center" style="position:absolute; width:100%; height:100%; background-color: #e5dfc040;">
+                                                    <h4><strong>NON VISIBILE</strong></h4>
+                                                </a>
+                                            @endif
                                             <div class="card-header d-flex align-items-center justify-content-center" style="min-height: 70px">
                                                 <h5 class="text-uppercase fst-italic m-0">
                                                     <a href="{{ route('apartment.show', $apartment->id) }}" class="text-black text-decoration-none">{{ $apartment->title }}</a>
@@ -58,7 +64,7 @@
                                             <div class="card-body p-2">
                                                 {{-- immagine --}}
                                                 <div class="rounded" style="width:100%; aspect-ratio: 16 / 10;">
-                                                    <img class="rounded" src="{{asset('storage/' . $apartment -> picture) }}" alt="{{ $apartment->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    <img class="rounded" src="{{asset('storage/' . $apartment->picture) }}" alt="{{ $apartment->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                                 </div>
                                                 <div class="my-2">
                                                     Prezzo: {{ $apartment->price }}€ / notte
@@ -67,13 +73,11 @@
                                             <div class="card-footer">
 
                                                 @if ($apartment->sponsor)
-
-                                                <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
-                                                    Sponsorizzato
-                                                </div>
-
+                                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
+                                                        Sponsorizzato
+                                                    </div>
                                                 @else
-                                                <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
+                                                    <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
                                                 @endif
 
                                             </div>
