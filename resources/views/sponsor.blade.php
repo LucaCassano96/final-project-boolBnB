@@ -14,7 +14,7 @@
                                 <div class="container">
                                     <div class="row justify-content-center align-items-center p-2">
                                         <div class="col">
-                                            <h1 class="text-white"><strong>SPONSORSHIP</strong></h1>
+                                            <h2 class="text-white"><strong>SPONSORSHIP</strong></h2>
                                         </div>
                                     </div>
                                 </div>
