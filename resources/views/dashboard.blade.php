@@ -55,42 +55,50 @@
 
                                 @foreach ($user->apartments as $apartment)
                                     {{-- Card APPARTAMENTO --}}
-                                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 p-3">
-
-                                        <div class="card border text-center" style="position:relative; background-color: #e0a458;">
-                                            @if (!$apartment->visible)
-                                                <a href="{{ route('apartment.show', $apartment->id) }}" class="d-flex text-decoration-none text-dark justify-content-center align-items-center" style="position:absolute; width:100%; height:100%; background-color: #e5dfc040;">
-                                                    <h4><strong>NON VISIBILE</strong></h4>
-                                                </a>
-                                            @endif
-                                            <div class="card-header d-flex align-items-center justify-content-center" style="min-height: 70px">
-                                                <h5 class="text-uppercase fst-italic m-0">
-                                                    <a href="{{ route('apartment.show', $apartment->id) }}" class="text-black text-decoration-none">{{ $apartment->title }}</a>
-                                                </h5>
-                                            </div>
-
+                                    <div class="col-md-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
+                                        <div class="card border text-center p-0" style="min-height:430px; background-color:#2d3047; border-color:#fffdeb">
+                    
+                                            {{-- Card Body --}}
                                             <div class="card-body p-2">
                                                 {{-- immagine --}}
-                                                <div class="rounded" style="width:100%; aspect-ratio: 16 / 10;">
-                                                    <img class="rounded" src="{{asset('storage/' . $apartment->picture) }}" alt="{{ $apartment->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <div class="rounded mb-2" style="width:100%; aspect-ratio: 1 / 1; border: 2px solid #e0a458;">
+                                                    <img class="rounded" loading="lazy" src="{{
+                                                        asset(
+                                                            $apartment->picture
+                                                            ? 'storage/' . $apartment->picture
+                                                            : 'storage/images/apartment.jpg')
+                                                        }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                                 </div>
-                                                <div class="my-2">
-                                                    Prezzo: {{ $apartment->price }}€ / notte
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-
-                                                @if ($apartment->sponsor)
-                                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
-                                                        Sponsorizzato
+                    
+                                                {{-- dati appartamento --}}
+                                                <div class="my-2" style="color: #fffdeb">
+                                                    {{-- titolo --}}
+                                                    <h6 class="text-uppercase m-0">
+                                                        <a class="d-flex justify-content-center align-items-center
+                                                        text-decoration-none border p-2 rounded"
+                                                        style="height:60px; color: #fffdeb; border-color: #fffdeb; width: 100% overflow:ellipsis;"
+                                                        href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+                                                    </h6>
+                                                    {{-- indirizzo --}}
+                                                    <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
+                                                        <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
                                                     </div>
-                                                @else
-                                                    <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
-                                                @endif
-
+                                                    
+                                                    {{-- sponsorizzazione --}}
+                                                    <div class="card-footer">
+                                                        @if ($apartment->sponsor)
+                                                            <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
+                                                                Sponsorizzato
+                                                            </div>
+                                                        @else
+                                                            <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
+                                                        @endif
+        
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                 @endforeach
                             </div>
                         @endif
