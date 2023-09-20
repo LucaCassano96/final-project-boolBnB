@@ -15,94 +15,102 @@
         @auth
             @if (Auth::user()->id == $apartment->user_id)
                 {{-- Buttons --}}
-                <div class="d-flex justify-content-end py-3">
+                <div class="d-flex justify-content-center justify-content-lg-end py-3">
 
                     {{-- Delete Appartamento --}}
-                    <form action="{{ route('apartment.delete', $apartment->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="button" class="btn btn-danger" style="border: 2px solid #e0a458;"data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            Elimina appartamento
-                        </button>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Vuoi eliminare
-                                            definitivamente l'appartamento?</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-                                        <button class="btn btn-danger" type="submit">
-                                            Elimina appartamento
-                                        </button>
+                    <div class="me-5">
+                        <form action="{{ route('apartment.delete', $apartment->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" style="border: 2px solid #e0a458;"data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                Elimina appartamento
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Vuoi eliminare
+                                                definitivamente l'appartamento?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                                            <button class="btn btn-danger" type="submit">
+                                                Elimina appartamento
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
                     {{-- Edit Appartamento --}}
-                    <a class="btn btn-primary mx-4" style="border: 2px solid #e0a458;"
-                        href="{{ route('apartment.edit', $apartment->id) }}">Modifica Appartamento</a>
-                    {{-- Messaggio conferma edit --}}
-                    @if (session('edit'))
-                        <div class="alert alert-success">
-                            {{ session('edit') }}
-                        </div>
-                    @endif
+                    <div class="d-flex">
+                        <a class="btn btn-primary" style="border: 2px solid #e0a458;"
+                            href="{{ route('apartment.edit', $apartment->id) }}">Modifica Appartamento</a>
+                        {{-- Messaggio conferma edit --}}
+                        @if (session('edit'))
+                            <div class="alert alert-success">
+                                {{ session('edit') }}
+                            </div>
+                        @endif
+                    </div>
 
                 </div>
             @endif
         @endauth
 
-
         <div class="mt-2 text-light p-3 pt-0" style="background-color: #5c80bc; border: 3px solid #e0a458;">
-
             {{-- se sei proprietario dell'appartamento visualizzi i diversi bottoni --}}
             @auth
                 @if (Auth::user()->id == $apartment->user_id)
-                    <div class="container-button col-12 d-flex justify-content-end">
-                        <div class="row d-flex justify-content-end mb-3 col-xs-12 col-6">
-                            <div class="col px-3 d-flex justify-content-center">
+                    <div class="row justify-content-end mb-3">
+                        <div class="col-12 col-md-8 col-lg-4 order-md-2">
+                            <div class="row">
+                                {{-- link/button appartamenti --}}
+                                <div class="col-6 d-flex justify-content-center">
+                                    <div class="send-button pt-3">
+                                        <a class="btn text-white" style="background-color: #2d3047" role="button"
+                                            href="{{ route('dashboard') }}">I tuoi appartamenti</a>
+                                    </div>
+                                </div>
+                                {{-- link/button i tuoi messaggi --}}
+                                <div class="col-6 d-flex justify-content-center">
+                                    <div class="send-button pt-3">
+                                        <a class="btn text-white px-2" style="background-color: #2d3047" role="button"
+                                            href="{{ route('messageApartment') }}">
+                                            <i class="bi bi-envelope mx-1"></i> I tuoi messaggi
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-12 col-md-4 col-lg-2 d-flex justify-content-center order-md-1">
+                            @if ($apartment->sponsor->isNotEmpty())
                                 @foreach ($apartment->sponsor as $sponsor)
                                     {{-- se l'appartamento è gia sponsorizzato --}}
-                                @if ($sponsor->pivot->end_date > now())
-                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2 send-button d-flex align-items-center mt-3 px-3 py-1">
-                                        Sponsorizzato
-                                    </div>
-                                {{-- se l'appartamento non è sponzorizzato --}}
-                                @else
-                                    <div class="text-primary-emphasis rounded-3 d-flex align-items-center mt-3 px-2">
-                                        <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
-                                    </div>
-                                @endif
+                                    @if ($sponsor->pivot->end_date > now())
+                                        <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2 send-button d-flex align-items-center mt-3 px-3 py-1">
+                                            Sponsorizzato
+                                        </div>
+                                    {{-- se l'appartamento non è sponzorizzato --}}
+                                    @else
+                                        <div class="text-primary-emphasis rounded-3 d-flex align-items-center mt-3 px-2">
+                                            <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
+                                        </div>
+                                    @endif
                                 @endforeach
-
-                            </div>
-
-                            {{-- link/button appartamenti --}}
-                            <div class="col px-3 d-flex justify-content-center">
-                                <div class="send-button pt-3">
-                                    <a class="btn text-white" style="background-color: #2d3047" role="button"
-                                        href="{{ route('dashboard') }}">I tuoi appartamenti</a>
+                            @else
+                                {{-- se l'appartamento non è sponzorizzato --}}
+                                <div class="text-primary-emphasis rounded-3 d-flex align-items-center mt-3 px-2">
+                                    <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
                                 </div>
-                            </div>
-
-                            {{-- link/button i tuoi messaggi --}}
-                            <div class="col px-3 d-flex justify-content-center">
-                                <div class="send-button pt-3">
-                                    <a class="btn text-white px-2" style="background-color: #2d3047" role="button"
-                                        href="{{ route('messageApartment') }}"><i class="bi bi-envelope mx-1"></i> I tuoi messaggi</a>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                     {{-- se non sei proprietare dell'appartamento ma sei loggato --}}
@@ -112,9 +120,7 @@
                             href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
                     </div>
                 @endif
-
             @endauth
-
             {{-- se non sei loggato --}}
             @guest
                 <div class="send-button d-flex justify-content-end pt-3">
@@ -122,8 +128,6 @@
                         href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
                 </div>
             @endguest
-
-
                 {{-- IMMAGINE E DESCRIZIONE --}}
             <div class="row">
                 {{-- TITOLO - IMMAGINE --}}
@@ -203,17 +207,17 @@
                         @auth
                             @if (Auth::user()->id == $apartment->user_id)
                                 @if ($apartment->visible === 1)
-                                <div class="text-uppercase text-center" style="color: #2d3047">
-                                    <h4>
-                                        Il tuo appartamento è visibile <i class="bi bi-eye"></i>
-                                    </h4>
-                                </div>
+                                    <div class="text-uppercase text-center" style="color: #2d3047">
+                                        <h4>
+                                            Il tuo appartamento è visibile <i class="bi bi-eye"></i>
+                                        </h4>
+                                    </div>
                                 @else
-                                <div class="text-uppercase text-center" style="color: #2d3047">
-                                <h4>
-                                    Il tuo appartamento non è visibile <i class="bi bi-eye-slash"></i>
-                                </h4>
-                                </div>
+                                    <div class="text-uppercase text-center" style="color: #2d3047">
+                                        <h4>
+                                            Il tuo appartamento non è visibile <i class="bi bi-eye-slash"></i>
+                                        </h4>
+                                    </div>
                                 @endif
                             @endif
                         @endauth
