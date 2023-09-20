@@ -73,7 +73,7 @@
                             <div class="col px-3 d-flex justify-content-center">
                                 {{-- se l'appartamento è gia sponsorizzato --}}
                                 @if ($apartment->sponsor)
-                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 send-button d-flex align-items-center mt-3 px-2">
+                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2 send-button d-flex align-items-center mt-3 px-3 py-1">
                                         Sponsorizzato
                                     </div>
                                 {{-- se l'appartamento non è sponzorizzato --}}
@@ -108,7 +108,7 @@
                             href="{{ route('messagePage', $apartment->id) }}">Invia messaggio</a>
                     </div>
                 @endif
-                    
+
             @endauth
 
             {{-- se non sei loggato --}}
@@ -121,7 +121,7 @@
 
 
                 {{-- IMMAGINE E DESCRIZIONE --}}
-            <div class="row rounded">
+            <div class="row">
                 {{-- TITOLO - IMMAGINE --}}
                 <div class="col-12 p-3 mb-3 text-center">
 
@@ -143,83 +143,80 @@
                     </div>
                 </div>
 
-                
-                {{-- prezzo appartamento --}}
-                <div class="fw-bold col-6 text-center rounded p-2 m-auto mt-3"
+            </div>
+            {{-- prezzo appartamento --}}
+            <div class="row justify-content-center">
+                <div class="fw-bold col-6 text-center rounded p-2 mt-3"
                     style="border: 2px solid #e0a458; background-color:#2d3047">
                     Prezzo: {{ $apartment->price }}€
                 </div>
+            </div>
+            {{-- DESCRIZIONE - PREZZO --}}
+            <div class="row mt-3">
+                <div class="col-12 col-lg-6 p-3 border-2">
 
-                <div class="right col-12 d-flex borde-dark mt-3">
-                    <div class="row">
-                        {{-- VISIBLE - DESCRIZIONE - PREZZO --}}
-                        <div class="col-12 col-lg-6 p-3 border-2">
-    
-                            {{-- descrizione appartamento --}}
-                            <div class="rounded p-3" style="border:2px solid #e0a458; background-color:#2d3047; max-height:400px; overflow:auto;">
-                                <h5>
-                                    DESCRIZIONE APPARTAMENTO
-                                </h5>
-                                {{ $apartment->description }}
-                            </div>              
-                        
-                        </div>
-    
-                        {{-- DATI - AMENITY --}}
-                        <div class="col-12 col-lg-6 p-3">
-                            <div class="d-flex p-3 rounded justify-content-center" style="border: 2px solid #e0a458; background-color:#2d3047">
-                                {{-- dati appartamento --}}
-                                <div class="p-3">
-                                    <h3>STRUTTURA</h3>
-                                    <ul class="p-3">
-                                        <li> Stanze: {{ $apartment->rooms }}</li>
-                                        <li> Letti: {{ $apartment->beds }}</li>
-                                        <li> Bagni: {{ $apartment->bathrooms }}</li>
-                                        <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
-                                    </ul>
-                                </div>
-            
-                                {{-- amenity --}}
-                                <div class="p-3"> 
-                                    <h3>SERVIZI</h3>
-                                    <ul class="p-3">
-                                        @foreach ($apartment->amenities as $amenity)
-                                            <li class="">{{ $amenity->title }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
+                    {{-- descrizione appartamento --}}
+                    <div class="rounded p-3" style="border:2px solid #e0a458; background-color:#2d3047; max-height:400px; overflow:auto;">
+                        <h5>
+                            DESCRIZIONE APPARTAMENTO
+                        </h5>
+                        {{ $apartment->description }}
+                    </div>
+
+                </div>
+
+                {{-- DATI - AMENITY --}}
+                <div class="col-12 col-lg-6 p-3">
+                    <div class="d-flex p-3 rounded justify-content-center" style="border: 2px solid #e0a458; background-color:#2d3047">
+                        {{-- dati appartamento --}}
+                        <div class="p-3">
+                            <h3>STRUTTURA</h3>
+                            <ul class="p-3">
+                                <li> Stanze: {{ $apartment->rooms }}</li>
+                                <li> Letti: {{ $apartment->beds }}</li>
+                                <li> Bagni: {{ $apartment->bathrooms }}</li>
+                                <li>Superficie: {{ $apartment->square_meters }} m<sup>2</sup></li>
+                            </ul>
                         </div>
 
+                        {{-- amenity --}}
+                        <div class="p-3">
+                            <h3>SERVIZI</h3>
+                            <ul class="p-3">
+                                @foreach ($apartment->amenities as $amenity)
+                                    <li class="">{{ $amenity->title }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
-              
-                <div>
+
+            </div>
+            {{-- VISIBLE --}}
+            <div class="row justify-content-center justify-content-lg-start">
+                <div class="col-12 col-lg-6 mt-2">
                     {{-- se sei proprietario dell'appartamento visualizzi il messaggio --}}
                         @auth
                             @if (Auth::user()->id == $apartment->user_id)
                                 @if ($apartment->visible === 1)
-
-                                <div class="text-uppercase mt-2" style="color: #2d3047">
+                                <div class="text-uppercase text-center" style="color: #2d3047">
                                     <h4>
                                         Il tuo appartamento è visibile <i class="bi bi-eye"></i>
                                     </h4>
                                 </div>
-
                                 @else
-
-                                <div class="text-uppercase mt-2" style="color: #2d3047">
+                                <div class="text-uppercase text-center" style="color: #2d3047">
                                 <h4>
                                     Il tuo appartamento non è visibile <i class="bi bi-eye-slash"></i>
                                 </h4>
                                 </div>
-
                                 @endif
                             @endif
                         @endauth
                 </div>
-                
             </div>
+
+
 
 
 <script>
