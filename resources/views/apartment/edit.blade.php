@@ -104,7 +104,7 @@
                     {{-- INDIRIZZO --}}
                     <div class="my-3 input-group mb-3">
                         <span class="d-inline-block input-group-text" style="width:90px;">Indirizzo</span>
-                        <input value="{{$apartment->address}}" type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control">
+                        <input value="{{$apartment->address}}" type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control" autocomplete="off">
                     </div>
 
                     {{-- Hidden select --}}

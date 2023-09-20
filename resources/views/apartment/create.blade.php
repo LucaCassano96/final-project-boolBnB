@@ -93,7 +93,7 @@
                     {{-- INDIRIZZO --}}
                     <div class=" mt-3 input-group">
                         <span class="input-group-text" style="width:90px;">Indirizzo</span>
-                        <input type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control">
+                        <input type="text" id="address" name="address" placeholder="inserisci l'indirizzo" class="form-control" autocomplete="off">
                     </div>
                     {{-- Hidden select --}}
                     <select id="autocompleteSelect" class="form-select" size="5" style="display: none; cursor: pointer;"></select>
