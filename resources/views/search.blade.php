@@ -44,42 +44,42 @@
 
                     {{-- RAGGIO DI RICERCA --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text">km</span>
+                        <span style="width:70px;" class="input-group-text text-center">km</span>
                         <input type="number" id="filterRadius" name="filterRadius" placeholder="Raggio di ricerca"
                             class="form-control filter-input" value="20" min="0">
                     </div>
 
                     {{-- NUMERO STANZE --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span style="width:70px;" class="input-group-text">Stanze</span>
                         <input type="number" id="rooms" name="rooms" placeholder="stanze"
                             class="form-control filter-input" min="0">
                     </div>
 
                     {{-- NUMERO LETTI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span style="width:70px;" class="input-group-text">Letti</span>
                         <input type="number" id="beds" name="beds" placeholder="letti"
                             class="form-control filter-input" min="0">
                     </div>
 
                     {{-- NUMERO BAGNI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span style="width:70px;" class="input-group-text">Bagni</span>
                         <input type="number" id="bathrooms" name="bathrooms" placeholder="bagni"
                             class="form-control filter-input" min="0">
                     </div>
 
                     {{-- METRI QUADRATI --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text"></span>
+                        <span style="width:70px;" class="input-group-text">M <sup>2</sup> </span>
                         <input type="number" id="square_meters" name="square_meters" placeholder="metri quadrati"
                             class="form-control filter-input" min="0">
                     </div>
 
                     {{-- PREZZO --}}
                     <div class="my-3 input-group mb-3">
-                        <span class="input-group-text">€</span>
+                        <span style="width:70px;" class="input-group-text">€</span>
                         <input type="number" id="price" name="price" placeholder="prezzo"
                             class="form-control filter-input" min="0">
                     </div>
@@ -347,7 +347,7 @@
                             <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
                                 <img class="rounded"
                                 src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
-                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                alt="" style="width: 100%; height: 100%; object-fit: cover; loading:lazy;">
                             </div>
                             {{-- dati appartamento --}}
                             <div class="my-4">
