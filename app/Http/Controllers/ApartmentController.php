@@ -78,7 +78,7 @@ class ApartmentController extends Controller
 
         $data =  $request -> all();
         $address = $data['address'];
-        $radius = $data['radius'] ?? 20;
+        $radius = $data['radius'] ?? 200;
         $amenities = Amenity::all();
 
         // Geocode the address using the TomTom Geocoding API
@@ -89,14 +89,9 @@ class ApartmentController extends Controller
         $searchLat = $geocodingData['results'][0]['position']['lat'];
         $searchLon = $geocodingData['results'][0]['position']['lon'];
 
-        //Radius for the apartment search (in km)
-        /* if (!$radius) {
-            $radius = 20;
-        } */
-
         // Query apartments within the specified radius
         $apartments = Apartment::select('*')
-            ->selectRaw(
+             ->selectRaw(
                 '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
                 [$searchLat, $searchLon, $searchLat]
             )
@@ -104,6 +99,7 @@ class ApartmentController extends Controller
             ->orderBy('distance')
             ->with('amenities')
             ->get();
+
 
         $amenitiesJson = $amenities->isNotEmpty() ? json_encode($amenities) : '[]';
         $aptsJson = json_encode($apartments);
@@ -119,8 +115,6 @@ class ApartmentController extends Controller
         $newRadius = $data['currentRadius'];
         $address = $data['address'];
         $amenities = Amenity::all();
-
-
 
         // Geocode the address using the TomTom Geocoding API
         $geocodingResponse = $this->geocodeAddress($address);
@@ -153,21 +147,7 @@ class ApartmentController extends Controller
         $apartments = Apartment :: all();
         $apartments = Apartment::orderBy('created_at', 'desc')->get();
 
-        $sponsoredApartments = [];
-        $SponsoredVisibleApartments = [];
-
-        foreach ($apartments as $apartment) {
-           if ($apartment->sponsor) {
-            $sponsoredApartments[] = $apartment;
-           }
-        }
-        foreach ($sponsoredApartments as $sponsoredApartment) {
-            if ($sponsoredApartment->visible) {
-                $SponsoredVisibleApartments[] = $sponsoredApartment;
-               }
-        }
-
-        return view("home", compact("apartments", "SponsoredVisibleApartments"));
+        return view("home", compact("apartments"));
     }
 
     /* DASHBOARD */
@@ -453,32 +433,23 @@ class ApartmentController extends Controller
         $apartment = Apartment::findOrFail($id);
         $sponsor = Sponsor::findOrFail($request->sponsor_id);
 
-        // Ottieni tutte le sponsorizzazioni per l'appartamento
-        $sponsorships = $apartment->sponsor()->withPivot('end_date')->get();
+        // Detach any existing sponsors
+        $apartment->sponsor()->detach();
 
-        // Ordina la collezione in base alla end_date
-        $lastSponsorship = $sponsorships->sortByDesc(function ($sponsorship) {
-            return $sponsorship->pivot->end_date;
-        })->first();
-
-        // Se esiste una sponsorizzazione e la sua end_date è nel futuro,
-        // usa quella come punto di partenza. Altrimenti, usa l'ora corrente.
-        $now = ($lastSponsorship && $lastSponsorship->pivot->end_date > Carbon::now())
-            ? Carbon::parse($lastSponsorship->pivot->end_date)
-            : Carbon::now();
-
-        $end_date = $now->copy()->addHours($sponsor->duration);
+        $sponsor_end_date = now()->addHours($sponsor->duration);
         $apartment->sponsor()->attach($sponsor->id, [
-            'start_date' => $now,
-            'end_date' => $end_date,
+            'start_date' => now(),
+            'end_date' => $sponsor_end_date,
         ]);
+
+        $end_date = $apartment->sponsor()->where('sponsor_id', $sponsor->id)->first()->pivot->end_date;
+
         // Se la nuova end_date della sponsorizzazione è nel futuro, allora aggiorna la flag sponsor a 1
         if ($end_date > Carbon::now()) {
-            $apartment->sponsor = 1;
+            $apartment->activeSponsor = 1;
             $apartment->save();
         }
 
         return redirect()->route('dashboard')->with('success', 'Pagamento andato a buon fine');
     }
 }
-

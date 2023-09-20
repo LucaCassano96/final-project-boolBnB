@@ -107,19 +107,9 @@
         {{-- Apartments preview --}}
         <div class="col-12 col-md-9">
             @foreach (json_decode($aptsJson) as $apartment)
-                @if ($apartment->visible && $apartment->sponsor)
-                    <div class="row mt-2" id="sponsoredApartments">
+                    <div class="row mt-2 text-light" id="apartmentsList">
 
                     </div>
-                @endif
-            @endforeach
-
-            @foreach (json_decode($aptsJson) as $apartment)
-                @if ($apartment->visible)
-                    <div class="row mt-2" id="apartmentsList">
-
-                    </div>
-                @endif
             @endforeach
         </div>
     </div>
@@ -131,9 +121,9 @@
     const searchInput = document.getElementById('searchInput');
     const radiusSelect = document.getElementById('filterRadius');
     const apartmentsList = document.getElementById('apartmentsList');
-    const sponsoredApartments = document.getElementById('sponsoredApartments');
     const searchButton = document.getElementById('searchButton');
     const filterInputs = document.querySelectorAll('.filter-input');
+
 
     // Gestione del clic sul pulsante "Cerca"
 
@@ -334,7 +324,7 @@
 
         /* apartmentsList.innerHTML = ""; */
         const filteredApartmentsHtml = filteredApartments.map((apartment) => {
-            if (!apartment.sponsor) {
+
                 return `
                 <div class="col-12 col-lg-6 col-xl-4 p-3">
                     <div class="card border text-center p-0"
@@ -372,55 +362,8 @@
                         </div>
                     </div>
                 </div>`
-            }
         });
-        const sponsoredApartmentsHtml = filteredApartments.map((apartment) => {
-            if (apartment.sponsor) {
-                return`
-                <div class="col-12 col-lg-6 col-xl-4 p-3">
-                    {{-- card --}}
-                    <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:530px; background-color:#353f5c;border-color:#fffdeb">
-                        {{-- logo sponsor - position absolute top right --}}
-                        <i class="bi bi-badge-ad text-warning" style="position: absolute; top:-1%; right:0%; font-size:30px;"></i>
 
-                        {{-- Card Header --}}
-                        <div class="d-flex card-header p-2 align-items-center justify-content-center"
-                            style="border-color: #fffdeb; min-height: 130px">
-                            <h5 class="text-uppercase m-0">
-
-                                <a class="d-inline-block
-                            text-decoration-none border p-2 rounded my-3"
-                                style="color: #fffdeb; border-color: #fffdeb; width: 100%"
-                                href="http://127.0.0.1:8000/show/${apartment.id}"
-                                >${apartment.title}</a>
-                            </h5>
-                        </div>
-                        {{-- Card Body --}}
-                        <div class="card-body p-4">
-                            {{-- immagine --}}
-                            <div class="rounded" loading="lazy" style="width:100%; aspect-ratio: 16 / 10; border: 2px solid #e0a458;">
-                                <img class="rounded"
-                                src="${apartment.picture ? "storage/" + apartment.picture : "storage/images/apartment.jpg"}"
-                                alt="" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-                            {{-- dati appartamento --}}
-                            <div class="my-4">
-                                <ul class="list-unstyled" style="color: #fffdeb">
-                                    <li>${apartment.address}</li>
-                                <li class="p-0 mt-5">
-                                    <span class="p-0 mt-5" style="font-size: 30px; font-weight:800;">${apartment.price} €
-                                    </span><span><small>/ notte</small></span>
-                                </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>`
-            }
-        }
-
-        )
-        sponsoredApartments.innerHTML = sponsoredApartmentsHtml.join('');
         apartmentsList.innerHTML = filteredApartmentsHtml.join('');
 
     }

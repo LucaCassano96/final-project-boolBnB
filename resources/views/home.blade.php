@@ -27,55 +27,63 @@
 
     <!--Tutti gli appartamenti-->
     <div class="row mt-4 mx-md-4 mx-lg-5">
-        <!--Appartamenti in evidenza-->
+        @php $sponsoredApartments = []; @endphp
         @foreach ($apartments as $apartment)
-            @if ($apartment->visible && $apartment->sponsor)
-                <div class="col-md-6 col-lg-4 col-xl-2 p-3">
-                    {{-- card --}}
-                    <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:430px; background-color:#353f5c; border-color:#fffdeb">
-                        {{-- logo sponsor - position absolute top right --}}
-                        <i class="bi bi-badge-ad text-warning" style="position: absolute; bottom:-1%; right:2%; font-size:30px;"></i>
+            @foreach ($apartment->sponsor as $sponsor)
+            {{-- <p>End Date: {{ $sponsor->pivot->end_date }}</p> --}}
+            @if ($apartment->visible && $sponsor->pivot->end_date > now())
+            @php $sponsoredApartments[] = $apartment; @endphp
+            @endif
+            @endforeach
+        @endforeach
 
-                        {{-- Card Body --}}
-                        <div class="card-body p-2">
-                            {{-- immagine --}}
-                            <div class="rounded mb-2" style="width:100%; aspect-ratio: 1 / 1; border: 2px solid #e0a458;">
-                                <img class="rounded" loading="lazy" src="{{
-                                    asset(
-                                        $apartment->picture
-                                        ? 'storage/' . $apartment->picture
-                                        : 'storage/images/apartment.jpg')
-                                    }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+        <!--Appartamenti in evidenza-->
+        @foreach ($sponsoredApartments as $apartment)
+            <div class="col-md-6 col-lg-4 col-xl-2 order-1 p-3">
+                {{-- card --}}
+                <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:430px; background-color:#353f5c; border-color:#fffdeb">
+                    {{-- logo sponsor - position absolute top right --}}
+                    <i class="bi bi-badge-ad text-warning" style="position: absolute; bottom:-1%; right:2%; font-size:30px;"></i>
+
+                    {{-- Card Body --}}
+                    <div class="card-body p-2">
+                        {{-- immagine --}}
+                        <div class="rounded mb-2" style="width:100%; aspect-ratio: 1 / 1; border: 2px solid #e0a458;">
+                            <img class="rounded" loading="lazy" src="{{
+                                asset(
+                                    $apartment->picture
+                                    ? 'storage/' . $apartment->picture
+                                    : 'storage/images/apartment.jpg')
+                                }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        {{-- dati appartamento --}}
+                        <div class="my-2" style="color: #fffdeb">
+                            {{-- titolo --}}
+                            <h6 class="text-uppercase m-0">
+                                <a class="d-flex justify-content-center align-items-center
+                                text-decoration-none border p-2 rounded"
+                                style="height:60px; color: #fffdeb; border-color: #fffdeb; width: 100% overflow:ellipsis;"
+                                href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
+                            </h6>
+                            {{-- indirizzo --}}
+                            <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
+                                <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
                             </div>
-
-                            {{-- dati appartamento --}}
-                            <div class="my-2" style="color: #fffdeb">
-                                {{-- titolo --}}
-                                <h6 class="text-uppercase m-0">
-                                    <a class="d-flex justify-content-center align-items-center
-                                    text-decoration-none border p-2 rounded"
-                                    style="height:60px; color: #fffdeb; border-color: #fffdeb; width: 100% overflow:ellipsis;"
-                                    href="{{ route('apartment.show', $apartment->id) }}"> {{ $apartment->title }}</a>
-                                </h6>
-                                {{-- indirizzo --}}
-                                <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
-                                    <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
-                                </div>
-                                <div class="p-1">
-                                    <span class="p-0" style="font-size: 25px; font-weight:800;">{{ $apartment->price }} € </span>
-                                    <span><small>/ notte</small></span>
-                                </div>
+                            <div class="p-1">
+                                <span class="p-0" style="font-size: 25px; font-weight:800;">{{ $apartment->price }} € </span>
+                                <span><small>/ notte</small></span>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
         @endforeach
 
         <!--Appartamenti non in evidenza-->
-        @foreach ($apartments as $apartment)
-            @if ($apartment->visible && !$apartment->sponsor)
-                <div class="col-md-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
+        @foreach ($apartments as $apartment )
+            @if ($apartment->visible && !in_array($apartment, $sponsoredApartments))
+                <div class="col-md-6 col-lg-4 col-xl-2 order-2 p-3 d-flex align-items-end">
                     <div class="card border text-center p-0" style="min-height:430px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                         {{-- Card Body --}}
@@ -113,6 +121,7 @@
                 </div>
             @endif
         @endforeach
+
 
 
     </div>

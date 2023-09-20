@@ -80,13 +80,25 @@
                                             </div>
                                             <div class="card-footer">
 
-                                                @if ($apartment->sponsor)
-                                                    <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
-                                                        Sponsorizzato
-                                                    </div>
+                                                @if ($apartment->sponsor->isNotEmpty())
+                                                    @foreach ($apartment->sponsor as $sponsor)
+                                                    @if ($sponsor->pivot->end_date > now())
+                                                        <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
+                                                            Sponsorizzato
+                                                        </div>
+                                                    @else
+                                                        <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
+                                                    @endif
+
+                                                    @endforeach
                                                 @else
                                                     <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
                                                 @endif
+
+
+
+
+
 
                                             </div>
                                         </div>
