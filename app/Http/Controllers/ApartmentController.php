@@ -78,7 +78,7 @@ class ApartmentController extends Controller
 
         $data =  $request -> all();
         $address = $data['address'];
-        $radius = $data['radius'] ?? 200;
+        $radius = $data['radius'] ?? 20;
         $amenities = Amenity::all();
 
         // Geocode the address using the TomTom Geocoding API
