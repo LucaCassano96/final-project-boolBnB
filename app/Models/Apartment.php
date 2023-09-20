@@ -23,6 +23,7 @@ class Apartment extends Model
         "address",
         "latitude",
         "longitude",
+        "activeSponsor",
         "user_id"
 
     ];

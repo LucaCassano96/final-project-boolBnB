@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table -> boolean("visible") -> default(true);
 
-            $table->boolean('sponsor')->default(0);
+            $table->boolean('activeSponsor')->default(0);
 
             $table->timestamps();
         });

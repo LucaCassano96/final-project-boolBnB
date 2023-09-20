@@ -84,18 +84,33 @@
                                                         <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
                                                     </div>
                                                     
-                                                    {{-- sponsorizzazione --}}
-                                                    <div class="card-footer">
-                                                        @if ($apartment->sponsor)
-                                                            <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
-                                                                Sponsorizzato
-                                                            </div>
-                                                        @else
-                                                            <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
-                                                        @endif
-        
-                                                    </div>
                                                 </div>
+                                                <div class="my-2 text-white">
+                                                    Prezzo: {{ $apartment->price }}€ / notte
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+
+                                                @if ($apartment->sponsor->isNotEmpty())
+                                                    @foreach ($apartment->sponsor as $sponsor)
+                                                    @if ($sponsor->pivot->end_date > now())
+                                                        <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 py-1">
+                                                            Sponsorizzato
+                                                        </div>
+                                                    @else
+                                                        <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
+                                                    @endif
+
+                                                    @endforeach
+                                                @else
+                                                    <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn btn-secondary">Sponsorizza</a>
+                                                @endif
+
+
+
+
+
+
                                             </div>
                                         </div>
                                     </div> 
