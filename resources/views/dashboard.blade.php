@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid" style="background-color: #2d3047;">
+<div class="container" style="background-color: #2d3047;">
 
     <div class="row justify-content-center">
         <div class="col">
-            <div class="card m-5 rounded" style="background-color: #5c80bc">
+            <div class="card rounded" style="background-color: #5c80bc">
 
                 {{-- Messaggio conferma invio messaggio --}}
                 @if (session('success'))
@@ -57,7 +57,7 @@
                                     {{-- Card APPARTAMENTO --}}
                                     <div class="col-md-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
                                         <div class="card border text-center p-0" style="min-height:430px; background-color:#2d3047; border-color:#fffdeb">
-                    
+
                                             {{-- Card Body --}}
                                             <div class="card-body p-2">
                                                 {{-- immagine --}}
@@ -69,7 +69,7 @@
                                                             : 'storage/images/apartment.jpg')
                                                         }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                                 </div>
-                    
+
                                                 {{-- dati appartamento --}}
                                                 <div class="my-2" style="color: #fffdeb">
                                                     {{-- titolo --}}
@@ -83,7 +83,7 @@
                                                     <div class="d-flex justify-content-center align-items-center p-1 my-2" style="height:60px; overflow:hidden;">
                                                         <span style="text-overflow:'(...)';">{{ $apartment->address }}</span>
                                                     </div>
-                                                    
+
                                                 </div>
                                                 <div class="my-2 text-white">
                                                     Prezzo: {{ $apartment->price }}€ / notte
@@ -113,7 +113,7 @@
 
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 @endforeach
                             </div>
                         @endif
