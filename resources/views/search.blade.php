@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container pt-4" style="background-color: #2d3047;">
+<div class="container py-4" style="background-color: #2d3047;">
 
     <div class="row d-flex justify-content-center">
         <div class="col">
@@ -34,7 +34,7 @@
 
     <div class="row d-flex justify-content-center">
         {{-- Filters --}}
-        <div class="col mb-lg-5 p-0">
+        <div class="col mb-lg-5">
             <div class="card p-4 mt-4 rounded-4">
                 <h3 class="my-3 text-center" style="color:#2d3047">Filtri di ricerca</h3>
 
@@ -326,7 +326,7 @@
         const filteredApartmentsHtml = filteredApartments.map((apartment) => {
 
                 return `
-                <div class="col-12 col-lg-6 col-xl-4 p-3">
+                <div class="col-6 col-xl-4 p-3">
                     <div class="card border text-center p-0"
                         style="min-height:530px; background-color:#5c7fbc32; border-color:#fffdeb">
                         {{-- Card Header --}}

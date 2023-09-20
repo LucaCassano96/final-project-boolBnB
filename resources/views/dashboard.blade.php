@@ -55,7 +55,7 @@
 
                                 @foreach ($user->apartments as $apartment)
                                     {{-- Card APPARTAMENTO --}}
-                                    <div class="col-md-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
+                                    <div class="col-6 col-lg-4 col-xl-2 p-3 d-flex align-items-end">
                                         <div class="card border text-center p-0" style="min-height:430px; background-color:#2d3047; border-color:#fffdeb">
 
                                             {{-- Card Body --}}

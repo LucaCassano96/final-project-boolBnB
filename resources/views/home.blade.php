@@ -39,7 +39,7 @@
 
         <!--Appartamenti in evidenza-->
         @foreach ($sponsoredApartments as $apartment)
-            <div class="col-md-6 col-lg-4 col-xl-2 order-1 p-3">
+            <div class="col-6 col-lg-4 col-xl-2 order-1 p-3">
                 {{-- card --}}
                 <div class="card border border-3 border-warning rounded-2 text-center p-0" style="position:relative; min-height:430px; background-color:#353f5c; border-color:#fffdeb">
                     {{-- logo sponsor - position absolute top right --}}
@@ -83,7 +83,7 @@
         <!--Appartamenti non in evidenza-->
         @foreach ($apartments as $apartment )
             @if ($apartment->visible && !in_array($apartment, $sponsoredApartments))
-                <div class="col-md-6 col-lg-4 col-xl-2 order-2 p-3 d-flex align-items-end">
+                <div class="col-6 col-lg-4 col-xl-2 order-2 p-3 d-flex align-items-end">
                     <div class="card border text-center p-0" style="min-height:430px; background-color:#5c7fbc32; border-color:#fffdeb">
 
                         {{-- Card Body --}}
