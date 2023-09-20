@@ -71,8 +71,10 @@
                     <div class="container-button col-12 d-flex justify-content-end">
                         <div class="row d-flex justify-content-end mb-3 col-xs-12 col-6">
                             <div class="col px-3 d-flex justify-content-center">
-                                {{-- se l'appartamento è gia sponsorizzato --}}
-                                @if ($apartment->sponsor)
+
+                                @foreach ($apartment->sponsor as $sponsor)
+                                    {{-- se l'appartamento è gia sponsorizzato --}}
+                                @if ($sponsor->pivot->end_date > now())
                                     <div class="text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2 send-button d-flex align-items-center mt-3 px-3 py-1">
                                         Sponsorizzato
                                     </div>
@@ -82,6 +84,8 @@
                                         <a href="{{ route('sponsor-form', $apartment->id) }}" class="py-1 btn" style="background-color: #e0a458;">Sponsorizza</a>
                                     </div>
                                 @endif
+                                @endforeach
+
                             </div>
 
                             {{-- link/button appartamenti --}}
